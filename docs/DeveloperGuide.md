@@ -339,10 +339,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **Private contact detail**: A contact detail that is not meant to be shared with others
-* **Employee profile**: The name, phone number, email, address, tags (optional), salary and certificates (optional) associated with a particular employee.
-* **CLI**: An app interface where the primary mode of interaction with the app is typing commands that can be parsed by the system.
-* **Corruption**: An event where data can no longer be correctly interpreted by the system. 
-* **Saved locally** : Data is stored on the user's device and not on any online server or cloud system. 
 
 --------------------------------------------------------------------------------------------------------------------
 
