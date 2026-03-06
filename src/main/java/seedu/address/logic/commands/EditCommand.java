@@ -105,8 +105,8 @@ public class EditCommand extends Command {
         Salary updatedSalary = editPersonDescriptor.getSalary().orElse(personToEdit.getSalary());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress,
-                updatedTags, updatedSalary);
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags,
+                updatedSalary);
     }
 
     @Override
@@ -164,7 +164,7 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, salary, tags);
+            return CollectionUtil.isAnyNonNull(name, phone, email, address, tags, salary);
         }
 
         public void setName(Name name) {
@@ -199,12 +199,12 @@ public class EditCommand extends Command {
             return Optional.ofNullable(address);
         }
 
-        public void setSalary(Salary salary) {
-            this.salary = salary;
-        }
-
         public Optional<Salary> getSalary() {
             return Optional.ofNullable(salary);
+        }
+
+        public void setSalary(Salary salary) {
+            this.salary = salary;
         }
 
         /**
@@ -240,8 +240,8 @@ public class EditCommand extends Command {
                     && Objects.equals(phone, otherEditPersonDescriptor.phone)
                     && Objects.equals(email, otherEditPersonDescriptor.email)
                     && Objects.equals(address, otherEditPersonDescriptor.address)
-                    && Objects.equals(salary, otherEditPersonDescriptor.salary)
-                    && Objects.equals(tags, otherEditPersonDescriptor.tags);
+                    && Objects.equals(tags, otherEditPersonDescriptor.tags)
+                    && Objects.equals(salary, otherEditPersonDescriptor.salary);
         }
 
         @Override
