@@ -11,8 +11,14 @@ public class Phone {
 
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Phone numbers should only contain numbers, and it should be at least 3 digits long";
-    public static final String VALIDATION_REGEX = "\\d{3,}";
+            "If not blank, phone numbers should adopt the format +<COUNTRY_CODE> <PHONE NUMBER>, "
+                    + "with a space between country code and number, followed by min 3 max 15 digits only";
+    /* If not blank:
+     * (1) Must start with '+' followed by 1-3 digits for country code.
+     * (2) Must be followed by a single space.
+     * (3) Must then be followed by minimum 3 and maximum 15 digits.
+     */
+    public static final String VALIDATION_REGEX = "^\\+\\d{1,3} \\d{3,15}$";
     public final String value;
 
     /**
@@ -28,9 +34,10 @@ public class Phone {
 
     /**
      * Returns true if a given string is a valid phone number.
+     * Field be empty but not null
      */
     public static boolean isValidPhone(String test) {
-        return test.matches(VALIDATION_REGEX);
+        return test.isEmpty() || test.matches(VALIDATION_REGEX);
     }
 
     @Override
