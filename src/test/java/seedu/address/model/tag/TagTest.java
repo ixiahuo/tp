@@ -12,8 +12,22 @@ public class TagTest {
     }
 
     @Test
-    public void constructor_invalidTagName_throwsIllegalArgumentException() {
+    public void constructor_emptyTagName_throwsIllegalArgumentException() {
         String invalidTagName = "";
+        assertThrows(IllegalArgumentException.class, () -> new Tag(invalidTagName));
+    }
+
+    @Test
+    public void constructor_invalidTagName_throwsIllegalArgumentException() {
+        String invalidTagName = "Lets, Test";
+        assertThrows(IllegalArgumentException.class, () -> new Tag(invalidTagName));
+    }
+
+
+    @Test
+    public void constructor_invalidTagLength_throwsIllegalArgumentException() {
+        // Should be less than equal to 30
+        String invalidTagName = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
         assertThrows(IllegalArgumentException.class, () -> new Tag(invalidTagName));
     }
 
