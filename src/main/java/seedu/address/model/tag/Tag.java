@@ -9,8 +9,14 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class Tag {
 
-    public static final String MESSAGE_CONSTRAINTS = "Tags names should be alphanumeric";
-    public static final String VALIDATION_REGEX = "\\p{Alnum}+";
+    public static final String MESSAGE_CONSTRAINTS =
+            "Tag should not exceed 30 characters and should not contain “,”";
+    /*
+     * (1) Must not exceed 30 characters.
+     * (2) Allow any characters except ",".
+     * (3) Can be blank
+     */
+    public static final String VALIDATION_REGEX = "^[^,]{0,30}$";
 
     public final String tagName;
 
@@ -29,7 +35,7 @@ public class Tag {
      * Returns true if a given string is a valid tag name.
      */
     public static boolean isValidTagName(String test) {
-        return test.matches(VALIDATION_REGEX);
+        return test.isEmpty() || test.matches(VALIDATION_REGEX);
     }
 
     @Override
