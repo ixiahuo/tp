@@ -2,7 +2,6 @@ package seedu.address.model.person;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 
@@ -21,10 +20,11 @@ public class SalaryTest {
     }
 
     @Test
-    public void equals_differentTypes_returnsFalse() {
-        assertNotEquals(5000, new Salary("5000"));
+    public void equals_nullAndOtherTypes() {
+        Salary salary = new Salary("5000");
+        assertFalse(salary.equals(null)); // Tests null path
+        assertFalse(salary.equals("5000")); // Tests different type path
     }
-
     @Test
     public void hashcode() {
         Salary salary = new Salary("5000");
