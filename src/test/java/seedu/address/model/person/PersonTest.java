@@ -95,6 +95,11 @@ public class PersonTest {
     }
 
     @Test
+    public void hashCode_test() {
+        assertEquals(ALICE.hashCode(), new PersonBuilder(ALICE).build().hashCode());
+    }
+
+    @Test
     public void toStringMethod() {
         String expected = Person.class.getCanonicalName() + "{name=" + ALICE.getName() + ", phone=" + ALICE.getPhone()
                 + ", email=" + ALICE.getEmail() + ", address=" + ALICE.getAddress() + ", tags=" + ALICE.getTags()

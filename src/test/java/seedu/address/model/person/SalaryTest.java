@@ -1,6 +1,8 @@
 package seedu.address.model.person;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 
@@ -16,6 +18,17 @@ public class SalaryTest {
     public void constructor_invalidSalary_throwsIllegalArgumentException() {
         String invalidSalary = "two thousand";
         assertThrows(IllegalArgumentException.class, () -> new Salary(invalidSalary));
+    }
+
+    @Test
+    public void equals_differentTypes_returnsFalse() {
+        assertNotEquals(5000, new Salary("5000"));
+    }
+
+    @Test
+    public void hashcode() {
+        Salary salary = new Salary("5000");
+        assertEquals(salary.hashCode(), new Salary("5000").hashCode());
     }
 
     @Test
