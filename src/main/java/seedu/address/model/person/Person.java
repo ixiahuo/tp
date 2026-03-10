@@ -30,7 +30,7 @@ public class Person {
     private ArrayList<Certificate> certs;
 
     /**
-     * Every field must be present and not null.
+     * Every field except certificate must be present and not null.
      */
     public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, Salary salary) {
         requireAllNonNull(name, phone, email, address, tags, salary);
@@ -43,6 +43,9 @@ public class Person {
         this.certs = new ArrayList<Certificate>();
     }
 
+    /**
+     * Overloaded constructor to create a Person with existing certificates.
+     */
     public Person(Name name, Phone phone,
                 Email email, Address address, Set<Tag> tags,
                 Salary salary, ArrayList<Certificate> certs) {
@@ -88,6 +91,11 @@ public class Person {
         return certs;
     }
 
+    /**
+     * Checks if this person already has this certificate.
+     * @param cert Certificate to be checked against.
+     * @return true if the certificate exists in this person's list of certificates, false otherwise.
+     */
     public boolean hasCert(Certificate cert) {
         return (this.certs.stream()
                 .filter(x -> x.isSameCert(cert))

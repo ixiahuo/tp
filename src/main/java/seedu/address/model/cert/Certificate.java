@@ -1,6 +1,5 @@
 package seedu.address.model.cert;
 
-import java.time.LocalDate;
 import java.util.Objects;
 
 import seedu.address.commons.util.ToStringBuilder;
@@ -28,6 +27,10 @@ public class Certificate {
         return expiry;
     }
 
+    /**
+     * Returns true if both certificates have the same name.
+     * This defines a weaker notion of equality between two certificates.
+     */
     public boolean isSameCert(Certificate otherCertificate) {
         if (otherCertificate == this) {
             return true;
