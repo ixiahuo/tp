@@ -4,49 +4,46 @@ import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CERT_EXPIRY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CERT_NAME;
 
-import java.util.Set;
 import java.util.stream.Stream;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.CertAddCommand;
 import seedu.address.logic.commands.EditCommand;
-import seedu.address.logic.parser.CliSyntax;
-import seedu.address.logic.parser.Parser;
-import seedu.address.logic.parser.ParserUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.cert.CertName;
 import seedu.address.model.cert.CertExpiry;
+import seedu.address.model.cert.CertName;
 import seedu.address.model.cert.Certificate;
 
+/**
+ * Parses input arguments and creates a new CertAddCommand object.
+ */
 public class CertAddCommandParser implements Parser<CertAddCommand> {
 
-        public CertAddCommand parse(String args) throws ParseException {
-                ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_CERT_NAME, PREFIX_CERT_EXPIRY);
+    public CertAddCommand parse(String args) throws ParseException {
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_CERT_NAME, PREFIX_CERT_EXPIRY);
 
-                if (!arePrefixesPresent(argMultimap, PREFIX_CERT_NAME, PREFIX_CERT_EXPIRY)) {
-                        throw new ParseException(
-                                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, CertAddCommand.MESSAGE_USAGE));
-                }
-
-                argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_CERT_NAME, PREFIX_CERT_EXPIRY);
-
-                Index index;
-
-                try {
-                index = ParserUtil.parseIndex(argMultimap.getPreamble());
-                } catch (ParseException pe) {
-                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE), pe);
-                }
-
-                CertName name = ParserUtil.parseCertName(argMultimap.getValue(PREFIX_CERT_NAME).get());
-                CertExpiry expiry = ParserUtil.parseCertExpiry(argMultimap.getValue(PREFIX_CERT_EXPIRY).get());
-
-                Certificate cert = new Certificate(name, expiry);
-
-                return new CertAddCommand(index, cert);
+        if (!arePrefixesPresent(argMultimap, PREFIX_CERT_NAME, PREFIX_CERT_EXPIRY)) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, CertAddCommand.MESSAGE_USAGE));
         }
 
-        private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-                return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_CERT_NAME, PREFIX_CERT_EXPIRY);
+
+        Index index;
+        try {
+        	index = ParserUtil.parseIndex(argMultimap.getPreamble());
+        } catch (ParseException pe) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE), pe);
         }
+
+        CertName name = ParserUtil.parseCertName(argMultimap.getValue(PREFIX_CERT_NAME).get());
+        CertExpiry expiry = ParserUtil.parseCertExpiry(argMultimap.getValue(PREFIX_CERT_EXPIRY).get());
+        Certificate cert = new Certificate(name, expiry);
+
+        return new CertAddCommand(index, cert);
+    }
+
+    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+       return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    }
 }

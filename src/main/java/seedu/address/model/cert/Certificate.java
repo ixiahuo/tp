@@ -2,24 +2,19 @@ package seedu.address.model.cert;
 
 import java.time.LocalDate;
 import java.util.Objects;
-import java.util.Set;
-
-import javax.swing.text.html.HTML.Tag;
 
 import seedu.address.commons.util.ToStringBuilder;
-import seedu.address.model.cert.CertName;
-import seedu.address.model.person.Person;
-import seedu.address.model.cert.CertExpiry;
 
+/**
+ * Represents a certificate that a person can hold.
+ */
 public class Certificate {
     private CertName name;
     private CertExpiry expiry;
 
-    public Certificate(CertName name) {
-        this.name = name;
-        this.expiry = new CertExpiry(LocalDate.parse("999999-31-31"));
-    }
-
+    /**
+     * Every field must be present.
+     */
     public Certificate(CertName name, CertExpiry expiry) {
         this.name = name;
         this.expiry = expiry;
