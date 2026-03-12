@@ -28,6 +28,7 @@ public class Salary {
 
     /**
      * Returns true if a given salary is a valid salary.
+     * The salary field can be empty.
      */
     public static boolean isValidSalary(String test) {
         return test.isEmpty() || test.matches(VALIDATION_REGEX);

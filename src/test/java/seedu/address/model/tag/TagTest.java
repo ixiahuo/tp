@@ -1,5 +1,7 @@
 package seedu.address.model.tag;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 
 import org.junit.jupiter.api.Test;
@@ -27,7 +29,9 @@ public class TagTest {
     @Test
     public void constructor_invalidTagLength_throwsIllegalArgumentException() {
         // Should be less than equal to 30
-        String invalidTagName = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+        String invalidTagName = "thisTagIsWayTooLongOverThirtyCharacters";
+
+        assertFalse(Tag.isValidTagLength(invalidTagName)); // over 30 char
         assertThrows(IllegalArgumentException.class, () -> new Tag(invalidTagName));
     }
 
@@ -35,6 +39,14 @@ public class TagTest {
     public void isValidTagName() {
         // null tag name
         assertThrows(NullPointerException.class, () -> Tag.isValidTagName(null));
+
+        // invalid tag names
+        assertFalse(Tag.isValidTagName("friend,family")); // contains comma
+        assertFalse(Tag.isValidTagName("hr team #2")); // contains special char
+
+        // valid tag names
+        assertTrue(Tag.isValidTagName("friend")); // alphanumeric
+        assertTrue(Tag.isValidTagName("12345")); // numbers
     }
 
 }
