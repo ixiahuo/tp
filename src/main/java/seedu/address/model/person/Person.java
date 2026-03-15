@@ -44,6 +44,14 @@ public class Person {
     }
 
     /**
+     * Overloaded constructor to create a Person without using tags
+     * Chains to the main constructor with an empty HashSet.
+     */
+    public Person(Name name, Phone phone, Email email, Address address, Salary salary) {
+        this(name, phone, email, address, new HashSet<>(), salary);
+    }
+
+    /**
      * Overloaded constructor to create a Person with existing certificates.
      */
     public Person(Name name, Phone phone,
