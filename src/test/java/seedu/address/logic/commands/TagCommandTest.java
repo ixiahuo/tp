@@ -62,7 +62,7 @@ public class TagCommandTest {
     }
 
     @Test
-    public void execute_someFieldsSpecifiedUnfilteredList_success() {
+    public void execute_addTagsUnfilteredList_success() {
         Person originalPerson = model.getFilteredPersonList().get(0);
 
         Set<Tag> toAdd = Set.of(new Tag("Test"));
@@ -89,7 +89,77 @@ public class TagCommandTest {
     }
 
     @Test
-    public void execute_noFieldsSpecifiedUnfilteredList_success() {
+    public void execute_deleteTagsUnfilteredList_success() {
+        Person originalPerson = model.getFilteredPersonList().get(0);
+
+        Set<Tag> toDelete = new HashSet<Tag>(originalPerson.getTags());
+
+        assert(!toDelete.isEmpty());
+
+        Person editedPerson = new Person(originalPerson.getName(),
+                originalPerson.getPhone(),
+                originalPerson.getEmail(),
+                originalPerson.getAddress(),
+                Set.of(),
+                originalPerson.getSalary());
+
+        TagCommand tagCommand = new TagCommand(INDEX_FIRST_PERSON, Set.of(), toDelete);
+
+        String expectedMessage = String.format(TagCommand.MESSAGE_TAG_EDIT_PERSON_SUCCESS,
+                Messages.format(editedPerson));
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
+
+        assertCommandSuccess(tagCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_deleteNonexistentTagsUnfilteredList_failure() {
+        Person originalPerson = model.getFilteredPersonList().get(0);
+
+        Set<Tag> toDelete = new HashSet<Tag>();
+        toDelete.add(new Tag("Non-existent"));
+
+        Person editedPerson = new Person(originalPerson.getName(),
+                originalPerson.getPhone(),
+                originalPerson.getEmail(),
+                originalPerson.getAddress(),
+                Set.of(),
+                originalPerson.getSalary());
+
+        TagCommand tagCommand = new TagCommand(INDEX_FIRST_PERSON, Set.of(), toDelete);
+
+        String expectedMessage = String.format(TagCommand.MESSAGE_NOT_EDITED,
+                Messages.format(editedPerson));
+
+        assertCommandFailure(tagCommand, model, expectedMessage);
+    }
+
+    @Test
+    public void execute_addDeleteSameTagUnfilteredList_failure() {
+        Person originalPerson = model.getFilteredPersonList().get(0);
+
+        Set<Tag> tags = new HashSet<Tag>();
+        tags.add(new Tag("Tag"));
+
+        Person editedPerson = new Person(originalPerson.getName(),
+                originalPerson.getPhone(),
+                originalPerson.getEmail(),
+                originalPerson.getAddress(),
+                Set.of(),
+                originalPerson.getSalary());
+
+        TagCommand tagCommand = new TagCommand(INDEX_FIRST_PERSON, tags, tags);
+
+        String expectedMessage = String.format(TagCommand.MESSAGE_NOT_EDITED,
+                Messages.format(editedPerson));
+
+        assertCommandFailure(tagCommand, model, expectedMessage);
+    }
+
+    @Test
+    public void execute_noFieldsSpecifiedUnfilteredList_failure() {
         Person originalPerson = model.getFilteredPersonList().get(0);
 
         Set<Tag> sameTags = new HashSet<Tag>(originalPerson.getTags());
