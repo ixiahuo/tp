@@ -143,7 +143,7 @@
 }
 
 .status-bar {
-    -fx-background-color: derive(#1d1d1d, 30%);
+    -fx-background-color: #012442;
 }
 
 .status-bar .label {
