@@ -21,14 +21,16 @@ import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 
 public class ParserUtilTest {
-    private static final String INVALID_NAME = "R@chel";
-    private static final String INVALID_PHONE = "+651234";
-    private static final String INVALID_ADDRESS = " ";
-    private static final String INVALID_EMAIL = "example.com";
-    private static final String INVALID_TAG = "#friend";
+    private static final String INVALID_NAME = "R@chel"; // contains special char @
+    private static final String INVALID_PHONE = "+651234"; // no space between country code and phone
+    private static final String INVALID_ADDRESS = "9*1 Tah Ching Road"; // contains invalid special char *
+    private static final String INVALID_EMAIL = "example.com"; // missing @ char
+    private static final String INVALID_TAG = "[friend]";
+    private static final String INVALID_TAG_BY_LENGTH = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+
 
     private static final String VALID_NAME = "Rachel Walker";
-    private static final String VALID_PHONE = "123456";
+    private static final String VALID_PHONE = "+65 123456";
     private static final String VALID_ADDRESS = "123 Main Street #0505";
     private static final String VALID_EMAIL = "rachel@example.com";
     private static final String VALID_TAG_1 = "friend";
@@ -159,6 +161,12 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseTag_invalidLength_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseTag(INVALID_TAG_BY_LENGTH));
+    }
+
+
+    @Test
     public void parseTag_validValueWithoutWhitespace_returnsTag() throws Exception {
         Tag expectedTag = new Tag(VALID_TAG_1);
         assertEquals(expectedTag, ParserUtil.parseTag(VALID_TAG_1));
@@ -192,5 +200,14 @@ public class ParserUtilTest {
         Set<Tag> expectedTagSet = new HashSet<Tag>(Arrays.asList(new Tag(VALID_TAG_1), new Tag(VALID_TAG_2)));
 
         assertEquals(expectedTagSet, actualTagSet);
+    }
+
+    @Test
+    public void parseSalary_invalidValue_throwsParseException() {
+        // Non-numeric salary
+        assertThrows(ParseException.class, () -> ParserUtil.parseSalary("two thousand"));
+
+        // Negative salary
+        assertThrows(ParseException.class, () -> ParserUtil.parseSalary("-100"));
     }
 }

@@ -15,7 +15,7 @@ public class AddressTest {
 
     @Test
     public void constructor_invalidAddress_throwsIllegalArgumentException() {
-        String invalidAddress = "";
+        String invalidAddress = "9*1 Tah Ching Road";
         assertThrows(IllegalArgumentException.class, () -> new Address(invalidAddress));
     }
 
@@ -25,13 +25,16 @@ public class AddressTest {
         assertThrows(NullPointerException.class, () -> Address.isValidAddress(null));
 
         // invalid addresses
-        assertFalse(Address.isValidAddress("")); // empty string
-        assertFalse(Address.isValidAddress(" ")); // spaces only
+        assertFalse(Address.isValidAddress("9*1 Tah Ching Road")); // contains * character
+        assertFalse(Address.isValidAddress("Leng Incorporation Private Limited, 12345678 Market Street,"
+                + "San Francisco California 2349879, United States of America")); // address exceeds 100 char
+
 
         // valid addresses
+        assertTrue(Address.isValidAddress("")); // empty string
+        assertTrue(Address.isValidAddress(" ")); // spaces only
         assertTrue(Address.isValidAddress("Blk 456, Den Road, #01-355"));
         assertTrue(Address.isValidAddress("-")); // one character
-        assertTrue(Address.isValidAddress("Leng Inc; 1234 Market St; San Francisco CA 2349879; USA")); // long address
     }
 
     @Test

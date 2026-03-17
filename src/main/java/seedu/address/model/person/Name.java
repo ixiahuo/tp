@@ -10,13 +10,17 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class Name {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Names should only contain alphanumeric characters and spaces, and it should not be blank";
+            "Names should only contain alphabets, spaces, forward slashes and it should not be blank\n"
+            + "If a “/” is used (e.g., S/O), the letters immediately before and after must be uppercase";
 
     /*
-     * The first character of the address must not be a whitespace,
-     * otherwise " " (a blank string) becomes a valid input.
+     * (1) Only alphabetical characters, single spaces, and forward slashes.
+     * (2) Cannot be blank.
+     * (3) If Name contains forward slashes, then alphabets before and after the forward slash must be uppercase
+     * This regex ensures the first and last characters are not spaces,
+     * and only single spaces are allowed between characters.
      */
-    public static final String VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum} ]*";
+    public static final String VALIDATION_REGEX = "^[a-zA-Z]+(([ ]|[A-Z]/[A-Z])[a-zA-Z]*)*$";
 
     public final String fullName;
 
@@ -33,6 +37,7 @@ public class Name {
 
     /**
      * Returns true if a given string is a valid name.
+     * The name field cannot be empty.
      */
     public static boolean isValidName(String test) {
         return test.matches(VALIDATION_REGEX);
@@ -56,7 +61,8 @@ public class Name {
         }
 
         Name otherName = (Name) other;
-        return fullName.equals(otherName.fullName);
+        // Case-insensitive comparison for duplicate checks
+        return fullName.equalsIgnoreCase(otherName.fullName);
     }
 
     @Override
