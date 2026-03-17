@@ -48,10 +48,10 @@ public class TypicalPersons {
             .withTags("owesMoney", "friends")
             .withSalary("")
             .withCertificates(TYPICAL_CERTIFICATES).build();
-    public static final Person CARL = new PersonBuilder().withName("Carl Kurz").withPhone("95352563")
+    public static final Person CARL = new PersonBuilder().withName("Carl Kurz").withPhone("+65 95352563")
             .withEmail("heinz@example.com").withAddress("wall street").withSalary("")
             .withCertificates(new ArrayList<Certificate>()).build();
-    public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier").withPhone("87652533")
+    public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier").withPhone("+65 87652533")
             .withEmail("cornelia@example.com").withAddress("10th street").withTags("friends").withSalary("").build();
     public static final Person ELLE = new PersonBuilder().withName("Elle Meyer").withPhone("+65 9482224")
             .withEmail("werner@example.com").withAddress("michegan ave").withSalary("").build();
