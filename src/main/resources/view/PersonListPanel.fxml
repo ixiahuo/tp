@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
-  <ScrollPane fitToWidth="true">
-    <TilePane fx:id="personTilePane" VBox.vgrow="ALWAYS" />
+  <ScrollPane fitToWidth="true" style="-fx-background-color: #012442">
+    <TilePane fx:id="personTilePane" style="-fx-background-color: #012442;" VBox.vgrow="ALWAYS" />
   </ScrollPane>
 </VBox>
