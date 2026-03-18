@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import main.java.seedu.address.model.cert.CertExpiry;
-
 import java.util.Optional;
 
 import seedu.address.commons.core.index.Index;
@@ -23,6 +21,7 @@ import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.cert.CertExpiry;
 import seedu.address.model.cert.CertName;
 import seedu.address.model.cert.Certificate;
 import seedu.address.model.person.Address;
@@ -56,52 +55,18 @@ public class CertEditCommand extends Command {
 
     private final Index index;
     private final Certificate toEdit;
-    private final Optional<String> newName;
-    private final Optional<String> newDate;
-    private final boolean hasNewName;
-    private final boolean hasNewDate;
+    private final Optional<CertName> newName;
+    private final Optional<CertExpiry> newDate;
 
     /**
      * Creates a CertEditCommand to edit the specified {@code Certificate} cert.
      */
-    public CertEditCommand(Index index, Certificate cert, String newName, String newDate) {
+    public CertEditCommand(Index index, Certificate cert,
+            Optional<CertName> newName, Optional<CertExpiry> newDate) {
         this.index = index;
         this.toEdit = cert;
-        this.newName = Optional.<String>of(newName);
-        this.newDate = Optional.<String>of(newDate);
-        this.hasNewName = true;
-        this.hasNewDate = true;
-    }
-
-    /**
-     * Overloaded constructor for CertEditCommand if only the name of the certificate is to be modified.
-     * @param index Index of Person to hold the edited certificate.
-     * @param cert Certificate to be edited.
-     * @param newName New name of the certificate to be edited to.
-     */
-    public CertEditCommand(Index index, Certificate cert, String newName) {
-        this.index = index;
-        this.toEdit = cert;
-        this.newName = Optional.<String>of(newName);
-        this.newDate = Optional.<String>empty();
-        this.hasNewName = true;
-        this.hasNewDate = false;
-    }
-
-    /**
-     * Overloaded constructor for CertEditCommand if only the expiry date of
-     * the certificate is to be modified.
-     * @param index Index of Person to hold the edited certificate.
-     * @param cert Certificate to be edited.
-     * @param newDate New expiry date of the certificate to be edited to.
-     */
-    public CertEditCommand(Index index, Certificate cert, String newDate) {
-        this.index = index;
-        this.toEdit = cert;
-        this.newName = Optional.<String>empty();
-        this.newDate = Optional.<String>of(newDate);
-        this.hasNewName = false;
-        this.hasNewDate = true;
+        this.newName = newName;
+        this.newDate = newDate;
     }
 
     @Override
@@ -119,9 +84,9 @@ public class CertEditCommand extends Command {
             throw new CommandException(MESSAGE_MISSING_CERT);
         }
 
-        Certificate updatedCert = getUpdatedCert();
+        Certificate updatedCert = this.getUpdatedCert();
 
-        Person personEdited = editCertForPerson(personToEdit, toEdit);
+        Person personEdited = editCertForPerson(personToEdit, toEdit, updatedCert);
 
         model.setPerson(personToEdit, personEdited);
 
@@ -134,20 +99,8 @@ public class CertEditCommand extends Command {
      * @return Certificate with the edited information.
      */
     private Certificate getUpdatedCert() {
-        CertName updatedName;
-        CertExpiry updatedExpiry;
-
-        if (hasNewName) {
-            updatedName = newName.get();
-        } else {
-            updatedName = toEdit.getName();
-        }
-
-        if (hasNewDate) {
-            updatedExpiry = newDate.get();
-        } else {
-            updatedExpiry = toEdit.getExpiry();
-        }
+        CertName updatedName = this.newName.orElse(this.toEdit.getName());
+        CertExpiry updatedExpiry = this.newDate.orElse(this.toEdit.getExpiry());
 
         Certificate updatedCert = new Certificate(updatedName, updatedExpiry);
         return updatedCert;
@@ -171,12 +124,12 @@ public class CertEditCommand extends Command {
         // set the new cert
         certList.set(index, updatedCert);
 
-        Name name = personToAddTo.getName();
-        Phone phone = personToAddTo.getPhone();
-        Email email = personToAddTo.getEmail();
-        Address address = personToAddTo.getAddress();
-        Set<Tag> tags = personToAddTo.getTags();
-        Salary salary = personToAddTo.getSalary();
+        Name name = personToEdit.getName();
+        Phone phone = personToEdit.getPhone();
+        Email email = personToEdit.getEmail();
+        Address address = personToEdit.getAddress();
+        Set<Tag> tags = personToEdit.getTags();
+        Salary salary = personToEdit.getSalary();
         return new Person(name, phone, email, address, tags, salary, certList);
     }
 
@@ -187,18 +140,20 @@ public class CertEditCommand extends Command {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof CertAddCommand)) {
+        if (!(other instanceof CertEditCommand)) {
             return false;
         }
 
-        CertAddCommand otherCertAddCommand = (CertAddCommand) other;
-        return toAdd.equals(otherCertAddCommand.toAdd);
+        CertEditCommand otherCertEditCommand = (CertEditCommand) other;
+        return toEdit.equals(otherCertEditCommand.toEdit)
+                && index.equals(otherCertEditCommand.index);
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("toAdd", toAdd)
+                .add("index", index)
+                .add("toEdit", toEdit)
                 .toString();
     }
 }
