@@ -29,16 +29,18 @@ public class TagCommand extends Command {
 
     public static final String COMMAND_WORD = "tag";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Add or Delete Tags from the person identified by the index number used in the displayed person list.\n"
-            + "Flags: [" + PREFIX_ADD_TAG + "TAG] to add tags, [" + PREFIX_DELETE_TAG + "TAG] to delete tags\n"
-            + "Parameters: INDEX (must be a positive integer)\n"
-            + "Example: " + COMMAND_WORD + "1 " + PREFIX_ADD_TAG + "HR STAR_EMPLOYEE"
-            + PREFIX_DELETE_TAG + " WRONG_DEPT";
+    public static final String MESSAGE_USAGE = String.format(
+            "%s : adds or deletes tags from an existing contact according to the currently displayed list\n\n"
+            + "Format : %s INDEX [%sTAGS_TO_ADD] [%sTAGS_TO_DELETE]\n"
+            + "Example : %s 1 %sJunior_Dev Cloud Project_1 %sIntern\n\n"
+            + "Multiple tags are separated with spaces.",
+            COMMAND_WORD,
+            COMMAND_WORD, PREFIX_ADD_TAG, PREFIX_DELETE_TAG,
+            COMMAND_WORD, PREFIX_ADD_TAG, PREFIX_DELETE_TAG);
 
     public static final String MESSAGE_TAG_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_TAGS_PROVIDED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_NOT_EDITED = "No tags were changed";
+    public static final String MESSAGE_NOT_EDITED = "No tags were changed.";
 
     private final Index targetIndex;
     private final Set<Tag> tagsToAdd;

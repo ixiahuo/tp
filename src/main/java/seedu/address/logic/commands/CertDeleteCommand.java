@@ -28,14 +28,13 @@ import seedu.address.model.tag.Tag;
 public class CertDeleteCommand extends Command {
     public static final String COMMAND_WORD = "cert-del";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Deletes a certificate from "
-            + "a person's portfolio in the address book. "
-            + "Parameters: "
-            + "INDEX "
-            + PREFIX_CERT_NAME + "NAME "
-            + "Example: " + COMMAND_WORD + " "
-            + "2 "
-            + PREFIX_CERT_NAME + "Social Media Marketing";
+    public static final String MESSAGE_USAGE = String.format(
+            "%s : deletes a certificate from an existing contact according to the currently displayed list\n\n"
+            + "Format : %s INDEX %sCERT_NAME\n"
+            + "Example : %s 2 %sSocial Media Marketing",
+            COMMAND_WORD,
+            COMMAND_WORD, PREFIX_CERT_NAME,
+            COMMAND_WORD, PREFIX_CERT_NAME);
 
     public static final String MESSAGE_SUCCESS = "Certificate deleted: %1$s";
     public static final String MESSAGE_MISSING_CERT = "This person does not have this certificate.";

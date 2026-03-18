@@ -29,16 +29,13 @@ import seedu.address.model.tag.Tag;
 public class CertAddCommand extends Command {
     public static final String COMMAND_WORD = "cert-add";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a certificate to "
-            + "a person's portfolio in the address book. "
-            + "Parameters: "
-            + "INDEX "
-            + PREFIX_CERT_NAME + "NAME "
-            + PREFIX_CERT_EXPIRY + "EXPIRY_DATE "
-            + "Example: " + COMMAND_WORD + " "
-            + "2 "
-            + PREFIX_CERT_NAME + "Social Media Marketing "
-            + PREFIX_CERT_EXPIRY + "2028-06-03";
+    public static final String MESSAGE_USAGE = String.format(
+            "%s : adds a certificate to an existing contact according to the currently displayed list\n\n"
+            + "Format : %s INDEX %sCERT_NAME %sCERT_EXPIRY\n"
+            + "Example : %s 2 %sSocial Media Marketing %s2028-06-03",
+            COMMAND_WORD,
+            COMMAND_WORD, PREFIX_CERT_NAME, PREFIX_CERT_EXPIRY,
+            COMMAND_WORD, PREFIX_CERT_NAME, PREFIX_CERT_EXPIRY);
 
     public static final String MESSAGE_SUCCESS = "New certificate added: %1$s";
     public static final String MESSAGE_DUPLICATE_CERT = "This person already has this certificate.";

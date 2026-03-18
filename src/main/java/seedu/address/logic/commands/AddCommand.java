@@ -20,22 +20,24 @@ public class AddCommand extends Command {
 
     public static final String COMMAND_WORD = "add";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a person to the address book. "
-            + "Parameters: "
-            + PREFIX_NAME + "NAME "
-            + PREFIX_PHONE + "PHONE "
-            + PREFIX_EMAIL + "EMAIL "
-            + PREFIX_ADDRESS + "ADDRESS "
-            + PREFIX_SALARY + "SALARY "
-            + "Example: " + COMMAND_WORD + " "
-            + PREFIX_NAME + "John Doe "
-            + PREFIX_PHONE + "+65 98765432 "
-            + PREFIX_EMAIL + "johnd@example.com "
-            + PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 "
-            + PREFIX_SALARY + "3000 ";
+    public static final String MESSAGE_USAGE = String.format(
+            "%s : adds a new contact\n\n"
+            + "Format : %s %sNAME %sPHONE %sEMAIL %sADDRESS %sSALARY\n"
+            + "Example : %s "
+                    + "%sJohn Doe "
+                    + "%s+65 81234567 "
+                    + "%sj.doe@xyz.co "
+                    + "%s123D Pine Road, #12-345, Singapore 123456 "
+                    + "%s5000\n\n"
+            + "Phone, email, address and salary can be blank, "
+            + "but the prefixes (%s %s %s %s) must still be entered.",
+            COMMAND_WORD,
+            COMMAND_WORD, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_SALARY,
+            COMMAND_WORD, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_SALARY,
+            PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_SALARY);
 
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
+    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
     private final Person toAdd;
 
     /**
