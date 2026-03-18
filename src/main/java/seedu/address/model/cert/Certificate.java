@@ -9,11 +9,22 @@ import seedu.address.commons.util.ToStringBuilder;
  * Represents a certificate that a person can hold.
  */
 public class Certificate {
-    private CertName name;
-    private CertExpiry expiry;
+    private final CertName name;
+    private final CertExpiry expiry;
 
     /**
-     * Every field must be present.
+     * Constructor for a certificate with no expiry date.
+     * @param name name of certificate
+     */
+    public Certificate(CertName name) {
+        this.name = name;
+        this.expiry = new CertExpiry(LocalDate.parse("9999-12-31"));
+    }
+
+    /**
+     * Constructor for a Certificate with an expiry date.
+     * @param name Name of Certificate
+     * @param expiry Expiry date of the Certificate
      */
     public Certificate(CertName name, CertExpiry expiry) {
         this.name = name;
@@ -62,8 +73,7 @@ public class Certificate {
         }
 
         Certificate otherCert = (Certificate) other;
-        return name.equals(otherCert.name)
-                && expiry.equals(otherCert.expiry);
+        return name.equals(otherCert.name);
     }
 
     @Override

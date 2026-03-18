@@ -112,6 +112,20 @@ public class Person {
     }
 
     /**
+     * Gets the index of a Certificate within this.certs
+     * @param cert Certificate to find index of
+     * @return index of cert within this.certs
+     */
+    public int getCertIndex(Certificate cert) {
+        for (int i = 0; i < this.certs.size(); i++) {
+            if (certs.get(i).isSameCert(cert)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
      * Returns true if both persons have the same phone and email.
      * This defines a stronger notion of equality between two persons.
      */

@@ -1,8 +1,10 @@
 package seedu.address.testutil;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import seedu.address.model.cert.Certificate;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
@@ -29,6 +31,7 @@ public class PersonBuilder {
     private Address address;
     private Set<Tag> tags;
     private Salary salary;
+    private ArrayList<Certificate> certs;
 
     /**
      * Creates a {@code PersonBuilder} with the default details.
@@ -40,6 +43,7 @@ public class PersonBuilder {
         address = new Address(DEFAULT_ADDRESS);
         tags = new HashSet<>();
         salary = new Salary(DEFAULT_SALARY);
+        certs = new ArrayList<Certificate>();
     }
 
     /**
@@ -52,6 +56,7 @@ public class PersonBuilder {
         address = personToCopy.getAddress();
         tags = new HashSet<>(personToCopy.getTags());
         salary = personToCopy.getSalary();
+        certs = personToCopy.getCertificates();
     }
 
     /**
@@ -102,8 +107,16 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code ArrayList<Certificate>} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withCertificates(ArrayList<Certificate> certs) {
+        this.certs = certs;
+        return this;
+    }
+
     public Person build() {
-        return new Person(name, phone, email, address, tags, salary);
+        return new Person(name, phone, email, address, tags, salary, certs);
     }
 
 }

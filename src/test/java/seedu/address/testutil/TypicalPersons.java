@@ -13,11 +13,15 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_SALARY_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import seedu.address.model.AddressBook;
+import seedu.address.model.cert.CertExpiry;
+import seedu.address.model.cert.CertName;
+import seedu.address.model.cert.Certificate;
 import seedu.address.model.person.Person;
 
 /**
@@ -25,18 +29,28 @@ import seedu.address.model.person.Person;
  */
 public class TypicalPersons {
 
+    public static final ArrayList<Certificate> TYPICAL_CERTIFICATES = new ArrayList<Certificate>() {
+        {
+            add(new Certificate(new CertName("Accounting"), new CertExpiry(LocalDate.parse("2020-12-12"))));
+            add(new Certificate(new CertName("Social Media"), new CertExpiry(LocalDate.parse("2022-02-02"))));
+        }
+    };
+
     public static final Person ALICE = new PersonBuilder().withName("Alice Pauline")
             .withAddress("123, Jurong West Ave 6, #08-111").withEmail("alice@example.com")
             .withPhone("+65 94351253")
             .withTags("friends")
-            .withSalary("").build();
+            .withSalary("")
+            .withCertificates(new ArrayList<Certificate>()).build();
     public static final Person BENSON = new PersonBuilder().withName("Benson Meier")
             .withAddress("311, Clementi Ave 2, #02-25")
             .withEmail("johnd@example.com").withPhone("+65 98765432")
             .withTags("owesMoney", "friends")
-            .withSalary("").build();
+            .withSalary("")
+            .withCertificates(TYPICAL_CERTIFICATES).build();
     public static final Person CARL = new PersonBuilder().withName("Carl Kurz").withPhone("+65 95352563")
-            .withEmail("heinz@example.com").withAddress("wall street").withSalary("").build();
+            .withEmail("heinz@example.com").withAddress("wall street").withSalary("")
+            .withCertificates(new ArrayList<Certificate>()).build();
     public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier").withPhone("+65 87652533")
             .withEmail("cornelia@example.com").withAddress("10th street").withTags("friends").withSalary("").build();
     public static final Person ELLE = new PersonBuilder().withName("Elle Meyer").withPhone("+65 9482224")

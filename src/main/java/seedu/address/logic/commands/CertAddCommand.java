@@ -85,7 +85,7 @@ public class CertAddCommand extends Command {
         Address address = personToAddTo.getAddress();
         Set<Tag> tags = personToAddTo.getTags();
         Salary salary = personToAddTo.getSalary();
-        ArrayList<Certificate> certs = personToAddTo.getCertificates();
+        ArrayList<Certificate> certs = new ArrayList<>(personToAddTo.getCertificates());
         certs.add(cert);
 
         return new Person(name, phone, email, address, tags, salary, certs);
@@ -103,12 +103,13 @@ public class CertAddCommand extends Command {
         }
 
         CertAddCommand otherCertAddCommand = (CertAddCommand) other;
-        return toAdd.equals(otherCertAddCommand.toAdd);
+        return toAdd.equals(otherCertAddCommand.toAdd) && index.equals(otherCertAddCommand.index);
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
+                .add("index", index)
                 .add("toAdd", toAdd)
                 .toString();
     }
