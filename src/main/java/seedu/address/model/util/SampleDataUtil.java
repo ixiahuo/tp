@@ -24,20 +24,47 @@ import seedu.address.model.tag.Tag;
  */
 public class SampleDataUtil {
     public static Person[] getSamplePersons() {
-        ArrayList<Certificate> certs = new ArrayList<>();
-        certs.add(new Certificate(
-                new CertName("OSCP"),
+        ArrayList<Certificate> oscpCert = new ArrayList<>();
+        oscpCert.add(new Certificate(
+                new CertName("OSCP Plus"),
                 new CertExpiry(LocalDate.parse("2028-12-31"))));
+
+        ArrayList<Certificate> burpCert = new ArrayList<>();
+        burpCert.add(new Certificate(
+                new CertName("Burp Suite Certified Practitioner"),
+                new CertExpiry(LocalDate.parse("2027-06-21"))));
 
         return new Person[] {
             new Person(
                     new Name("John Kler"),
                     new Phone("+65 81234567"),
                     new Email("johnkler@example.co"),
-                    new Address("123D Pine Road, #12-345, Singpore 123456"),
+                    new Address("123D Pine Road, #12-345, Singapore 123456"),
                     getTagSet("Pentester", "AD"),
                     new Salary("6500"),
-                    certs)
+                    oscpCert),
+            new Person(
+                    new Name("John Doe"),
+                    new Phone("+65 87654321"),
+                    new Email("johndoe@example.co"),
+                    new Address("321D Einp Road, #54-321, Singapore 654321"),
+                    getTagSet("Pentester", "Web"),
+                    new Salary("6500"),
+                    burpCert),
+            new Person(
+                    new Name("Jane Do"),
+                    new Phone("+65 84321765"),
+                    new Email("janedo@example.co"),
+                    new Address("987A Nepi Road, #21-543, Singapore 321654"),
+                    getTagSet("Intern"),
+                    new Salary("1300")),
+            new Person(
+                    new Name("Johny Doeh"),
+                    new Phone("+65 81357246"),
+                    new Email("johnydoeh@example.co"),
+                    new Address("654B Enpi Road, #45-123, Singapore 246135"),
+                    getTagSet("Intern"),
+                    new Salary("1300"))
         };
     }
 

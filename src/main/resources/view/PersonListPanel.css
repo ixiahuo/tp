@@ -1,0 +1,15 @@
+.scroll-pane {
+    -fx-background-color: #012442;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: #012442;
+}
+
+.scroll-pane > .corner {
+    -fx-background-color: #012442;
+}
+
+.tile-pane {
+    -fx-background-color: #012442;
+}
