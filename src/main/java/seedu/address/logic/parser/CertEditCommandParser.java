@@ -6,7 +6,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_CERT_EDIT_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CERT_EXPIRY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CERT_NAME;
 
-import java.time.LocalDate;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -47,15 +46,25 @@ public class CertEditCommandParser {
 
         CertName name = ParserUtil.parseCertName(argMultimap.getValue(PREFIX_CERT_NAME).get());
         Certificate cert = new Certificate(name);
-        Optional<CertName> newName = argMultimap.getValue(PREFIX_CERT_EDIT_NAME)
-                .map(x -> new CertName(x));
-        Optional<CertExpiry> newDate = argMultimap.getValue(PREFIX_CERT_EDIT_DATE)
-                .map(x -> new CertExpiry(LocalDate.parse(x)));
+        Optional<CertName> newName = parseOptionalCertName(argMultimap);
+        Optional<CertExpiry> newDate = parseOptionalCertExpiry(argMultimap);
 
         return new CertEditCommand(index, cert, newName, newDate);
     }
 
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    }
+
+    private Optional<CertName> parseOptionalCertName(ArgumentMultimap argMultimap) throws ParseException {
+        return argMultimap.getValue(PREFIX_CERT_EDIT_NAME).isPresent()
+                ? Optional.of(ParserUtil.parseCertName(argMultimap.getValue(PREFIX_CERT_EDIT_NAME).get()))
+                : Optional.empty();
+    }
+
+    private Optional<CertExpiry> parseOptionalCertExpiry(ArgumentMultimap argMultimap) throws ParseException {
+        return argMultimap.getValue(PREFIX_CERT_EDIT_DATE).isPresent()
+                ? Optional.of(ParserUtil.parseCertExpiry(argMultimap.getValue(PREFIX_CERT_EDIT_DATE).get()))
+                : Optional.empty();
     }
 }

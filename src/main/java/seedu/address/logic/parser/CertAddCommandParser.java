@@ -30,12 +30,7 @@ public class CertAddCommandParser implements Parser<CertAddCommand> {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, CertAddCommand.MESSAGE_USAGE));
         }
-        if (!arePrefixesPresent(argMultimap, PREFIX_CERT_NAME, PREFIX_CERT_EXPIRY)) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, CertAddCommand.MESSAGE_USAGE));
-        }
 
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_CERT_NAME, PREFIX_CERT_EXPIRY);
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_CERT_NAME, PREFIX_CERT_EXPIRY);
 
         Index index;
