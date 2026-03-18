@@ -42,6 +42,8 @@ public class PersonCard extends UiPart<Region> {
     private Label salary;
     @FXML
     private FlowPane tags;
+    @FXML
+    private Label cert;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
@@ -58,5 +60,14 @@ public class PersonCard extends UiPart<Region> {
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+
+        if (!person.getCertificates().isEmpty()) {
+            StringBuilder certStringBuilder = new StringBuilder();
+            certStringBuilder.append("Certified with:\n");
+            person.getCertificates().forEach(s -> certStringBuilder.append(s.displayCertString()).append('\n'));
+            cert.setText(certStringBuilder.toString());
+        } else {
+            cert.setText("");
+        }
     }
 }

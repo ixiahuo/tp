@@ -3,6 +3,8 @@ package seedu.address.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ADD_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DELETE_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
@@ -40,6 +42,10 @@ public class CommandTestUtil {
     public static final String VALID_SALARY_AMY = "2000";
     public static final String VALID_SALARY_BOB = "3000";
 
+    public static final String VALID_MULTI_TAG_AMY = "HR STARxEMPLOYEE FRIEND";
+    public static final String VALID_MULTI_TAG_LEFTOVER_AMY = "HR FRIEND";
+    public static final String VALID_MULTI_TAG_BOB = "STARxEMPLOYEE";
+
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
     public static final String PHONE_DESC_AMY = " " + PREFIX_PHONE + VALID_PHONE_AMY;
@@ -52,6 +58,9 @@ public class CommandTestUtil {
     public static final String SALARY_DESC_BOB = " " + PREFIX_SALARY + VALID_SALARY_BOB;
     public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + VALID_TAG_FRIEND;
     public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + VALID_TAG_HUSBAND;
+    public static final String MULTI_TAG_DESC_AMY = " " + PREFIX_ADD_TAG + VALID_MULTI_TAG_AMY;
+    public static final String MULTI_TAG_DESC_BOB = " " + PREFIX_DELETE_TAG + VALID_MULTI_TAG_BOB;
+
 
     public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
     public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "11111111"; // missing country code
@@ -59,6 +68,9 @@ public class CommandTestUtil {
     public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "hubby, friend"; // contains ','
     public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS + "!HOUSE AT HOUSE"; // ! not allowed
     public static final String INVALID_SALARY_DESC = " " + PREFIX_SALARY + "two thousand";
+    public static final String INVALID_MULTI_TAG_DEL_DESC = " " + PREFIX_DELETE_TAG + "NIL";
+    public static final String INVALID_MULTI_TAG_DESC = " " + PREFIX_ADD_TAG + "HEL\"LO";
+
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";
@@ -72,14 +84,14 @@ public class CommandTestUtil {
                 .withEmail(VALID_EMAIL_AMY)
                 .withAddress(VALID_ADDRESS_AMY)
                 .withSalary(VALID_SALARY_AMY)
-                .withTags(VALID_TAG_FRIEND)
+                //.withTags(VALID_TAG_FRIEND)
                 .build();
         DESC_BOB = new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB)
                 .withPhone(VALID_PHONE_BOB)
                 .withEmail(VALID_EMAIL_BOB)
                 .withAddress(VALID_ADDRESS_BOB)
                 .withSalary(VALID_SALARY_BOB)
-                .withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND)
+                //.withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND)
                 .build();
     }
 

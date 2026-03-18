@@ -44,6 +44,14 @@ public class Person {
     }
 
     /**
+     * Overloaded constructor to create a Person without using tags
+     * Chains to the main constructor with an empty HashSet.
+     */
+    public Person(Name name, Phone phone, Email email, Address address, Salary salary) {
+        this(name, phone, email, address, new HashSet<>(), salary);
+    }
+
+    /**
      * Overloaded constructor to create a Person with existing certificates.
      */
     public Person(Name name, Phone phone,
@@ -111,10 +119,25 @@ public class Person {
         if (otherPerson == this) {
             return true;
         }
+        if (otherPerson == null) {
+            return false;
+        }
 
-        return otherPerson != null
-                && otherPerson.getPhone().equals(getPhone())
-                && otherPerson.getEmail().equals(getEmail());
+        boolean p1HasPhone = !getPhone().value.isEmpty();
+        boolean p1HasEmail = !getEmail().value.isEmpty();
+        boolean p2HasPhone = !otherPerson.getPhone().value.isEmpty();
+        boolean p2HasEmail = !otherPerson.getEmail().value.isEmpty();
+
+        // both persons have no email and no phone, check name
+        if (!p1HasPhone && !p2HasPhone) {
+            if (!p1HasEmail && !p2HasEmail) {
+                return otherPerson.getName().equals(getName());
+            }
+        }
+
+        return otherPerson.getPhone().equals(getPhone())
+                && otherPerson.getEmail().equals(getEmail())
+                && otherPerson.getName().equals(getName());
     }
 
     /**
