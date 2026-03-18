@@ -17,7 +17,7 @@ public class HelpWindow extends UiPart<Stage> {
             "Available commands:\n"
             + " * 'add' : adds a new contact\n"
             + " * 'edit' : edits an existing contact\n"
-            + " * 'delete' : delete an existing contact\n"
+            + " * 'delete' : deletes an existing contact\n"
             + "    'clear' : deletes all existing contacts\n"
             + " * 'cert-add' : adds a certificate to an existing contact\n"
             + " * 'cert-del' : deletes a certificate from an existing contact\n"
