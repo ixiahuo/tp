@@ -4,6 +4,7 @@ import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -13,6 +14,7 @@ import java.util.stream.Stream;
 
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.CombinedPredicate;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.TagContainsKeywordsPredicate;
@@ -29,7 +31,7 @@ public class FindCommandParser implements Parser<FindCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public FindCommand parse(String args) throws ParseException {
-        Predicate<Person> predicateToFind = null;
+        List<Predicate<Person>> predicates = new ArrayList<>();
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_TAG);
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_TAG)
@@ -38,14 +40,14 @@ public class FindCommandParser implements Parser<FindCommand> {
         }
 
         if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
-            predicateToFind = getNamePredicate(argMultimap);
+            predicates.add(getNamePredicate(argMultimap));
         }
 
         if (argMultimap.getValue(PREFIX_TAG).isPresent()) {
-            predicateToFind = getTagPredicate(argMultimap);
+            predicates.add(getTagPredicate(argMultimap));
         }
 
-        return new FindCommand(predicateToFind);
+        return new FindCommand(new CombinedPredicate(predicates));
     }
 
     /**
@@ -57,7 +59,10 @@ public class FindCommandParser implements Parser<FindCommand> {
     }
 
     private NameContainsKeywordsPredicate getNamePredicate(ArgumentMultimap argMultimap) {
-        List<String> names = argMultimap.getAllValues(PREFIX_NAME);
+        List<String> names = argMultimap.getAllValues(PREFIX_NAME)
+            .stream().map(String::strip).collect(Collectors.toList());
+        names.replaceAll(String::trim);
+        System.out.println(names);
         return new NameContainsKeywordsPredicate(names);
     }
 
