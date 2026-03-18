@@ -4,9 +4,8 @@
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
-  <ScrollPane fx:id="personScrollPane" fitToWidth="true" fitToHeight="true" vbarPolicy="ALWAYS"
-              style="-fx-background-color: #012442" VBox.vgrow="ALWAYS">
-    <TilePane fx:id="personTilePane" style="-fx-background-color: #012442;" VBox.vgrow="ALWAYS" />
+<VBox stylesheets="@PersonListPanel.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+  <ScrollPane fx:id="personScrollPane" fitToWidth="true" fitToHeight="true" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+    <TilePane fx:id="personTilePane" VBox.vgrow="ALWAYS" />
   </ScrollPane>
 </VBox>
