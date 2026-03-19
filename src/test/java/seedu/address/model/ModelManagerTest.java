@@ -109,6 +109,14 @@ public class ModelManagerTest {
     }
 
     @Test
+    public void undoAddressBook_noPreviousState_remainsUnchanged() {
+        AddressBook initialAb = new AddressBook(modelManager.getAddressBook());
+        assertFalse(modelManager.canUndo());
+        modelManager.undoAddressBook();
+        assertEquals(initialAb, modelManager.getAddressBook());
+    }
+
+    @Test
     public void equals() {
         AddressBook addressBook = new AddressBookBuilder().withPerson(ALICE).withPerson(BENSON).build();
         AddressBook differentAddressBook = new AddressBook();
