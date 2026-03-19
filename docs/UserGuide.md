@@ -83,7 +83,7 @@ Format: `add n/NAME [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [s/SALARY]`
 
 **Validation & Duplicate-handling Rules**
 > [**NAME**]<br>
-> (1) Cannot be empty<br>
+> (1) **Cannot be empty**<br>
 > (2) Only letter, spaces, forward slash<br>
 > (3) Letters immediately beside forward slash must be uppercase<br>
 > Duplicate-handling: case-insensitive comparison<br>
