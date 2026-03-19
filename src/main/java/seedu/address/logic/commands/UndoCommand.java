@@ -3,6 +3,10 @@ package seedu.address.logic.commands;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 
+/**
+ * Restores the address book to its previous state.
+ * This command allows users to undo a single modifying operation.
+ */
 public class UndoCommand extends Command {
 
     public static final String COMMAND_WORD = "undo";
