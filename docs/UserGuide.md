@@ -6,7 +6,7 @@
 
 # AB-3 User Guide
 
-AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized for use via a  Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB3 can get your contact management tasks done faster than traditional GUI apps.
+AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB3 can get your contact management tasks done faster than traditional GUI apps.
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -26,14 +26,14 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
-1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
+1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open an external help window.<br>
    Some example commands you can try:
 
    * `list` : Lists all contacts.
 
-   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
+   * `add n/John Doe p/+65 98765432 e/johnd@example.com a/John street, block 123, #01-01 s/3000` : Adds a contact named `John Doe` to the Address Book.
 
-   * `delete 3` : Deletes the 3rd contact shown in the current list.
+   * `delete 3` : Deletes the 3rd contact shown in the currently displayed list.
 
    * `clear` : Deletes all contacts.
 
@@ -52,11 +52,8 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
   e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
 
-* Items in square brackets are optional.<br>
-  e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
-
-* Items with `…`​ after them can be used multiple times including zero times.<br>
-  e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
+* Items in square brackets can be empty, but prefix has to be specified.<br>
+  e.g `n/NAME [e/EMAIL]` can be used as `n/John Doe e/ureka@gmail.com` or as `n/John Doe e/`.
 
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
@@ -69,7 +66,7 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
 ### Viewing help : `help`
 
-Shows a message explaining how to access the help page.
+Pops up an external window with brief explanations of command usages.
 
 ![help message](images/helpMessage.png)
 
@@ -80,16 +77,54 @@ Format: `help`
 
 Adds a person to the address book.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
+Format: `add n/NAME [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [s/SALARY]`
 
 <box type="tip" seamless>
 
-**Tip:** A person can have any number of tags (including 0)
-</box>
+**Validation & Duplicate-handling Rules**
+> [**NAME**]<br>
+> (1) **Cannot be empty**<br>
+> (2) Only letter, spaces, forward slash<br>
+> (3) Letters immediately beside forward slash must be uppercase<br>
+> Duplicate-handling: case-insensitive comparison<br>
+
+> [**PHONE_NUMBER**]<br>
+> (1) Can be empty<br>
+> (2) + followed by COUNTRY_CODE followed by space followed by 3 to 15 digits phone number<br>
+> Duplicate-handling: all digits match exactly<br>
+
+> [**EMAIL**]<br>
+> (1) Can be empty<br>
+> (2) Emails should be of the format 'local-part@domain', where 'local-part' should:<br>
+> * contain only alphanumeric characters and +_.-<br>
+> * not start or end with +_.-<br>
+> 
+> (3) and 'domain' is made of domain labels where each should:<br>
+> * be separated by '.'
+> * contain only alphanumeric characters and hyphens
+> * start and end only with alphanumeric characters
+> * be at least 2 characters long for the last domain label<br>
+>
+> Duplicate-handling: exact match<br>
+
+> [**ADDRESS**]<br>
+> (1) Can be empty<br>
+> (2) Only alphanumeric characters and #,-<br>
+> (3) At most 100 characters long<br>
+> Duplicate-handling: exact match<br>
+
+> [**SALARY**]<br>
+> (1) Can be empty<br>
+> (2) Only digits<br>
+> Duplicate-handling: exact match<br>
+
+> [**PERSON duplicate handling**]<br>
+> (1) EMAIL and PHONE_NUMBER are empty: duplicates if NAMEs are the same<br>
+> (2) Else, 2 persons are duplicates if their NAME & PHONE_NUMBER & EMAIL are the same<br>
 
 Examples:
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
+* `add n/John Doe p/+65 98765432 e/johnd@example.com a/John street, block 123, #01-01 s/`
+* `add n/Betsy Crowe s/ e/betsycrowe@example.com a/Newgate Prison p/+81 1234567`
 
 ### Listing all persons : `list`
 
@@ -101,18 +136,15 @@ Format: `list`
 
 Edits an existing person in the address book.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/SALARY]`
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
-* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
-* You can remove all the person’s tags by typing `t/` without
-    specifying any tags after it.
 
 Examples:
-*  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-*  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+*  `edit 1 p/+017 91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `+017 91234567` and `johndoe@example.com` respectively.
+*  `edit 2 n/Betsy Crower` Edits the name of the 2nd person to be `Betsy Crower`.
 
 ### Locating persons by name: `find`
 
@@ -173,10 +205,6 @@ If your changes to the data file makes its format invalid, AddressBook will disc
 Furthermore, certain edits can cause the AddressBook to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
 
-### Archiving data files `[coming in v2.0]`
-
-_Details coming soon ..._
-
 --------------------------------------------------------------------------------------------------------------------
 
 ## FAQ
@@ -197,10 +225,10 @@ _Details coming soon ..._
 
 Action     | Format, Examples
 -----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-**Add**    | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
+**Add**    | `add n/NAME [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [s/SALARY]` <br> e.g., `add n/James Ho p/+65 22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 s/4000`
 **Clear**  | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
+**Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [s/SALARY]`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **List**   | `list`
 **Help**   | `help`
