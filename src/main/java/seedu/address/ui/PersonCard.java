@@ -5,7 +5,7 @@ import java.util.Comparator;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.person.Person;
 
@@ -27,7 +27,7 @@ public class PersonCard extends UiPart<Region> {
     public final Person person;
 
     @FXML
-    private HBox cardPane;
+    private VBox cardPane;
     @FXML
     private Label name;
     @FXML
@@ -43,7 +43,7 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private FlowPane tags;
     @FXML
-    private Label cert;
+    private FlowPane certs;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
@@ -56,18 +56,16 @@ public class PersonCard extends UiPart<Region> {
         phone.setText(person.getPhone().value);
         address.setText(person.getAddress().value);
         email.setText(person.getEmail().value);
-        salary.setText("$" + person.getSalary().value);
+        salary.setText(person.getSalary().value);
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
-
-        if (!person.getCertificates().isEmpty()) {
-            StringBuilder certStringBuilder = new StringBuilder();
-            certStringBuilder.append("Certified with:\n");
-            person.getCertificates().forEach(s -> certStringBuilder.append(s.displayCertString()).append('\n'));
-            cert.setText(certStringBuilder.toString());
-        } else {
-            cert.setText("");
-        }
+        person.getCertificates()
+                .forEach(cert -> {
+                    Label l = new Label(cert.displayCertString());
+                    l.setWrapText(true);
+                    l.maxWidthProperty().bind(certs.widthProperty());
+                    certs.getChildren().add(l);
+                });
     }
 }

@@ -31,8 +31,8 @@
 
         <StackPane fx:id="commandBoxPlaceholder" VBox.vgrow="NEVER" styleClass="command-box" />
 
-        <VBox fx:id="personList" VBox.vgrow="ALWAYS">
-          <StackPane fx:id="personListPanelPlaceholder" VBox.vgrow="ALWAYS" />
+        <VBox fx:id="personList" VBox.vgrow="ALWAYS" styleClass="person-list">
+          <StackPane fx:id="personListPanelPlaceholder" VBox.vgrow="NEVER" />
         </VBox>
 
         <StackPane fx:id="statusbarPlaceholder" VBox.vgrow="NEVER" styleClass="status-bar" />
