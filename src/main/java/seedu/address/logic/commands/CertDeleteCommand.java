@@ -106,12 +106,14 @@ public class CertDeleteCommand extends Command {
         }
 
         CertDeleteCommand otherCertDeleteCommand = (CertDeleteCommand) other;
-        return toDel.equals(otherCertDeleteCommand.toDel);
+        return index.equals(otherCertDeleteCommand.index)
+                && toDel.equals(otherCertDeleteCommand.toDel);
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
+                .add("index", index)
                 .add("toDel", toDel)
                 .toString();
     }

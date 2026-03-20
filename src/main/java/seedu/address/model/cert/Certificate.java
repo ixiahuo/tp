@@ -14,15 +14,6 @@ public class Certificate {
     private final CertExpiry expiry;
 
     /**
-     * Constructor for a certificate with no expiry date.
-     * @param name name of certificate
-     */
-    public Certificate(CertName name) {
-        this.name = name;
-        this.expiry = new CertExpiry(LocalDate.parse("9999-12-31"));
-    }
-
-    /**
      * Constructor for a Certificate with an expiry date.
      * @param name Name of Certificate
      * @param expiry Expiry date of the Certificate
@@ -30,6 +21,15 @@ public class Certificate {
     public Certificate(CertName name, CertExpiry expiry) {
         this.name = name;
         this.expiry = expiry;
+    }
+
+    /**
+     * Overloaded constructor for a Certificate with no expiry date.
+     * @param name Certificate name.
+     */
+    public Certificate(CertName name) {
+        this.name = name;
+        this.expiry = new CertExpiry(LocalDate.parse("9999-12-31"));
     }
 
     public CertName getName() {

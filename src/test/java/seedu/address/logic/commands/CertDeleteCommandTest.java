@@ -98,40 +98,40 @@ public class CertDeleteCommandTest {
     public void equals() {
         Certificate cert1 = new Certificate(new CertName("cert1"));
         Certificate cert2 = new Certificate(new CertName("cert2"));
-        CertAddCommand certAddCommand = new CertAddCommand(Index.fromOneBased(1), cert1);
+        CertDeleteCommand certDeleteCommand = new CertDeleteCommand(Index.fromOneBased(1), cert1);
 
         // same object -> returns true
-        assertTrue(certAddCommand.equals(certAddCommand));
+        assertTrue(certDeleteCommand.equals(certDeleteCommand));
 
         // same values -> returns true
-        CertAddCommand certAddCommandCopy = new CertAddCommand(Index.fromOneBased(1), cert1);
-        assertTrue(certAddCommand.equals(certAddCommandCopy));
+        CertDeleteCommand certDeleteCommandCopy = new CertDeleteCommand(Index.fromOneBased(1), cert1);
+        assertTrue(certDeleteCommand.equals(certDeleteCommandCopy));
 
         // different types -> returns false
-        assertFalse(certAddCommand.equals(1));
+        assertFalse(certDeleteCommand.equals(1));
 
         // null -> returns false
-        assertFalse(certAddCommand.equals(null));
+        assertFalse(certDeleteCommand.equals(null));
 
         // different person -> returns false
-        assertFalse(certAddCommand.equals(new CertAddCommand(Index.fromOneBased(2), cert1)));
+        assertFalse(certDeleteCommand.equals(new CertDeleteCommand(Index.fromOneBased(2), cert1)));
 
         // different cert -> returns false
-        assertFalse(certAddCommand.equals(new CertAddCommand(Index.fromOneBased(1), cert2)));
+        assertFalse(certDeleteCommand.equals(new CertDeleteCommand(Index.fromOneBased(1), cert2)));
     }
 
     @Test
     public void toStringMethod() {
         Index index = Index.fromOneBased(1);
-        CertAddCommand certAddCommand = new CertAddCommand(index,
+        CertDeleteCommand certDeleteCommand = new CertDeleteCommand(index,
                 new Certificate(new CertName("cert")));
-        String expected = CertAddCommand.class.getCanonicalName() + "{index=" + index
-                + ", toAdd=" + new Certificate(new CertName("cert")) + "}";
-        String actual = certAddCommand.toString();
+        String expected = CertDeleteCommand.class.getCanonicalName() + "{index=" + index
+                + ", toDel=" + new Certificate(new CertName("cert")) + "}";
+        String actual = certDeleteCommand.toString();
         System.out.println("Expected: [" + expected + "]");
         System.out.println("Actual:   [" + actual + "]");
         System.out.println("Expected length: " + expected.length());
         System.out.println("Actual length:   " + actual.length());
-        assertEquals(expected, certAddCommand.toString());
+        assertEquals(expected, certDeleteCommand.toString());
     }
 }
