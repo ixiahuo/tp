@@ -41,7 +41,7 @@ Big Brother is a desktop app for managing employee contacts, optimized for use v
    * `list` : Lists all contacts.
 
    * `add n/John Doe p/+65 98765432 e/johnd@example.com a/Abc Rd, Blk 123, #01-01 s/3000` :<br>
-     Adds a new contact 'John Doe' with the given details (elaborated in the explanation for `add` [below](#adding-a-person-add))
+     Adds a new contact 'John Doe' with the given details (elaborated in the explanation for `add` [below](#adding-a-new-contact-add))
 
    * `delete 3` : Deletes the 3rd contact shown in the currently displayed list.
 
@@ -99,10 +99,10 @@ Format: `help`
 
 ![add usage message](images/addUsageMessage.png)
 
-### Adding a contact : `add`
+### Adding a new contact : `add`
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/SALARY`
 
-<box type="tip" seamless>
+<box type="info" seamless>
 
 **Validation & Duplicate-handling Rules**
 > [**NAME**]<br>
@@ -113,17 +113,17 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/SALARY`
 
 > [**PHONE_NUMBER**]<br>
 > (1) Can be empty<br>
-> (2) + followed by COUNTRY_CODE followed by space followed by 3 to 15 digits phone number<br>
+> (2) `+` followed by COUNTRY_CODE followed by space followed by 3 to 15 digits phone number<br>
 > Duplicate-handling: all digits match exactly<br>
 
 > [**EMAIL**]<br>
 > (1) Can be empty<br>
 > (2) Emails should be of the format 'local-part@domain', where 'local-part' should:<br>
-> * contain only alphanumeric characters and +_.-<br>
-> * not start or end with +_.-<br>
+> * contain only alphanumeric characters and `+_.-`<br>
+> * not start or end with `+_.-`<br>
 > 
 > (3) and 'domain' is made of domain labels where each should:<br>
-> * be separated by '.'
+> * be separated by `.`
 > * contain only alphanumeric characters and hyphens
 > * start and end only with alphanumeric characters
 > * be at least 2 characters long for the last domain label<br>
@@ -132,7 +132,7 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/SALARY`
 
 > [**ADDRESS**]<br>
 > (1) Can be empty<br>
-> (2) Only alphanumeric characters and #,-<br>
+> (2) Only alphanumeric characters and `#,-`<br>
 > (3) At most 100 characters long<br>
 > Duplicate-handling: exact match<br>
 
@@ -152,11 +152,11 @@ Examples:
 * `add n/Betsy Crowe s/ e/betsycrowe@example.com a/Newgate Prison p/+81 1234567`
 
 
-### Editing a contact : `edit`
+### Editing an existing contact : `edit`
 Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/SALARY]`
 
-* Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
-* At least one of the optional fields must be provided.
+* Edits the person at the specified `INDEX` of the the displayed person list.
+* **At least one of the optional fields must be provided.**
 * Existing values will be updated to the input values.
 
 Examples:
@@ -166,15 +166,13 @@ Examples:
 ### Deleting an existing contact : `delete`
 Format: `delete INDEX`
 
-* Deletes the person at the specified `INDEX`.
-* The index refers to the index number shown in the displayed person list.
-* The index **must be a positive integer** 1, 2, 3, …​
+* Deletes the person at the specified `INDEX` of the the displayed person list.
 
 Examples:
 * `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+* `find n/Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
 
-### Locating persons by name: `find`
+### Locating contacts by name: `find`
 
 Finds persons whose names contain any of the given keywords.
 
@@ -196,22 +194,25 @@ Examples:
 Format: `list`
 
 ### Adding and deleting tags of a contact: `tag`
-Format `tag INDEX [a/TAGS TO ADD SEPARATED BY SPACE] [d/TAGS TO DELETE SEPARATED BY SPACE]`
+Format: `tag INDEX [a/TAGS TO ADD SEPARATED BY SPACE] [d/TAGS TO DELETE SEPARATED BY SPACE]`
 
-* Adds / Deletes Tags for the person at the specified `INDEX`.
-* The index refers to the index number shown in the displayed person list.
-* The index **must be a positive integer** 1, 2, 3, …​
-* If multiple Tags are to be added/deleted, they are to be separated by space
+* Add or delete tags of the person at the specified `INDEX` of the the displayed person list.
+* If multiple tags are to be added or deleted, they are to be separated by spaces.
+* **At least one of the optional fields must be provided.**
 
 Examples:
-* `tag a/IT Intern` adds two Tags `IT` and `Intern`
-* `tag d/Best_Employee` deletes a Tag `Best_Employee`
-* `tag a/HR Best_Emplyee d/ IT` adds two Tags `HR` and `Best_Emplyee`, while deleting `IT`
+* `tag 1 a/IT Intern` adds two Tags `IT` and `Intern`
+* `tag 1 d/Best_Employee` deletes a Tag `Best_Employee`
+* `tag 1 a/HR Best_Employee d/ IT` adds two Tags `HR` and `Best_Employee`, while deleting `IT`
 
-> Note that tags are:
-> - Only be one word
-> - Limited to Alphanumeric characters and these characters: !@#$?/|<>_*&:;=
-> - Max size 30 characters
+<box type="info" seamless>
+
+**Validation & Duplicate-handling Rules**
+
+(1) Only alphanumeric characters and `!@#$?/|<>_*&:;=`<br>
+(2) At most 30 characters long<br>
+Duplicate-handling: exact match
+</box>
 
 ### Clearing all entries : `clear`
 Format: `clear`
@@ -223,13 +224,13 @@ Format: `exit`
 Big Brother data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
 ### Editing the data file
-Big Brother data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
+Big Brother data is saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
 
 <box type="warning" seamless>
 
-**Caution:**
-If your changes to the data file makes its format invalid, AddressBook will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
-Furthermore, certain edits can cause the AddressBook to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
+**Caution:**<br>
+If your changes to the data file makes its format invalid, Big Brother will discard all data and start with an empty data file at the next run.  Hence, it is **recommended to make a manual backup of the file before editing it**.<br><br>
+Furthermore, certain edits can cause the Big Brother to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
 
 --------------------------------------------------------------------------------------------------------------------
@@ -237,7 +238,7 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 ## FAQ
 
 **Q**: How do I transfer my data to another Computer?<br>
-**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous AddressBook home folder.
+**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Big Brother home folder.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -249,13 +250,19 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 --------------------------------------------------------------------------------------------------------------------
 
 ## Command summary
-
-Action     | Format, Examples
------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-**Add**    | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/SALARY` <br> e.g., `a`
-**Clear**  | `clear`
-**Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [s/SALARY]`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
-**Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
-**List**   | `list`
-**Help**   | `help`
+|Format|
+|------|
+`add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/SALARY`
+`edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/SALARY]`
+`delete INDEX`
+`clear`
+`undo`
+`cert-add INDEX n/CERT_NAME e/CERT_EXPIRY`
+`cert-edit INDEX n/NAME [ne/EDITED_NAME] [ee/EDITED_EXPIRY]`
+`cert-del INDEX n/CERT_NAME`
+`tag INDEX [a/TAGS TO ADD SEPARATED BY SPACE] [d/TAGS TO DELETE SEPARATED BY SPACE]`
+`sort ...`
+`find ...`
+`list`
+`exit`
+`help`
