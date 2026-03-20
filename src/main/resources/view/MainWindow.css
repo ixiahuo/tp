@@ -64,6 +64,16 @@
     -fx-background-color: derive(#1d1d1d, 50%);
 }
 
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-padding: 0;
+    -fx-shape: "";
+    -fx-background-color: transparent;
+    -fx-opacity: 0;
+    -fx-pref-width: 0;
+    -fx-pref-height: 0;
+}
+
 .grid-pane {
     -fx-background: transparent;
     -fx-background-color: transparent;
