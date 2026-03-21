@@ -9,12 +9,13 @@ participant "u:UndoCommand" as UndoCommand LOGIC_COLOR
 end box
 
 box Model MODEL_COLOR_T1
-participant ":Model" as Model MODEL_COLOR
+participant ":ModelManager" as ModelManager MODEL_COLOR
 end box
-[-> LogicManager : execute(undo)
+
+[-> LogicManager : execute("undo")
 activate LogicManager
 
-LogicManager -> AddressBookParser : parseCommand(undo)
+LogicManager -> AddressBookParser : parseCommand("undo")
 activate AddressBookParser
 
 create UndoCommand
@@ -30,17 +31,21 @@ deactivate AddressBookParser
 LogicManager -> UndoCommand : execute()
 activate UndoCommand
 
-UndoCommand -> Model : undoAddressBook()
-activate Model
+UndoCommand -> ModelManager : canUndo()
+activate ModelManager
+ModelManager --> UndoCommand : true
+deactivate ModelManager
 
-Model --> UndoCommand
-deactivate Model
+UndoCommand -> ModelManager : undoAddressBook()
+activate ModelManager
+ModelManager --> UndoCommand
+deactivate ModelManager
 
 UndoCommand --> LogicManager : result
 deactivate UndoCommand
 UndoCommand -[hidden]-> LogicManager : result
 destroy UndoCommand
 
-[<--LogicManager
+[<-- LogicManager : result
 deactivate LogicManager
 @enduml
