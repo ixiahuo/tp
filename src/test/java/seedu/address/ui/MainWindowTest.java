@@ -61,15 +61,15 @@ class MainWindowTest {
         waitForFxEvents();
 
         StackPane personListPanelPlaceholder =
-            robot.lookup("#personListPanelPlaceholder").queryAs(StackPane.class);
+                robot.lookup("#personListPanelPlaceholder").queryAs(StackPane.class);
         assertEquals(1, personListPanelPlaceholder.getChildren().size());
 
         StackPane statusbarPlaceholder =
-            robot.lookup("#statusbarPlaceholder").queryAs(StackPane.class);
+                robot.lookup("#statusbarPlaceholder").queryAs(StackPane.class);
         assertEquals(1, statusbarPlaceholder.getChildren().size());
 
         StackPane commandBoxPlaceholder =
-            robot.lookup("#commandBoxPlaceholder").queryAs(StackPane.class);
+                robot.lookup("#commandBoxPlaceholder").queryAs(StackPane.class);
         assertEquals(1, commandBoxPlaceholder.getChildren().size());
     }
 
