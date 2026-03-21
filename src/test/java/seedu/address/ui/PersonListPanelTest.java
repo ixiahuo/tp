@@ -1,7 +1,6 @@
 package seedu.address.ui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.testfx.util.WaitForAsyncUtils.waitForFxEvents;
 
 import java.util.concurrent.TimeoutException;
 
@@ -48,23 +47,22 @@ class PersonListPanelTest {
             this.personList.add(p);
             this.personList.add(p);
             this.personList.add(p);
+
+            GridPane personGridPane =
+                    robot.lookup("#personGridPane").queryAs(GridPane.class);
+            assertEquals(3, personGridPane.getChildren().size());
+
+            Node node = personGridPane.getChildren().get(0);
+            assertEquals(0, personGridPane.getRowIndex(node));
+            assertEquals(0, personGridPane.getColumnIndex(node));
+
+            node = personGridPane.getChildren().get(1);
+            assertEquals(0, personGridPane.getRowIndex(node));
+            assertEquals(1, personGridPane.getColumnIndex(node));
+
+            node = personGridPane.getChildren().get(2);
+            assertEquals(1, personGridPane.getRowIndex(node));
+            assertEquals(0, personGridPane.getColumnIndex(node));
         });
-        waitForFxEvents();
-
-        GridPane personGridPane =
-                robot.lookup("#personGridPane").queryAs(GridPane.class);
-        assertEquals(3, personGridPane.getChildren().size());
-
-        Node node = personGridPane.getChildren().get(0);
-        assertEquals(0, personGridPane.getRowIndex(node));
-        assertEquals(0, personGridPane.getColumnIndex(node));
-
-        node = personGridPane.getChildren().get(1);
-        assertEquals(0, personGridPane.getRowIndex(node));
-        assertEquals(1, personGridPane.getColumnIndex(node));
-
-        node = personGridPane.getChildren().get(2);
-        assertEquals(1, personGridPane.getRowIndex(node));
-        assertEquals(0, personGridPane.getColumnIndex(node));
     }
 }
