@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.testfx.util.WaitForAsyncUtils.waitForFxEvents;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -47,48 +48,54 @@ class MainWindowTest {
     }
 
     @Test
-    void constructMainWindow_defaultDimensions_success() throws TimeoutException {
-        FxToolkit.setupFixture(() -> {
-            assertEquals(DEFAULT_WIDTH, mainWindow.getRoot().getWidth());
-            assertEquals(DEFAULT_HEIGHT, mainWindow.getRoot().getHeight());
-        });
+    void constructMainWindow_defaultDimensions_success() {
+        assertEquals(DEFAULT_WIDTH, mainWindow.getRoot().getWidth());
+        assertEquals(DEFAULT_HEIGHT, mainWindow.getRoot().getHeight());
     }
 
     @Test
     void execute_fillInnerParts_success(FxRobot robot) throws TimeoutException {
         FxToolkit.setupFixture(() -> {
             mainWindow.fillInnerParts();
-            StackPane personListPanelPlaceholder =
-                    robot.lookup("#personListPanelPlaceholder").queryAs(StackPane.class);
-            assertEquals(1, personListPanelPlaceholder.getChildren().size());
-
-            StackPane statusbarPlaceholder =
-                    robot.lookup("#statusbarPlaceholder").queryAs(StackPane.class);
-            assertEquals(1, statusbarPlaceholder.getChildren().size());
-
-            StackPane commandBoxPlaceholder =
-                    robot.lookup("#commandBoxPlaceholder").queryAs(StackPane.class);
-            assertEquals(1, commandBoxPlaceholder.getChildren().size());
         });
+        waitForFxEvents();
+
+        StackPane personListPanelPlaceholder =
+                robot.lookup("#personListPanelPlaceholder").queryAs(StackPane.class);
+        assertEquals(1, personListPanelPlaceholder.getChildren().size());
+
+        StackPane statusbarPlaceholder =
+                robot.lookup("#statusbarPlaceholder").queryAs(StackPane.class);
+        assertEquals(1, statusbarPlaceholder.getChildren().size());
+
+        StackPane commandBoxPlaceholder =
+                robot.lookup("#commandBoxPlaceholder").queryAs(StackPane.class);
+        assertEquals(1, commandBoxPlaceholder.getChildren().size());
     }
 
     @Test
     void execute_show_success() throws TimeoutException {
         FxToolkit.setupFixture(() -> {
             mainWindow.show();
-            Stage primaryStage = mainWindow.getPrimaryStage();
-            assertTrue(primaryStage.isShowing());
         });
+        waitForFxEvents();
+        Stage primaryStage = mainWindow.getPrimaryStage();
+        assertTrue(primaryStage.isShowing());
     }
 
     @Test
     void execute_handleHelp_success() throws TimeoutException {
         FxToolkit.setupFixture(() -> {
             mainWindow.handleHelp();
-            Stage helpWindow = mainWindow.getHelpWindow();
-            assertTrue(helpWindow.isShowing());
-            mainWindow.handleHelp();
-            assertTrue(helpWindow.isFocused());
         });
+        waitForFxEvents();
+        Stage helpWindow = mainWindow.getHelpWindow();
+        assertTrue(helpWindow.isShowing());
+
+        FxToolkit.setupFixture(() -> {
+            mainWindow.handleHelp();
+        });
+        waitForFxEvents();
+        assertTrue(helpWindow.isFocused());
     }
 }
