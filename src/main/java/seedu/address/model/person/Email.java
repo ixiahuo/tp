@@ -50,7 +50,10 @@ public class Email {
      * The email field can be empty.
      */
     public static boolean isValidEmail(String test) {
-        return test.isEmpty() || test.matches(VALIDATION_REGEX);
+        if (test == null || test.trim().isEmpty()) {
+            return true;
+        }
+        return test.matches(VALIDATION_REGEX);
     }
 
     @Override
