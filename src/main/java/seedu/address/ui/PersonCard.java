@@ -59,7 +59,11 @@ public class PersonCard extends UiPart<Region> {
         salary.setText("$" + person.getSalary().value);
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+                .forEach(tag -> {
+                    Label tagLabel = new Label(tag.tagName);
+                    tagLabel.getStyleClass().add(TagColour.PURPLE.getCssClass());
+                    tags.getChildren().add(tagLabel);
+                });
 
         if (!person.getCertificates().isEmpty()) {
             StringBuilder certStringBuilder = new StringBuilder();
