@@ -178,7 +178,7 @@ Examples:
 * `list` followed by `delete 2` deletes the 2nd person in the address book.
 * `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
 
-### Adding / Deleting tasks : `tag`
+### Adding / Deleting tags : `tag`
 
 Adds and/or deletes Tags for a specified person in the address book.
 
@@ -198,6 +198,50 @@ Examples:
 > - Only be one word
 > - Limited to Alphanumeric characters and these characters: !@#$?/|<>_*&:;=
 > - Max size 30 characters
+
+### Adding certificates : `cert-add`
+
+Adds a Certificate to a person in the address book.
+
+Format `cert-add INDEX [n/CERT_NAME] [e/CERT_EXPIRY_DATE]`
+* Adds a Certificate to a person at the specified `INDEX`.
+* The index refers to the index number shown in the displayed person list.
+* The index **must be a positive integer** 1, 2, 3, ...
+* A Certificate must have both a name and an expiry date.
+* Expiry dates must be formatted as **YYYY-MM-DD**.
+
+Examples:
+* `cert-add 1 n/OSCP e/2028-03-05` adds a Certificate named OSCP with an expiry date on 5th March 2028 to the first person in the list.
+
+> Note that:
+> - Certificate names are limited to alphanumeric characters only.
+> - Multiple instances of Certificates with the same name will be considered duplicates, even if the expiry dates are different.
+
+### Deleting certificates : `cert-del`
+
+Deletes a Certificate from a person in the address book.
+
+Format `cert-del INDEX [n/CERT_NAME]`
+* Deletes a Certificate from a person at the specified `INDEX`.
+* The index refers to the index number shown in the displayed person list.
+* The index **must be a positive integer** 1, 2, 3, ...
+* The Certificate to be deleted is specified by only its name.
+
+Examples:
+* `cert-del 1 n/OSCP` deletes the OSCP certificate from the first person in the displayed person list.
+
+### Editing certificates: `cert-edit`
+
+Edit the details of a Certificate that a person in the address book holds.
+
+Format: `cert-edit INDEX [n/CERT_NAME] [ne/NEW_CERT_NAME] [ee/NEW_CERT_EXPIRY_DATE]`
+* Edits a Certificate that a person at the specified `INDEX` holds.
+* The index refers to the index number shown in the displayed person list.
+* The Certificate to be edited is specified by its name using the `n/` parameter.
+* It is optional to include `ne/` and `ee/` flags, depending on whether the name or the expiry date has to be edited.
+
+Examples:
+* `cert-edit 1 n/OSCP ne/OSCP2` will edit the certificate originally named 'OSCP' held by the first person in the list, updating its name to 'OSCP2'.
 
 ### Clearing all entries : `clear`
 
