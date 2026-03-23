@@ -23,6 +23,8 @@ import seedu.address.model.tag.TagNameComparator;
  */
 public class TagCommandParser implements Parser<TagCommand> {
 
+    public static final String MESSAGE_USELESS_COLOUR = "Colours are not required when just deleting Tags";
+
     /**
      * Parses the given {@code String} of arguments in the context of the TagCommand
      * and returns an TagCommand object for execution.
@@ -52,7 +54,6 @@ public class TagCommandParser implements Parser<TagCommand> {
             } else {
                 tagsToAdd = parseTagsForEdit(Set.of(argMultimap.getValue(PREFIX_ADD_TAG).get().split("\\s+")));
             }
-
         }
 
         if (argMultimap.getValue(PREFIX_DELETE_TAG).isPresent()) {
@@ -61,6 +62,10 @@ public class TagCommandParser implements Parser<TagCommand> {
                         argMultimap.getValue(PREFIX_COLOUR_TAG).get());
             } else {
                 tagsToDelete = parseTagsForEdit(Set.of(argMultimap.getValue(PREFIX_DELETE_TAG).get().split("\\s+")));
+            }
+
+            if (argMultimap.getValue(PREFIX_ADD_TAG).isEmpty() && colourGiven.isPresent()) {
+                throw new ParseException(String.format(MESSAGE_USELESS_COLOUR));
             }
         }
 
