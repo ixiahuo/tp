@@ -60,6 +60,8 @@ public class CertDeleteCommand extends Command {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
+        model.commitAddressBook();
+
         Person personToDeleteFrom = lastShownList.get(index.getZeroBased());
 
         if (!personToDeleteFrom.hasCert(toDel)) {
@@ -87,7 +89,7 @@ public class CertDeleteCommand extends Command {
         Address address = personToDeleteFrom.getAddress();
         Set<Tag> tags = personToDeleteFrom.getTags();
         Salary salary = personToDeleteFrom.getSalary();
-        ArrayList<Certificate> certs = personToDeleteFrom.getCertificates();
+        ArrayList<Certificate> certs = new ArrayList<>(personToDeleteFrom.getCertificates());
         int certIndex = personToDeleteFrom.getCertIndex(toDel);
         certs.remove(certIndex);
 
@@ -106,12 +108,14 @@ public class CertDeleteCommand extends Command {
         }
 
         CertDeleteCommand otherCertDeleteCommand = (CertDeleteCommand) other;
-        return toDel.equals(otherCertDeleteCommand.toDel);
+        return index.equals(otherCertDeleteCommand.index)
+                && toDel.equals(otherCertDeleteCommand.toDel);
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
+                .add("index", index)
                 .add("toDel", toDel)
                 .toString();
     }

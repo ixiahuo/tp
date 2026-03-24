@@ -5,6 +5,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADD_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DELETE_TAG;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,6 +15,7 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.cert.Certificate;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
@@ -23,7 +25,7 @@ import seedu.address.model.person.Salary;
 import seedu.address.model.tag.Tag;
 
 /**
- * Deletes a person identified using it's displayed index from the address book.
+ * Tag or DeTag a person identified using it's displayed index from the address book.
  */
 public class TagCommand extends Command {
 
@@ -72,6 +74,7 @@ public class TagCommand extends Command {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
+        model.commitAddressBook();
         Person personToEdit = lastShownList.get(targetIndex.getZeroBased());
         Person editedPerson = modifyTagsForPerson(personToEdit, tagsToAdd, tagsToDelete);
         if (personToEdit.getTags().equals(editedPerson.getTags())) {
@@ -96,12 +99,12 @@ public class TagCommand extends Command {
         Email email = personToEdit.getEmail();
         Address address = personToEdit.getAddress();
         Salary updatedSalary = personToEdit.getSalary();
-
+        ArrayList<Certificate> existingCerts = personToEdit.getCertificates();
         Set<Tag> updatedTags = new HashSet<>(tagsToAdd);
         updatedTags.addAll(personToEdit.getTags());
         updatedTags.removeAll(tagsToDelete);
 
-        return new Person(name, phone, email, address, updatedTags, updatedSalary);
+        return new Person(name, phone, email, address, updatedTags, updatedSalary, existingCerts);
     }
 
     @Override

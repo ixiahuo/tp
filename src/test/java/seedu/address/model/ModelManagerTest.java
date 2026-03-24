@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.testutil.AddressBookBuilder;
+import seedu.address.testutil.PersonBuilder;
 
 public class ModelManagerTest {
 
@@ -66,6 +67,19 @@ public class ModelManagerTest {
     }
 
     @Test
+    public void commitAddressBook_nullAddressBook_throwsAssertionError() {
+        ModelManager localModelManager = new ModelManager();
+        try {
+            java.lang.reflect.Field field = ModelManager.class.getDeclaredField("addressBook");
+            field.setAccessible(true);
+            field.set(localModelManager, null);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        assertThrows(AssertionError.class, () -> localModelManager.commitAddressBook());
+    }
+
+    @Test
     public void setAddressBookFilePath_validPath_setsAddressBookFilePath() {
         Path path = Paths.get("address/book/file/path");
         modelManager.setAddressBookFilePath(path);
@@ -91,6 +105,28 @@ public class ModelManagerTest {
     @Test
     public void getFilteredPersonList_modifyList_throwsUnsupportedOperationException() {
         assertThrows(UnsupportedOperationException.class, () -> modelManager.getFilteredPersonList().remove(0));
+    }
+
+    @Test
+    public void commitAndUndo_addressBookStateRestored() {
+        AddressBook initialAddressBook = new AddressBook(modelManager.getAddressBook());
+
+        modelManager.commitAddressBook();
+        modelManager.addPerson(new PersonBuilder().withName("Betty Lee").build());
+
+        assertTrue(modelManager.canUndo());
+        modelManager.undoAddressBook();
+
+        assertEquals(initialAddressBook, modelManager.getAddressBook());
+        assertFalse(modelManager.canUndo());
+    }
+
+    @Test
+    public void undoAddressBook_noPreviousState_remainsUnchanged() {
+        AddressBook initialAb = new AddressBook(modelManager.getAddressBook());
+        assertFalse(modelManager.canUndo());
+        modelManager.undoAddressBook();
+        assertEquals(initialAb, modelManager.getAddressBook());
     }
 
     @Test

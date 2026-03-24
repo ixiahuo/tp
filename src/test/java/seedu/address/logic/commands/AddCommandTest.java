@@ -84,6 +84,20 @@ public class AddCommandTest {
         assertEquals(expected, addCommand.toString());
     }
 
+    @Test
+    public void execute_nullPersonAssertion_throwsAssertionError() {
+        Person validPerson = new PersonBuilder().build();
+        AddCommand addCommand = new AddCommand(validPerson);
+        try {
+            java.lang.reflect.Field field = AddCommand.class.getDeclaredField("toAdd");
+            field.setAccessible(true);
+            field.set(addCommand, null);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        assertThrows(AssertionError.class, () -> addCommand.execute(new ModelStubAcceptingPersonAdded()));
+    }
+
     /**
      * A default model stub that have all of the methods failing.
      */
@@ -157,6 +171,21 @@ public class AddCommandTest {
         public void updateFilteredPersonList(Predicate<Person> predicate) {
             throw new AssertionError("This method should not be called.");
         }
+
+        @Override
+        public void commitAddressBook() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void undoAddressBook() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public boolean canUndo() {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 
     /**
@@ -198,6 +227,10 @@ public class AddCommandTest {
         @Override
         public ReadOnlyAddressBook getAddressBook() {
             return new AddressBook();
+        }
+
+        @Override
+        public void commitAddressBook() {
         }
     }
 

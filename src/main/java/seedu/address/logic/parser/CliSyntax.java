@@ -20,5 +20,6 @@ public class CliSyntax {
     /* Prefix definitions for cert command */
     public static final Prefix PREFIX_CERT_NAME = new Prefix("n/");
     public static final Prefix PREFIX_CERT_EXPIRY = new Prefix("e/");
-
+    public static final Prefix PREFIX_CERT_EDIT_NAME = new Prefix("ne/");
+    public static final Prefix PREFIX_CERT_EDIT_DATE = new Prefix("ee/");
 }

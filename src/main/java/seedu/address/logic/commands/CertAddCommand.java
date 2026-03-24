@@ -61,6 +61,8 @@ public class CertAddCommand extends Command {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
+        model.commitAddressBook();
+
         Person personToAddTo = lastShownList.get(index.getZeroBased());
 
         if (personToAddTo.hasCert(toAdd)) {
