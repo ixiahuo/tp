@@ -1,0 +1,29 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box UI UI_COLOR_T1
+participant ":PersonListPanel" as PersonListPanel UI_COLOR
+participant ":PersonCard" as PersonCard UI_COLOR
+end box
+
+[-> PersonListPanel : updateNumColumnsAndEntryWidth(scrollPaneWidth)
+activate PersonListPanel
+[<-- PersonListPanel
+deactivate PersonListPanel
+
+-> PersonListPanel : updateDisplay()
+activate PersonListPanel
+
+loop number of Person
+    create PersonCard
+    PersonListPanel -> PersonCard
+    activate PersonCard
+    PersonCard --> PersonListPanel
+    deactivate PersonCard
+end
+
+[<-- PersonListPanel
+deactivate PersonListPanel
+
+@enduml

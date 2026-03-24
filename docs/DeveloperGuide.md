@@ -82,6 +82,10 @@ The `UI` component,
 * keeps a reference to the `Logic` component, because the `UI` relies on the `Logic` to execute commands.
 * depends on some classes in the `Model` component, as it displays `Person` object residing in the `Model`.
 
+The sequence diagram below illustrates the interactions within the `UI` component when the window is resized, to dynamically change the number of displayed columns of contacts.
+
+<puml src="diagrams/ResizingSequenceDiagram.puml" alt="Interactions within the UI component during a window resizing" />
+
 ### Logic component
 
 **API** : [`Logic.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/logic/Logic.java)
