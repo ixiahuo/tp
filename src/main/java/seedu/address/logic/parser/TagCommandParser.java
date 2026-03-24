@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.TagCommand;
-import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.TagNameComparator;
@@ -25,11 +24,11 @@ import seedu.address.model.tag.TagNameComparator;
  * Parses input arguments and creates a new TagCommand object
  */
 public class TagCommandParser implements Parser<TagCommand> {
+    public static final String MESSAGE_USELESS_COLOUR = "Colours are invalid when not creating Tags.\n\n"
+            + TagCommand.MESSAGE_USAGE;
 
     private static final Logger logger = LogsCenter.getLogger(TagCommandParser.class);
 
-    public static final String MESSAGE_USELESS_COLOUR = "Colours are invalid when not creating Tags.\n\n"
-            + TagCommand.MESSAGE_USAGE;
     /**
      * Parses the given {@code String} of arguments in the context of the TagCommand
      * and returns an TagCommand object for execution.
