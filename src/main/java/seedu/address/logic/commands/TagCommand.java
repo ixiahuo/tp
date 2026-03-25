@@ -46,7 +46,7 @@ public class TagCommand extends Command {
             TagColour.MESSAGE_COLOUR_OPTIONS);
 
     public static final String MESSAGE_TAG_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
-    public static final String MESSAGE_NOT_EDITED = "No tags were changed.";
+    public static final String MESSAGE_NOT_EDITED = "No Tags were changed.";
 
     private final Index targetIndex;
     private final Set<Tag> tagsToAdd;
@@ -72,6 +72,10 @@ public class TagCommand extends Command {
 
         if (tagsToAdd.isEmpty() && tagsToDelete.isEmpty()) {
             throw new CommandException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE));
+        }
+
+        if (tagsToAdd.equals(tagsToDelete)) {
+            throw new CommandException(String.format(MESSAGE_NOT_EDITED));
         }
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
