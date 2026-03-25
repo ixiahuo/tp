@@ -1,6 +1,10 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_CERT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_CERT_EXPIRY;
 
 import java.util.function.Predicate;
 
@@ -17,10 +21,13 @@ public class FindCommand extends Command {
 
     public static final String COMMAND_WORD = "find";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names contain any of "
-            + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
-            + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
-            + "Example: " + COMMAND_WORD + " alice bob charlie";
+    public static final String MESSAGE_USAGE = String.format(
+            "%s : finds existing contacts based on given criteria\n\n"
+            + "Format : %s [%sNAME] [%sTAG] [%sCERT_NAME] [%sCERT_EXPIRY_DATE]\n"
+            + "Example : %s %sJohn %sIntern",
+            COMMAND_WORD,
+            COMMAND_WORD, PREFIX_NAME, PREFIX_TAG, PREFIX_CERT, PREFIX_CERT_EXPIRY,
+            COMMAND_WORD, PREFIX_NAME, PREFIX_TAG);
 
     private final Predicate<Person> predicate;
 
