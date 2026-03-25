@@ -112,7 +112,6 @@
 
 #tags .label {
     -fx-text-fill: white;
-    -fx-background-color: #5ea1bf;
     -fx-padding: 1 3 1 3;
     -fx-padding: 1 3 1 3;
     -fx-border-radius: 2;
@@ -137,3 +136,9 @@
     -fx-padding: 4px;
     -fx-pref-height: 30px;
 }
+
+.tag_colour_red { -fx-background-color: #E0115F }
+.tag_colour_yellow { -fx-background-color: #D19A66}
+.tag_colour_green { -fx-background-color: #568203}
+.tag_colour_purple { -fx-background-color: #C678DD}
+.tag_colour_default { -fx-background-color: #5EA1BF}

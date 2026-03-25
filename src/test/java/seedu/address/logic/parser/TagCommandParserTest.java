@@ -6,6 +6,7 @@ import static seedu.address.logic.commands.CommandTestUtil.MULTI_TAG_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static seedu.address.logic.parser.TagCommandParser.MESSAGE_USELESS_COLOUR;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
@@ -18,10 +19,11 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.TagColour;
 
 public class TagCommandParserTest {
     private static final String MESSAGE_INVALID_FORMAT =
-            String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE);
+            String.format("%1$s", TagCommand.MESSAGE_USAGE);
 
     private TagCommandParser parser = new TagCommandParser();
 
@@ -32,37 +34,50 @@ public class TagCommandParserTest {
     @Test
     public void parse_missingParts_failure() {
         // no index specified
-        assertParseFailure(parser, VALID_NAME_AMY, MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, VALID_NAME_AMY, ParserUtil.MESSAGE_INVALID_INDEX + "\n\n"
+                + TagCommand.MESSAGE_USAGE);
 
         // no field specified
-        assertParseFailure(parser, "1", TagCommand.MESSAGE_NOT_EDITED);
+        assertParseFailure(parser, "1", String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE));
 
         // no index and no field specified
-        assertParseFailure(parser, "", MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, "", ParserUtil.MESSAGE_INVALID_INDEX + "\n\n"
+                + TagCommand.MESSAGE_USAGE);
+
+        // only colour specified
+        assertParseFailure(parser, "c/blue", ParserUtil.MESSAGE_INVALID_INDEX + "\n\n"
+                + TagCommand.MESSAGE_USAGE);
     }
 
     @Test
     public void parse_invalidPreamble_failure() {
         // negative index
-        assertParseFailure(parser, "-5" + defaultTagFlags, MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, "-5" + defaultTagFlags, ParserUtil.MESSAGE_INVALID_INDEX
+                + "\n\n" + TagCommand.MESSAGE_USAGE);
 
         // zero index
-        assertParseFailure(parser, "0" + defaultTagFlags, MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, "0" + defaultTagFlags, ParserUtil.MESSAGE_INVALID_INDEX
+                + "\n\n" + TagCommand.MESSAGE_USAGE);
+
+        assertParseFailure(parser, "a" + defaultTagFlags, ParserUtil.MESSAGE_INVALID_INDEX
+                + "\n\n" + TagCommand.MESSAGE_USAGE);
 
         // invalid arguments being parsed as preamble
-        assertParseFailure(parser, "1 some random string", MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, "1 some random string", ParserUtil.MESSAGE_INVALID_INDEX + "\n\n"
+                + TagCommand.MESSAGE_USAGE);
 
         // invalid prefix being parsed as preamble
-        assertParseFailure(parser, "1 i/ string", MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, "1 i/ string", ParserUtil.MESSAGE_INVALID_INDEX + "\n\n"
+                + TagCommand.MESSAGE_USAGE);
     }
 
     @Test
     public void parse_allFieldsPresent_success() {
-        assertParseSuccess(parser, "1 a/TEST1 d/TEST2",
+        assertParseSuccess(parser, "1 a/TEST1 d/TEST2 c/red",
                 new TagCommand(INDEX_FIRST_PERSON,
-                        Set.of(new Tag("TEST1")),
-                        Set.of(new Tag("TEST2"))
-                        ));
+                        Set.of(new Tag("TEST1", TagColour.RED)),
+                        Set.of(new Tag("TEST2", TagColour.RED))
+                ));
     }
 
     @Test
@@ -73,17 +88,35 @@ public class TagCommandParserTest {
                         Set.of(new Tag("TEST1"), new Tag("TEST2"))
                 ));
 
+
         assertParseSuccess(parser, "1 a/TEST1 TEST2",
                 new TagCommand(INDEX_FIRST_PERSON,
                         Set.of(new Tag("TEST1"), new Tag("TEST2")),
                         Set.of()
                 ));
+
+        assertParseSuccess(parser, "1 a/TEST1 TEST2 c/purple",
+                new TagCommand(INDEX_FIRST_PERSON,
+                        Set.of(new Tag("TEST1", TagColour.PURPLE), new Tag("TEST2", TagColour.PURPLE)),
+                        Set.of()
+                ));
     }
+
+    @Test
+    public void parse_invalidColourFieldsPresent_failure() {
+        assertParseFailure(parser, "1 d/TEST1 c/GREEN", MESSAGE_USELESS_COLOUR);
+
+        assertParseFailure(parser, "1 c/RED", MESSAGE_USELESS_COLOUR);
+
+        assertParseFailure(parser, "1 a/BOB c/WHITE", TagColour.MESSAGE_INVALID_COLOUR);
+    }
+
 
     @Test
     public void execute_invalidPersonIndexUnfilteredList_failure() {
         assertParseFailure(parser, "a" + MULTI_TAG_DESC_AMY + MULTI_TAG_DESC_BOB,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE));
+                ParserUtil.MESSAGE_INVALID_INDEX + "\n\n" + TagCommand.MESSAGE_USAGE);
     }
+
 
 }

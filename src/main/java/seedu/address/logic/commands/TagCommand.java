@@ -1,14 +1,16 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADD_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_COLOUR_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DELETE_TAG;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
@@ -23,6 +25,8 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Salary;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.TagColour;
+import seedu.address.model.tag.TagNameComparator;
 
 /**
  * Tag or DeTag a person identified using it's displayed index from the address book.
@@ -33,16 +37,16 @@ public class TagCommand extends Command {
 
     public static final String MESSAGE_USAGE = String.format(
             "%s : adds or deletes tags from an existing contact according to the currently displayed list\n\n"
-            + "Format : %s INDEX [%sTAGS_TO_ADD] [%sTAGS_TO_DELETE]\n"
-            + "Example : %s 1 %sJunior_Dev Cloud Project_1 %sIntern\n\n"
-            + "Multiple tags are separated with spaces.",
+            + "Format : %s INDEX [%sTAGS_TO_ADD] [%sCOLOUR OF ADDED TAGS] [%sTAGS_TO_DELETE] \n"
+            + "Example : %s 1 %sJunior_Dev Cloud Project_1 %s%s %sIntern\n\n"
+            + "Multiple tags are separated with spaces.\n%s",
             COMMAND_WORD,
-            COMMAND_WORD, PREFIX_ADD_TAG, PREFIX_DELETE_TAG,
-            COMMAND_WORD, PREFIX_ADD_TAG, PREFIX_DELETE_TAG);
+            COMMAND_WORD, PREFIX_ADD_TAG, PREFIX_COLOUR_TAG, PREFIX_DELETE_TAG,
+            COMMAND_WORD, PREFIX_ADD_TAG, PREFIX_COLOUR_TAG, TagColour.RED.name(), PREFIX_DELETE_TAG,
+            TagColour.MESSAGE_COLOUR_OPTIONS);
 
     public static final String MESSAGE_TAG_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
-    public static final String MESSAGE_NOT_TAGS_PROVIDED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_NOT_EDITED = "No tags were changed.";
+    public static final String MESSAGE_NOT_EDITED = "No Tags were changed.";
 
     private final Index targetIndex;
     private final Set<Tag> tagsToAdd;
@@ -67,7 +71,11 @@ public class TagCommand extends Command {
         List<Person> lastShownList = model.getFilteredPersonList();
 
         if (tagsToAdd.isEmpty() && tagsToDelete.isEmpty()) {
-            throw new CommandException(MESSAGE_NOT_TAGS_PROVIDED);
+            throw new CommandException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE));
+        }
+
+        if (tagsToAdd.equals(tagsToDelete)) {
+            throw new CommandException(String.format(MESSAGE_NOT_EDITED));
         }
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
@@ -100,7 +108,9 @@ public class TagCommand extends Command {
         Address address = personToEdit.getAddress();
         Salary updatedSalary = personToEdit.getSalary();
         ArrayList<Certificate> existingCerts = personToEdit.getCertificates();
-        Set<Tag> updatedTags = new HashSet<>(tagsToAdd);
+
+        Set<Tag> updatedTags = new TreeSet<>(new TagNameComparator());
+        updatedTags.addAll(tagsToAdd);
         updatedTags.addAll(personToEdit.getTags());
         updatedTags.removeAll(tagsToDelete);
 

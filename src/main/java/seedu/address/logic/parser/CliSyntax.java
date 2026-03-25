@@ -14,8 +14,10 @@ public class CliSyntax {
     public static final Prefix PREFIX_TAG = new Prefix("t/");
     public static final Prefix PREFIX_CERT = new Prefix("c/"); // Used in find
 
+    /* Prefix definitions for tag command */
     public static final Prefix PREFIX_ADD_TAG = new Prefix("a/");
     public static final Prefix PREFIX_DELETE_TAG = new Prefix("d/");
+    public static final Prefix PREFIX_COLOUR_TAG = new Prefix("c/");
 
     /* Prefix definitions for cert command */
     public static final Prefix PREFIX_CERT_NAME = new Prefix("n/");

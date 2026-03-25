@@ -23,6 +23,7 @@ public class Tag {
     public static final String VALIDATION_REGEX = "[\\-\\p{Alnum}!@#$?/|<>_*&:;=]+";
     public static final Integer MAX_LENGTH = 30;
     public final String tagName;
+    public final TagColour tagColour;
 
     /**
      * Constructs a {@code Tag}.
@@ -33,6 +34,22 @@ public class Tag {
         requireNonNull(tagName);
         checkArgument(isValidTagName(tagName), MESSAGE_CONSTRAINTS);
         checkArgument(isValidTagLength(tagName), MESSAGE_CONSTRAINTS_LENGTH);
+        this.tagName = tagName;
+        this.tagColour = TagColour.DEFAULT;
+    }
+
+    /**
+     * Constructs a {@code Tag}.
+     *
+     * @param tagName A valid tag name.
+     * @param tagColour A valid colour for the Tag.
+     */
+    public Tag(String tagName, TagColour tagColour) {
+        requireNonNull(tagName);
+        requireNonNull(tagColour);
+        checkArgument(isValidTagName(tagName), MESSAGE_CONSTRAINTS);
+        checkArgument(isValidTagLength(tagName), MESSAGE_CONSTRAINTS_LENGTH);
+        this.tagColour = tagColour;
         this.tagName = tagName;
     }
 
@@ -66,7 +83,7 @@ public class Tag {
         }
 
         Tag otherTag = (Tag) other;
-        return tagName.equals(otherTag.tagName);
+        return tagName.equals(otherTag.tagName) && tagColour.equals(otherTag.tagColour);
     }
 
     @Override

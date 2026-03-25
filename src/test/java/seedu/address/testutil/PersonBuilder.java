@@ -1,8 +1,8 @@
 package seedu.address.testutil;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import seedu.address.model.cert.Certificate;
 import seedu.address.model.person.Address;
@@ -12,6 +12,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Salary;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.TagNameComparator;
 import seedu.address.model.util.SampleDataUtil;
 
 /**
@@ -41,7 +42,7 @@ public class PersonBuilder {
         phone = new Phone(DEFAULT_PHONE);
         email = new Email(DEFAULT_EMAIL);
         address = new Address(DEFAULT_ADDRESS);
-        tags = new HashSet<>();
+        tags = new TreeSet<>(new TagNameComparator());
         salary = new Salary(DEFAULT_SALARY);
         certs = new ArrayList<Certificate>();
     }
@@ -54,7 +55,8 @@ public class PersonBuilder {
         phone = personToCopy.getPhone();
         email = personToCopy.getEmail();
         address = personToCopy.getAddress();
-        tags = new HashSet<>(personToCopy.getTags());
+        tags = new TreeSet<>(new TagNameComparator());
+        tags.addAll(personToCopy.getTags());
         salary = personToCopy.getSalary();
         certs = personToCopy.getCertificates();
     }

@@ -201,16 +201,17 @@ Format: `list`
 <br>
 
 ### Adding and deleting tags of a contact: `tag`
-Format: `tag INDEX [a/TAGS TO ADD SEPARATED BY SPACE] [d/TAGS TO DELETE SEPARATED BY SPACE]`
+Format: `tag INDEX [a/TAGS TO ADD SEPARATED BY SPACE] [c/COLOUR OF TAGS TO BE ADDED] [d/TAGS TO DELETE SEPARATED BY SPACE]`
 
 * Add or delete tags of the person at the specified `INDEX` of the the displayed person list.
 * If multiple tags are to be added or deleted, they are to be separated by spaces.
-* **At least one of the optional fields must be provided.**
+* There are 5 colour options for Tags: `RED`, `YELLOW`, `GREEN`, `BLUE`, `PURPLE`, the default colour is `BLUE`
+* **At least one of the `a/` or `d/` fields must be provided.** There is no need to have `c/` when only deleting tags 
 
 Examples:
-* `tag 1 a/IT Intern` adds two Tags `IT` and `Intern`
+* `tag 1 a/IT Intern c/red` adds two Tags `IT` and `Intern` with a **RED** Colouration
 * `tag 1 d/Best_Employee` deletes a Tag `Best_Employee`
-* `tag 1 a/HR Best_Employee d/ IT` adds two Tags `HR` and `Best_Employee`, while deleting `IT`
+* `tag 1 a/HR Best_Employee d/IT` adds two Tags `HR` and `Best_Employee`, while deleting `IT`
 
 <box type="info" seamless>
 
@@ -323,7 +324,7 @@ Furthermore, certain edits can cause the Big Brother to behave in unexpected way
 `cert-add INDEX n/CERT_NAME e/CERT_EXPIRY`
 `cert-edit INDEX n/NAME [ne/EDITED_NAME] [ee/EDITED_EXPIRY]`
 `cert-del INDEX n/CERT_NAME`
-`tag INDEX [a/TAGS TO ADD SEPARATED BY SPACE] [d/TAGS TO DELETE SEPARATED BY SPACE]`
+`tag INDEX [a/TAGS TO ADD SEPARATED BY SPACE] [c/COLOUR OF TAGS TO BE ADDED] [d/TAGS TO DELETE SEPARATED BY SPACE]`
 `sort ...`
 `find [n/NAME] [t/TAG] [c/CERT_NAME] [e/CERT_EXPIRY_DATE]`
 `list`
