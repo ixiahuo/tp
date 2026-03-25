@@ -12,15 +12,14 @@
 <?import javafx.scene.layout.VBox?>
 
 <fx:root type="javafx.stage.Stage" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-         title="Big Brother" minWidth="450" minHeight="600" onCloseRequest="#handleExit">
+         title="Big Brother" minWidth="360" minHeight="410" onCloseRequest="#handleExit">
   <icons>
     <Image url="@/images/address_book_32.png" />
   </icons>
   <scene>
     <Scene>
       <stylesheets>
-        <URL value="@SunsetTheme.css" />
-        <URL value="@Extensions.css" />
+        <URL value="@MainWindow.css" />
       </stylesheets>
 
       <VBox>
@@ -30,20 +29,13 @@
           </Menu>
         </MenuBar>
 
-        <StackPane VBox.vgrow="NEVER" fx:id="commandBoxPlaceholder" styleClass="pane-with-border">
-          <padding>
-            <Insets top="0" right="1" bottom="0" left="1" />
-          </padding>
-        </StackPane>
+        <StackPane fx:id="commandBoxPlaceholder" VBox.vgrow="NEVER" styleClass="command-box" />
 
-        <VBox fx:id="personList" styleClass="pane-with-border" minWidth="340" prefWidth="340" VBox.vgrow="ALWAYS">
-          <padding>
-            <Insets top="0" right="1" bottom="0" left="1" />
-          </padding>
-          <StackPane fx:id="personListPanelPlaceholder" VBox.vgrow="ALWAYS"/>
+        <VBox fx:id="personList" VBox.vgrow="ALWAYS" styleClass="person-list">
+          <StackPane fx:id="personListPanelPlaceholder" VBox.vgrow="NEVER" />
         </VBox>
 
-        <StackPane fx:id="statusbarPlaceholder" VBox.vgrow="NEVER" />
+        <StackPane fx:id="statusbarPlaceholder" VBox.vgrow="NEVER" styleClass="status-bar" />
       </VBox>
     </Scene>
   </scene>
