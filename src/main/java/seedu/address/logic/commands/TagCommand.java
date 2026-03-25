@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADD_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_COLOUR_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DELETE_TAG;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
@@ -24,6 +25,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Salary;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.TagColour;
 import seedu.address.model.tag.TagNameComparator;
 
 /**
@@ -35,12 +37,13 @@ public class TagCommand extends Command {
 
     public static final String MESSAGE_USAGE = String.format(
             "%s : adds or deletes tags from an existing contact according to the currently displayed list\n\n"
-            + "Format : %s INDEX [%sTAGS_TO_ADD] [%sTAGS_TO_DELETE]\n"
-            + "Example : %s 1 %sJunior_Dev Cloud Project_1 %sIntern\n\n"
-            + "Multiple tags are separated with spaces.",
+            + "Format : %s INDEX [%sTAGS_TO_ADD] [%sCOLOUR OF ADDED TAGS] [%sTAGS_TO_DELETE] \n"
+            + "Example : %s 1 %sJunior_Dev Cloud Project_1 %s%s %sIntern\n\n"
+            + "Multiple tags are separated with spaces.\n%s",
             COMMAND_WORD,
-            COMMAND_WORD, PREFIX_ADD_TAG, PREFIX_DELETE_TAG,
-            COMMAND_WORD, PREFIX_ADD_TAG, PREFIX_DELETE_TAG);
+            COMMAND_WORD, PREFIX_ADD_TAG, PREFIX_COLOUR_TAG, PREFIX_DELETE_TAG,
+            COMMAND_WORD, PREFIX_ADD_TAG, PREFIX_COLOUR_TAG, TagColour.RED.name(), PREFIX_DELETE_TAG,
+            TagColour.MESSAGE_COLOUR_OPTIONS);
 
     public static final String MESSAGE_TAG_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "No tags were changed.";

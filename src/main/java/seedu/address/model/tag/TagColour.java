@@ -20,6 +20,9 @@ public enum TagColour {
     public static final String MESSAGE_INVALID_COLOUR =
             "Tag Colour does not exist. We only have: RED, YELLOW, GREEN, BLUE OR PURPLE";
 
+    public static final String MESSAGE_COLOUR_OPTIONS =
+            "Tags can come in the following colours: RED, YELLOW, GREEN, BLUE OR PURPLE";
+
     // Name of the cssClass that will be used to assign the colour in a css file
     private final String cssClass;
 
