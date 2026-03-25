@@ -80,7 +80,11 @@ public class CertEditCommand extends Command {
             throw new CommandException(MESSAGE_MISSING_CERT);
         }
 
-        Certificate updatedCert = this.getUpdatedCert();
+        // get the actual certificate-to-edit
+        Certificate actualToEdit = personToEdit.getCertificates()
+                .get(personToEdit.getCertIndex(toEdit));
+
+        Certificate updatedCert = this.getUpdatedCert(actualToEdit);
 
         if (newName.isPresent() && personToEdit.hasCert(updatedCert)) {
             throw new CommandException(MESSAGE_DUPLICATE_CERT);
@@ -98,10 +102,9 @@ public class CertEditCommand extends Command {
      * If new values are not supplied, the old values will be reused.
      * @return Certificate with the edited information.
      */
-    private Certificate getUpdatedCert() {
-        CertName updatedName = this.newName.orElse(this.toEdit.getName());
-        CertExpiry updatedExpiry = this.newDate.orElse(this.toEdit.getExpiry());
-
+    private Certificate getUpdatedCert(Certificate actualToEdit) {
+        CertName updatedName = this.newName.orElse(actualToEdit.getName());
+        CertExpiry updatedExpiry = this.newDate.orElse(actualToEdit.getExpiry());
         Certificate updatedCert = new Certificate(updatedName, updatedExpiry);
         return updatedCert;
     }
