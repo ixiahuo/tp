@@ -7,7 +7,7 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  * Represents a Person's name in the address book.
  * Guarantees: immutable; is valid as declared in {@link #isValidName(String)}
  */
-public class Name {
+public class Name implements Comparable<Name> {
 
     public static final String MESSAGE_CONSTRAINTS =
             "Names should contain only letters, spaces and forward slashes.\n"
@@ -41,6 +41,11 @@ public class Name {
      */
     public static boolean isValidName(String test) {
         return test.matches(VALIDATION_REGEX);
+    }
+
+    @Override
+    public int compareTo(Name otherName) {
+        return this.fullName.compareTo(otherName.fullName);
     }
 
 

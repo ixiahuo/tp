@@ -24,6 +24,25 @@ test {
     useJUnitPlatform()
     enableAssertions = true
     finalizedBy jacocoTestReport
+
+    exclude '**/ui/**'
+}
+
+task testGui(type: Test) {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+
+    include '**/ui/**'
+
+    systemProperty "testfx.robot", "glass"
+    systemProperty "testfx.headless", "true"
+    systemProperty "prism.order", "sw"
+    systemProperty "prism.text", "t2k"
+    systemProperty "java.awt.headless", "true"
+}
+
+jacocoTestReport {
+    executionData fileTree(buildDir).include("jacoco/*.exec")
 }
 
 task coverage(type: JacocoReport) {
@@ -64,6 +83,11 @@ dependencies {
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: jUnitVersion
 
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: jUnitVersion
+
+    testImplementation 'org.testfx:testfx-junit5:4.0.16-alpha'
+    testImplementation 'org.testfx:openjfx-monocle:17.0.10'
+    testImplementation 'org.mockito:mockito-core:5.11.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.11.0'
 }
 
 run {

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox stylesheets="@PersonListPanel.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
-  <ScrollPane fx:id="personScrollPane" fitToWidth="true" fitToHeight="true" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+  <ScrollPane fx:id="scrollPane" fitToWidth="true">
     <VBox>
-      <TilePane fx:id="personTilePane" VBox.vgrow="ALWAYS" />
+      <GridPane fx:id="personGridPane" />
     </VBox>
   </ScrollPane>
 </VBox>

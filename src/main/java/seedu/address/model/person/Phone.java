@@ -39,7 +39,10 @@ public class Phone {
      * The phone field can be empty.
      */
     public static boolean isValidPhone(String test) {
-        return test.isEmpty() || test.matches(VALIDATION_REGEX);
+        if (test == null || test.trim().isEmpty()) {
+            return true;
+        }
+        return test.matches(VALIDATION_REGEX);
     }
 
     @Override

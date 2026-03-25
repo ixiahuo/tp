@@ -46,6 +46,8 @@ public class CertEditCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "Certificate edited: %1$s";
     public static final String MESSAGE_MISSING_CERT = "This person does not have this certificate.";
+    public static final String MESSAGE_DUPLICATE_CERT = "This person already has this certificate.";
+
 
     private final Index index;
     private final Certificate toEdit;
@@ -79,6 +81,10 @@ public class CertEditCommand extends Command {
         }
 
         Certificate updatedCert = this.getUpdatedCert();
+
+        if (newName.isPresent() && personToEdit.hasCert(updatedCert)) {
+            throw new CommandException(MESSAGE_DUPLICATE_CERT);
+        }
 
         Person personEdited = editCertForPerson(personToEdit, toEdit, updatedCert);
 

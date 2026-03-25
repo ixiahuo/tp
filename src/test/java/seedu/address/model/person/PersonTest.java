@@ -27,6 +27,20 @@ public class PersonTest {
     }
 
     @Test
+    public void minimalistConstructor_setsDefaultValues() {
+        Name name = new Name("John Doe");
+        Person person = new Person(name);
+
+        assertEquals(name, person.getName());
+        assertEquals("", person.getPhone().value);
+        assertEquals("", person.getEmail().value);
+        assertEquals("", person.getAddress().value);
+        assertEquals("", person.getSalary().value);
+        assertTrue(person.getTags().isEmpty());
+        assertTrue(person.getCertificates().isEmpty());
+    }
+
+    @Test
     public void isSamePerson() {
         // same object -> returns true
         assertTrue(ALICE.isSamePerson(ALICE));

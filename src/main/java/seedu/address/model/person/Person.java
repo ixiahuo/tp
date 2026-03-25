@@ -45,6 +45,21 @@ public class Person {
     }
 
     /**
+     * Minimalist constructor: Only Name is strictly required.
+     * All other fields are initialized as empty.
+     */
+    public Person(Name name) {
+        requireAllNonNull(name);
+        this.name = name;
+        this.phone = new Phone("");
+        this.email = new Email("");
+        this.address = new Address("");
+        this.tags = Set.of();
+        this.salary = new Salary("");
+        this.certs = new ArrayList<Certificate>();
+    }
+
+    /**
      * Overloaded constructor to create a Person without using tags
      * Chains to the main constructor with an empty HashSet.
      */

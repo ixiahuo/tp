@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
@@ -93,4 +94,7 @@ public interface Model {
 
     /** Returns true if the model has a previous state to restore. */
     boolean canUndo();
+
+    /** Sorts the filtered person list. */
+    void sort(Comparator<Person> comparator);
 }

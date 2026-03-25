@@ -33,15 +33,13 @@ public class SalaryTest {
 
     @Test
     public void isValidSalary() {
-        // null salary
-        assertThrows(NullPointerException.class, () -> Salary.isValidSalary(null));
-
         // invalid salary
-        assertFalse(Salary.isValidSalary(" ")); // spaces only
         assertFalse(Salary.isValidSalary("two thousand")); // non-numeric
         assertFalse(Salary.isValidSalary("9011p")); // alphabets within digits
 
         // valid salary
+        assertTrue(Salary.isValidSalary(null));
+        assertTrue(Salary.isValidSalary(" ")); // spaces only
         assertTrue(Salary.isValidSalary("")); // empty string for optional field
         assertTrue(Salary.isValidSalary("0"));
         assertTrue(Salary.isValidSalary("5000"));

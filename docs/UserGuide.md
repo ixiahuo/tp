@@ -126,7 +126,6 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/SALARY`
 > * contain only alphanumeric characters and hyphens
 > * start and end only with alphanumeric characters
 > * be at least 2 characters long for the last domain label<br>
->
 > Duplicate-handling: exact match<br>
 
 > [**ADDRESS**]<br>

@@ -6,10 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
+import static seedu.address.testutil.TypicalPersons.BENSON;
+import static seedu.address.testutil.TypicalPersons.CARL;
+import static seedu.address.testutil.TypicalPersons.DANIEL;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.function.Predicate;
 
@@ -17,86 +19,61 @@ import org.junit.jupiter.api.Test;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
-import seedu.address.logic.Messages;
-import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
+import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
-import seedu.address.testutil.PersonBuilder;
 
-public class AddCommandTest {
+public class SortCommandTest {
 
     @Test
-    public void constructor_nullPerson_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new AddCommand(null));
+    public void constructor_nullComparator_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> new SortCommand(null));
     }
 
     @Test
-    public void execute_personAcceptedByModel_addSuccessful() throws Exception {
-        ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
-        Person validPerson = new PersonBuilder().build();
-
-        CommandResult commandResult = new AddCommand(validPerson).execute(modelStub);
-
-        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, Messages.format(validPerson)),
-                commandResult.getFeedbackToUser());
-        assertEquals(Arrays.asList(validPerson), modelStub.personsAdded);
-    }
-
-    @Test
-    public void execute_duplicatePerson_throwsCommandException() {
-        Person validPerson = new PersonBuilder().build();
-        AddCommand addCommand = new AddCommand(validPerson);
-        ModelStub modelStub = new ModelStubWithPerson(validPerson);
-
-        assertThrows(CommandException.class, AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
+    public void execute_defaultSortSuccessful() throws Exception {
+        ModelStubWithPeople modelStub = new ModelStubWithPeople();
+        CommandResult commandResult = new SortCommand().execute(modelStub);
+        ArrayList<Person> expectedList = new ArrayList<Person>() {
+            {
+                add(ALICE);
+                add(BENSON);
+                add(CARL);
+                add(DANIEL);
+            }
+        };
+        assertEquals(SortCommand.MESSAGE_SUCCESS, commandResult.getFeedbackToUser());
+        assertEquals(expectedList, modelStub.personsAdded);
     }
 
     @Test
     public void equals() {
-        Person alice = new PersonBuilder().withName("Alice").withSalary("2000").build();
-        Person bob = new PersonBuilder().withName("Bob").withSalary("3000").build();
-        AddCommand addAliceCommand = new AddCommand(alice);
-        AddCommand addBobCommand = new AddCommand(bob);
+        // trivial equality test
+        SortCommand sortCommand = new SortCommand();
+        assertTrue(sortCommand.equals(sortCommand));
 
-        // same object -> returns true
-        assertTrue(addAliceCommand.equals(addAliceCommand));
+        // different comparators -> false
+        SortCommand otherSortCommand = new SortCommand(new Comparator<Person>() {
+            public int compare(Person p1, Person p2) {
+                Name name1 = p1.getName();
+                Name name2 = p2.getName();
+                return name2.compareTo(name1);
+            }
+        });
+        assertFalse(sortCommand.equals(otherSortCommand));
 
-        // same values -> returns true
-        AddCommand addAliceCommandCopy = new AddCommand(alice);
-        assertTrue(addAliceCommand.equals(addAliceCommandCopy));
-
-        // different types -> returns false
-        assertFalse(addAliceCommand.equals(1));
-
-        // null -> returns false
-        assertFalse(addAliceCommand.equals(null));
-
-        // different person -> returns false
-        assertFalse(addAliceCommand.equals(addBobCommand));
+        // different types -> false
+        assertFalse(sortCommand.equals(1));
     }
 
     @Test
     public void toStringMethod() {
-        AddCommand addCommand = new AddCommand(ALICE);
-        String expected = AddCommand.class.getCanonicalName() + "{toAdd=" + ALICE + "}";
-        assertEquals(expected, addCommand.toString());
-    }
-
-    @Test
-    public void execute_nullPersonAssertion_throwsAssertionError() {
-        Person validPerson = new PersonBuilder().build();
-        AddCommand addCommand = new AddCommand(validPerson);
-        try {
-            java.lang.reflect.Field field = AddCommand.class.getDeclaredField("toAdd");
-            field.setAccessible(true);
-            field.set(addCommand, null);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-        assertThrows(AssertionError.class, () -> addCommand.execute(new ModelStubAcceptingPersonAdded()));
+        SortCommand sortCommand = new SortCommand();
+        String expectedString = SortCommand.class.getCanonicalName();
+        assertEquals(expectedString, sortCommand.toString());
     }
 
     /**
@@ -135,6 +112,11 @@ public class AddCommandTest {
 
         @Override
         public void addPerson(Person person) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void sort(Comparator<Person> comparator) {
             throw new AssertionError("This method should not be called.");
         }
 
@@ -187,48 +169,20 @@ public class AddCommandTest {
         public boolean canUndo() {
             throw new AssertionError("This method should not be called.");
         }
-
-        @Override
-        public void sort(Comparator<Person> comparator) {
-            throw new AssertionError("This method should not be called.");
-        }
-    }
-
-    /**
-     * A Model stub that contains a single person.
-     */
-    private class ModelStubWithPerson extends ModelStub {
-        private final Person person;
-
-        ModelStubWithPerson(Person person) {
-            requireNonNull(person);
-            this.person = person;
-        }
-
-        @Override
-        public boolean hasPerson(Person person) {
-            requireNonNull(person);
-            return this.person.isSamePerson(person);
-        }
     }
 
     /**
      * A Model stub that always accept the person being added.
      */
-    private class ModelStubAcceptingPersonAdded extends ModelStub {
-        final ArrayList<Person> personsAdded = new ArrayList<>();
-
-        @Override
-        public boolean hasPerson(Person person) {
-            requireNonNull(person);
-            return personsAdded.stream().anyMatch(person::isSamePerson);
-        }
-
-        @Override
-        public void addPerson(Person person) {
-            requireNonNull(person);
-            personsAdded.add(person);
-        }
+    private class ModelStubWithPeople extends ModelStub {
+        final ArrayList<Person> personsAdded = new ArrayList<>() {
+            {
+                add(DANIEL);
+                add(CARL);
+                add(BENSON);
+                add(ALICE);
+            }
+        };
 
         @Override
         public ReadOnlyAddressBook getAddressBook() {
@@ -238,6 +192,11 @@ public class AddCommandTest {
         @Override
         public void commitAddressBook() {
         }
-    }
 
+        @Override
+        public void sort(Comparator<Person> comparator) {
+            requireNonNull(comparator);
+            personsAdded.sort(comparator);
+        }
+    }
 }
