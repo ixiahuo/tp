@@ -154,9 +154,8 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/SALARY]`
 * **At least one of the optional fields must be provided.**
 * Existing values will be updated to the input values.
 
-Examples:
+Example:
 *  `edit 1 p/+017 91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `+017 91234567` and `johndoe@example.com` respectively.
-*  `edit 2 n/Betsy Crower` Edits the name of the 2nd person to be `Betsy Crower`.
 
 <br>
 
@@ -270,10 +269,13 @@ Examples:
 
 <br>
 
-### Clearing all entries : `clear`
+### Delete all entries : `clear`
 Format: `clear`
 
 <br>
+
+### Restore the contact list to the immediate previous state : `undo`
+Format: `undo`
 
 ### Exiting the program : `exit`
 Format: `exit`
