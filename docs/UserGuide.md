@@ -33,23 +33,9 @@ Big Brother is a desktop app for managing employee contacts, optimized for use v
    A GUI similar to the below should appear in a few seconds.<br><br>
    ![Ui](images/Ui.png)
 
-1. Type a command in the command box (the red-brown box at the top) and press Enter to execute it.
-   Some example commands you can try:
-
-   * `help` : Pops up an in-app help menu of available commands.
-
-   * `list` : Lists all contacts.
-
-   * `add n/John Doe p/+65 98765432 e/johnd@example.com a/Abc Rd, Blk 123, #01-01 s/3000` :<br>
-     Adds a new contact 'John Doe' with the given details (elaborated in the explanation for `add` [below](#adding-a-new-contact-add))
-
-   * `delete 3` : Deletes the 3rd contact shown in the currently displayed list.
-
-   * `clear` : Deletes all contacts. You can use this to clear the existing sample data.
-
-   * `exit` : Exits the app.
-
-1. Refer to the [Features](#features) below for details of each command.
+1. Type a command in the command box (the red-brown rectangle at the top) and press Enter to execute it.<br>
+   Refer to the [Features](#features) below for details of each command.<br>
+   Refer to the [Summary](#command-summary) below for a summary of all available commands.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -99,7 +85,11 @@ Format: `help`
 </box>
 
 ### Adding a new contact : `add`
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/SALARY`
+Format: `add n/NAME [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/SALARY]`
+
+Examples:
+* `add n/John Doe p/+65 98765432 e/johnd@example.com`
+* `add n/Betsy Crowe p/+81 1234567 s/4500`
 
 <box type="info" seamless>
 
@@ -142,11 +132,6 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/SALARY`
 > (1) EMAIL and PHONE_NUMBER are empty: duplicates if NAMEs are the same<br>
 > (2) Else, 2 persons are duplicates if their NAME & PHONE_NUMBER & EMAIL are the same<br>
 </box>
-
-
-Examples:
-* `add n/John Doe p/+65 98765432 e/johnd@example.com a/John street, block 123, #01-01 s/`
-* `add n/Betsy Crowe s/ e/betsycrowe@example.com a/Newgate Prison p/+81 1234567`
 
 <br>
 
