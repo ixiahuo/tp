@@ -49,8 +49,11 @@ Big Brother is a desktop app for managing employee contacts, optimized for use v
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
   e.g. for `n/NAME`, `NAME` is the parameter.
 
-* Items in square brackets are optional. More explanations will be provided where they appear.<br>
-  e.g `tag INDEX [a/TAG_NAME] [d/TAG_NAME]`.
+* Arguments not in square brackets are compulsory.<br>
+  e.g. `n/NAME`, `INDEX`
+
+* Arguments in square brackets are optional. More explanations will be provided where they appear.<br>
+  e.g. `[a/TAGS_TO_ADD]`, `[d/TAGS_TO_DELETE]`
 
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE`, `p/PHONE n/NAME` is also acceptable.
@@ -108,7 +111,7 @@ As the app automatically resets the scroll bar to the top after the command, you
 > **NAME**<br>
 > (1) *Cannot be empty*<br>
 > (2) Only letter, spaces, forward slash<br>
-> (3) Letters immediately beside forward slash must be uppercase (eg: 'S/O')<br>
+> (3) Letters immediately beside forward slash must be uppercase (e.g. 'S/O')<br>
 > Duplicate-handling: case-*insensitive* match<br>
 
 > **PHONE**<br>
@@ -175,8 +178,8 @@ Examples:
 Format: `find [n/NAME] [t/TAG] [c/CERT_NAME] [e/CERT_EXPIRY_DATE]`
 
 * **At least one of the optional fields must be provided.**
-* For `NAME`, `TAG` and `CERT_NAME`, the match is case-insensitive and can match part of the word. eg:
-  * 'john' will match 'Johny'
+* For `NAME`, `TAG` and `CERT_NAME`, the match is case-insensitive and can match part of the word.
+  * e.g. 'john' will match 'Johny'
 * For `CERT_EXPIRY_DATE`, the match is for certificates that expire **before** the provided date.
 * Multiple values of the same field can be used to expand the search (i.e. `OR` search), except for `CERT_EXPIRY`.
 * Multiple fields can be used to narrow down the search (i.e `AND` search).
@@ -193,7 +196,7 @@ Format: `list`
 
 <br>
 
-### Adding and deleting tags: `tag`
+### Adding and deleting tags : `tag`
 Format: `tag INDEX [a/TAGS_TO_ADD] [c/COLOUR_FOR_TAGS_TO_ADD] [d/TAGS_TO_DELETE]`
 
 * Adds or deletes tags of the person at the specified `INDEX` of the displayed person list.
@@ -220,52 +223,40 @@ Examples:
 <br>
 
 ### Adding certificates : `cert-add`
+Format `cert-add INDEX n/CERT_NAME e/CERT_EXPIRY_DATE`
+* Adds a certificate to the person at the specified `INDEX` of the displayed person list.
 
-Adds a Certificate to a person in the address book.
+Example: `cert-add 1 n/OSCP e/2028-03-05`
+* Adds a certificate named OSCP with an expiry date on 5th March 2028 to the first person in the list.
 
-Format `cert-add INDEX [n/CERT_NAME] [e/CERT_EXPIRY_DATE]`
-* Adds a Certificate to a person at the specified `INDEX`.
-* The index refers to the index number shown in the displayed person list.
-* The index **must be a positive integer** 1, 2, 3, ...
-* A Certificate must have both a name and an expiry date.
-* Expiry dates must be formatted as **YYYY-MM-DD**.
+<box type="info" seamless>
 
-Examples:
-* `cert-add 1 n/OSCP e/2028-03-05` adds a Certificate named OSCP with an expiry date on 5th March 2028 to the first person in the list.
+**Validation & Duplicate-handling Rules**
 
-> Note that:
-> - Certificate names are limited to alphanumeric characters only.
-> - Multiple instances of Certificates with the same name will be considered duplicates, even if the expiry dates are different.
+> (1) CERT_NAME : Only alphanumeric characters and spaces<br>
+> (2) CERT_EXPIRY_DATE : format `yyyy-mm-dd`<br>
+> Duplicate-handling: case-sensitive match of the name only; the expiry date is not considered
+</box>
 
 <br>
 
 ### Deleting certificates : `cert-del`
+Format `cert-del INDEX n/CERT_NAME`
+* Deletes a certificate from the person at the specified `INDEX` of the displayed person list.
 
-Deletes a Certificate from a person in the address book.
-
-Format `cert-del INDEX [n/CERT_NAME]`
-* Deletes a Certificate from a person at the specified `INDEX`.
-* The index refers to the index number shown in the displayed person list.
-* The index **must be a positive integer** 1, 2, 3, ...
-* The Certificate to be deleted is specified by only its name.
-
-Examples:
-* `cert-del 1 n/OSCP` deletes the OSCP certificate from the first person in the displayed person list.
+Example: `cert-del 1 n/OSCP`
+* Deletes the certificate named OSCP from the first person in the list.
 
 <br>
 
-### Editing certificates: `cert-edit`
+### Editing certificates : `cert-edit`
+Format: `cert-edit INDEX n/CERT_NAME [ne/NEW_CERT_NAME] [ee/NEW_CERT_EXPIRY_DATE]`
 
-Edit the details of a Certificate that a person in the address book holds.
+* Edits a certificate of the person at the specified `INDEX` of the displayed person list.
+* **At least one of the optional fields should be provided.**
 
-Format: `cert-edit INDEX [n/CERT_NAME] [ne/NEW_CERT_NAME] [ee/NEW_CERT_EXPIRY_DATE]`
-* Edits a Certificate that a person at the specified `INDEX` holds.
-* The index refers to the index number shown in the displayed person list.
-* The Certificate to be edited is specified by its name using the `n/` parameter.
-* It is optional to include `ne/` and `ee/` flags, depending on whether the name or the expiry date has to be edited.
-
-Examples:
-* `cert-edit 1 n/OSCP ne/OSCP2` will edit the certificate originally named 'OSCP' held by the first person in the list, updating its name to 'OSCP2'.
+Example: `cert-edit 1 n/OSCP ne/OSCP2`
+* Edits the certificate originally named 'OSCP' held by the first person in the list, updating its name to 'OSCP2'.
 
 <br>
 
