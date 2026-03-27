@@ -208,7 +208,7 @@ Format: `tag INDEX [a/TAGS TO ADD SEPARATED BY SPACE] [c/COLOUR OF TAGS TO BE AD
 * Add or delete tags of the person at the specified `INDEX` of the the displayed person list.
 * If multiple tags are to be added or deleted, they are to be separated by spaces.
 * There are 5 colour options for Tags: `RED`, `YELLOW`, `GREEN`, `BLUE`, `PURPLE`, the default colour is `BLUE`
-* **At least one of the `a/` or `d/` fields must be provided.** There is no need to have `c/` when only deleting tags 
+* **At least one of the `a/` or `d/` fields must be provided.** There is no need to have `c/` when only deleting tags
 
 Examples:
 * `tag 1 a/IT Intern c/red` adds two Tags `IT` and `Intern` with a **RED** Colouration

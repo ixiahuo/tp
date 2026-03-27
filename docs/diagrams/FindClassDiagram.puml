@@ -1,0 +1,67 @@
+@startuml
+!include style.puml
+skinparam classAttributeIconSize 0
+show members
+
+class FindCommand #73b3ef {
+    + {static} COMMAND_WORD: String
+    - predicate: Predicate<Person>
+    + execute(model: Model): CommandResult
+}
+
+interface "Predicate<Person>" as Predicate #dad467{
+    + test(person: Person): boolean
+}
+
+
+class CombinedPredicate #f67474 {
+    - predicates: List<Predicate<Person>>
+    + test(person: Person): boolean
+}
+
+class NameContainsKeywordsPredicate #f67474 {
+    - keywords: List<String>
+    + test(person: Person): boolean
+}
+
+class TagContainsKeywordsPredicate #f67474 {
+    - tagGroups: List<Set<Tag>>
+    + test(person: Person): boolean
+}
+
+class CertContainsKeywordsPredicate #f67474 {
+    - certKeywords: ArrayList<Certificate>
+    + test(person: Person): boolean
+}
+
+class CertContainsDatePredicate #f67474 {
+    - expiry: CertExpiry
+    + test(person: Person): boolean
+}
+
+class Person #f67474 {
+    - name: Name
+    - phone: Phone
+    - email: Email
+    - address: Address
+    - tags: Set<Tag>
+    - salary: Salary
+    - certs: ArrayList<Certificate>
+    + getName(): Name
+    + getTags(): Set<Tag>
+    + getCertificates(): ArrayList<Certificate>
+}
+
+' Relationships
+FindCommand -right-> "1" Predicate
+CombinedPredicate .up.|> Predicate
+NameContainsKeywordsPredicate .up.|> Predicate
+TagContainsKeywordsPredicate .up.|> Predicate
+CertContainsKeywordsPredicate .up.|> Predicate
+CertContainsDatePredicate .up.|> Predicate
+
+CombinedPredicate o--> "*" Predicate : composite
+
+' Dependency on Person
+Predicate .down.> Person : tests >
+@enduml
