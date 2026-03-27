@@ -71,7 +71,7 @@ Big Brother is a desktop app for Human Resources to manage employee contacts, op
 
 * If you perform any commands that modify the contact list or contact details, all the scroll bars will automatically jump back to the top.
 
-* Mouseless-support in planned to be implemented in a future update.
+* Mouseless-support is planned to be implemented in a future update.
 
 ### Viewing in-app help : `help`
 Format: `help`
