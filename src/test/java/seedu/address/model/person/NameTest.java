@@ -28,9 +28,10 @@ public class NameTest {
         assertFalse(Name.isValidName("")); // empty String
         assertFalse(Name.isValidName(" ")); // spaces only
         assertFalse(Name.isValidName("^")); // not alphabetical or valid forward slash string
+        assertFalse(Name.isValidName("     /  ")); // only forward slash and extra spaces
         assertFalse(Name.isValidName("123")); // not alphabetical or valid forward slash string
         assertFalse(Name.isValidName("peter*")); // contains non-alphanumeric characters
-        assertFalse(Name.isValidName("/")); //only contains '/' which is invalid
+        assertFalse(Name.isValidName("/")); //only contains forward slash
         assertFalse(Name.isValidName("john s/o diva")); //non-capital letters before and after '/' char
 
         // valid name

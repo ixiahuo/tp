@@ -89,6 +89,13 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseName_slashWithExtraWhitespace_returnsNormalizedName() throws Exception {
+        String nameWithMessySlash = "  John    S    /    O   ";
+        Name expectedName = new Name("John S/O");
+        assertEquals(expectedName, ParserUtil.parseName(nameWithMessySlash));
+    }
+
+    @Test
     public void parsePhone_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> ParserUtil.parsePhone((String) null));
     }
