@@ -250,7 +250,7 @@ Format: `clear`
 Format: `undo`
 
 * Limited to undoing exactly one command to restore the contact list to the immediate previous state.
-* Will do nothing if there is no previous state (e.g. restarting the app, consecutive attempts to undo).
+* Will do nothing if there is no change in previous state (e.g. just restarted the app, consecutive attempts to undo, calling the `list` or `find` commands).
 
 ### Exiting the program : `exit`
 Format: `exit`
