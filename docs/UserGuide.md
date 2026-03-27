@@ -6,7 +6,7 @@
 
 # Big Brother User Guide
 
-Big Brother is a desktop app for managing employee contacts, optimized for use via typing in a Command Line Interface (CLI) while displaying the contacts efficiently via a Graphical User Interface (GUI).
+Big Brother is a desktop app for Human Resources to manage employee contacts, optimized for use via typing in a Command Line Interface (CLI) command box, while displaying the contacts efficiently via a Graphical User Interface (GUI).
 
 <!-- * Table of Contents -->
 <page-nav-print />
