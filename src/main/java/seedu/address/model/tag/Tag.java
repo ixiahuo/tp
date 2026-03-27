@@ -20,7 +20,7 @@ public class Tag {
 
     // Note: If the below rules are too lax, revert back to "\\p{Alnum}+"
     // i.e. Only alphanumeric characters instead
-    public static final String VALIDATION_REGEX = "[\\-\\p{Alnum}!@#$?/|<>_*&:;=]+";
+    public static final String VALIDATION_REGEX = "[\\-\\p{Alnum}!@#$?|<>_*&:;=]+";
     public static final Integer MAX_LENGTH = 30;
     public final String tagName;
     public final TagColour tagColour;

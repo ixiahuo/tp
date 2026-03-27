@@ -1,0 +1,25 @@
+@startuml
+!include style.puml
+show members
+skinparam classAttributeIconSize 0
+
+Class Certificate #8b4bc7 {
+    - certName: CertName
+    - certExpiry: CertExpiry
+}
+
+Class CertName #9abbf8 {
+    - certificateName: String
+    + isValidCertName(String): boolean
+}
+
+Class CertExpiry #9abbf8 {
+    - expiryDate: LocalDate
+    + isValidCertExpiry(String): boolean
+    + isBefore(CertExpiry): boolean
+}
+
+Certificate *--> "1" CertName
+Certificate *--> "1" CertExpiry
+
+@enduml
