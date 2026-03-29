@@ -85,7 +85,7 @@ Big Brother is a desktop app for managing employee contacts, optimized for use v
 
 * Mouseless-support in planned to be implemented in a future update.
 
-### Viewing in-app help : `help`
+### Viewing in-app help menu : `help`
 Format: `help`
 
 ![help message](images/helpMessage.png)
@@ -288,6 +288,13 @@ Format: `clear`
 
 ### Exiting the program : `exit`
 Format: `exit`
+
+<br>
+
+### Accessing the offline help menu : `help`
+Format: `help`
+
+> Tip: If you cannot access the user guide, you can use the `help` command to know what commands are available. Commands marked with `*` have detailed usage explanations, which you can view by running the command itself with no other inputs (e.g. just `cert-add`)
 
 <br>
 
