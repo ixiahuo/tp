@@ -110,8 +110,9 @@ public class TagCommand extends Command {
         ArrayList<Certificate> existingCerts = personToEdit.getCertificates();
 
         Set<Tag> updatedTags = new TreeSet<>(new TagNameComparator());
-        updatedTags.addAll(tagsToAdd);
         updatedTags.addAll(personToEdit.getTags());
+        updatedTags.removeAll(tagsToAdd);
+        updatedTags.addAll(tagsToAdd);
         updatedTags.removeAll(tagsToDelete);
 
         return new Person(name, phone, email, address, updatedTags, updatedSalary, existingCerts);

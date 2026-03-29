@@ -1,6 +1,6 @@
 package seedu.address.logic.parser;
 
-import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.Messages.*;
 import static seedu.address.logic.commands.CommandTestUtil.MULTI_TAG_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.MULTI_TAG_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
@@ -38,7 +38,7 @@ public class TagCommandParserTest {
                 + TagCommand.MESSAGE_USAGE);
 
         // no field specified
-        assertParseFailure(parser, "1", String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, "1", String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_AT_LEAST_ONE_FIELD + "a/ d/"));
 
         // no index and no field specified
         assertParseFailure(parser, "", ParserUtil.MESSAGE_INVALID_INDEX + "\n\n"
@@ -72,12 +72,8 @@ public class TagCommandParserTest {
     }
 
     @Test
-    public void parse_allFieldsPresent_success() {
-        assertParseSuccess(parser, "1 a/TEST1 d/TEST2 c/red",
-                new TagCommand(INDEX_FIRST_PERSON,
-                        Set.of(new Tag("TEST1", TagColour.RED)),
-                        Set.of(new Tag("TEST2", TagColour.RED))
-                ));
+    public void parse_allFieldsPresent_failure() {
+        assertParseFailure(parser, "1 a/TEST1 d/TEST2 c/red", MESSAGE_INVALID_FIELD_COMBI + "a/ d/");
     }
 
     @Test
@@ -104,9 +100,9 @@ public class TagCommandParserTest {
 
     @Test
     public void parse_invalidColourFieldsPresent_failure() {
-        assertParseFailure(parser, "1 d/TEST1 c/GREEN", MESSAGE_USELESS_COLOUR);
+        assertParseFailure(parser, "1 d/TEST1 c/GREEN", MESSAGE_INVALID_FIELD_COMBI + "c/ d/");
 
-        assertParseFailure(parser, "1 c/RED", MESSAGE_USELESS_COLOUR);
+        assertParseFailure(parser, "1 c/RED", MESSAGE_AT_LEAST_ONE_FIELD + "a/ d/");
 
         assertParseFailure(parser, "1 a/BOB c/WHITE", TagColour.MESSAGE_INVALID_COLOUR);
     }
