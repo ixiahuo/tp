@@ -251,8 +251,13 @@ Format: `clear`
 ### Restoring the contact list : `undo`
 Format: `undo`
 
-* Limited to undoing exactly one command to restore the contact list to the immediate previous state.
+<box type="warning" seamless>
+
+**CAUTION:**
+
+* Limited to undoing **exactly one command** to restore the contact list to the immediate previous state.
 * Will do nothing if there is no change in previous state (e.g. just restarted the app; consecutive attempts to undo; after calling the `list`, `find` or `sort` commands).
+</box>
 
 ### Exiting the program : `exit`
 Format: `exit`
@@ -265,7 +270,7 @@ Big Brother data is saved automatically as a JSON file `[JAR file location]/data
 
 <box type="warning" seamless>
 
-**Caution:**
+**CAUTION:**
 
 If your changes to the data file makes its format invalid, Big Brother will discard all data and start with an empty data file at the next run.  Hence, it is **recommended to make a manual backup of the file before editing it**. Support for the prevention of data loss in the event of corrupted or wrongly-formatted data is planned to be added in a future update.
 
