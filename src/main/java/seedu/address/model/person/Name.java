@@ -10,8 +10,8 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class Name implements Comparable<Name> {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Names should contain only letters, spaces and forward slashes.\n"
-            + "Letters immediately closest to a forward slash must be uppercase. (eg S/O)";
+            "Name cannot be empty. It should contain only letters, spaces and forward slashes.\n"
+            + "Letters immediately closest to a forward slash must be uppercase. (e.g. S/O)";
 
     /*
      * (1) Only alphabetical characters, single spaces, and forward slashes.
