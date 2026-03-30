@@ -35,8 +35,9 @@ Big Brother is a desktop app for Human Resources to manage employee contacts, op
    ![Ui](images/Ui.png)
 
 1. Type a command in the command box (the red-brown rectangle at the top) and press Enter to execute it.<br>
-   Refer to the [Features](#features) below for details of each command.<br>
-   Refer to the [Summary](#command-summary) below for a summary of all available commands.
+* Refer to the [Features](#features) below for details of each command.<br>
+* Refer to the [Input Validation, Duplicate Handling and Utilities](#input-validation-duplicate-handling-and-utilities) below to determine valid inputs, duplication rules and app utilities to help with usage.<br>
+* Refer to the [Summary](#command-summary) below for a summary of all available commands.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -117,54 +118,6 @@ Expected result (starting with the existing sample data):
 
 <box type="info" seamless>
 
-**Validation & Duplicate-handling Rules**
-> **NAME**<br>
-> (1) **Cannot be empty**<br>
-> (2) Only letter, spaces, forward slash<br>
-> (3) Letters immediately beside forward slash must be uppercase (e.g. 'S/O')<br>
-> > **Utility**:<br> Leading, trailing and internal whitespaces for `/` will be trimmed (e.g. `  S   /  O` will be trimmed to `S/O`). Internal whitespaces between words will be trimmed to 1.<br><br>
-> > **Duplicate-handling**: case-*insensitive* comparison<br>
-
-> [**PHONE**]<br>
-> (1) Can be empty<br>
-> (2) `+` then immediately followed by COUNTRY_CODE(1 to 3 digits) followed by space followed by PHONE(3 to 15 digits)<br>
-> > **Utility**:<br> Leading and trailing whitespaces will be trimmed. Internal whitespaces between `+` and COUNTRY_CODE will be trimmed. Internal whitespaces in PHONE will be trimmed to 1.<br><br>
-> > **Duplicate-handling**: digits and spaces match exactly<br>
-
-> [**EMAIL**]<br>
-> (1) Can be empty<br>
-> (2) Emails should be of the format 'local-part@domain', where 'local-part' should:<br>
-> * contain only alphanumeric characters and `+_.-`<br>
-> * not start or end with `+_.-`<br>
-> * not contain consecutive `+_.-`<br>
-> (3) and 'domain' is made of domain labels where each should:<br>
-> * be separated by `.`
-> * contain only alphanumeric characters and hyphens
-> * not contain consecutive hyphens
-> * start and end only with alphanumeric characters
-> * be at least 2 characters long for the last domain label<br>
-> > **Utility**: Leading, trailing and internal whitespaces will be trimmed.<br><br>
-> > **Duplicate-handling**: case-*sensitive* comparison<br>
-
-> [**ADDRESS**]<br>
-> (1) Can be empty<br>
-> (2) Only alphanumeric characters and `#,-`<br>
-> (3) At most 100 characters long<br>
-> > **Utility**:<br> Leading and trailing whitespaces will be trimmed. Internal whitespaces will be trimmed to 1.<br><br>
-> > **Duplicate-handling**: case-*insensitive* comparison<br>
-
-> [**SALARY**]<br>
-> (1) Can be empty<br>
-> (2) Only digits<br>
-> > **Utility**:<br> Leading, trailing and internal whitespaces will be trimmed.<br><br>
-> > **Duplicate-handling**: digits match exactly<br>
-
-> **PERSON duplicate handling**<br>
-> (1) EMAIL and PHONE are empty: duplicates if NAMEs are the same<br>
-> (2) Else, 2 persons are duplicates if their NAME & PHONE & EMAIL are the same<br>
-</box>
-
-
 Examples:
 * `add n/John Doe p/+65 98765432 e/johnd@example.com a/John street, block 123, #01-01 s/`
 * `add n/Betsy Crowe s/ e/betsycrowe@example.com a/Newgate Prison p/+81 1234567`
@@ -238,14 +191,6 @@ Examples:
 2. `tag 1 d/Best_Employee` deletes a tag `Best_Employee`.
 3. `tag 1 a/HR Best_Employee` adds two tags `HR` and `Best_Employee` with the default colouration.
 
-**Validation & Duplicate-handling Rules**
-
-> **TAG**<br>
-> (1) Only alphanumeric characters and `!@#$?|<>_*&:;=`<br>
-> (2) At most 30 characters long<br>
-> > **Utility**: leading and trailing whitespaces will be trimmed.<br><br>
-> > **Duplicate-handling**: case-sensitive match
-
 <br>
 
 ### Adding certificates : `cert-add`
@@ -261,22 +206,6 @@ Example: `cert-add 1 n/OSCP e/2028-03-05`
 <box type="info" seamless>
 
 </box>
-
-**Validation & Duplicate-handling Rules**
-
-> **CERT_NAME**<br>
-> (1) Only alphanumeric characters and spaces<br>
-> > **Utility**: leading and trailing whitespaces will be trimmed. Internal whitespaces will be trimmed to 1.<br><br>
-> > **Duplicate-handling**: case-sensitive match
-
-> **CERT_EXPIRY_DATE**<br>
-> (1) Must follow format `YYYY-MM-DD`<br>
-> (2) Must be a valid date.<br>
-> > **Utility**: leading and trailing whitespaces will be trimmed.<br><br>
-> > **Duplicate-handling**: same YYYY-MM-DD
-
-> **CERTIFICATE duplicate handling**<br>
-> Multiple instances of CERTIFICATE with the same CERT_NAME will be considered duplicates, even if their CERT_EXPIRY_DATE are different.
 
 <br>
 
@@ -342,6 +271,26 @@ Format: `help`
 > Tip: If you cannot access the user guide, you can use the `help` command to know what commands are available. Commands marked with `*` have detailed usage explanations, which you can view by running the command itself with no other inputs (e.g. just `cert-add`)
 
 </box>
+
+<br>
+
+## Input Validation, Duplicate Handling and Utilities
+| Parameter                | Input Validation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | Duplicate Handling                                                                                                                              | Whitespace Trimming Utility                                                                                                                                                                                                                                |
+|--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| NAME                     | 1. Cannot be empty<br>2. Only letter, whitespaces and forward slash<br/>3. Letters immediately beside forward slash must be uppercase (e.g. `S/O`)                                                                                                                                                                                                                                                                                                                                                                                                            | case-*insensitive* comparison                                                                                                                   | 1. Leading, trailing and internal whitespaces for `/` will be trimmed (e.g.   `S   /  O` will be trimmed to `S/O`). <br/> 2.Internal whitespaces between words will be trimmed to 1.                                                                       |
+| PHONE                    | 1. Can be empty<br>2.  `+` then immediately followed by COUNTRY_CODE(1 to 3 digits) followed by space followed by PHONE(3 to 15 digits)<br/>                                                                                                                                                                                                                                                                                                                                                                                                                  | digits and whitespaces match exactly                                                                                                            | 1. Leading and trailing whitespaces will be trimmed.<br/>2. Internal whitespaces between `+` and COUNTRY_CODE will be trimmed. <br/>3. Internal whitespaces in PHONE will be trimmed to 1.<br/>(e.g. ` +  33 22 34 55 ` will be trimmed to `+33 22 34 55`) |
+| EMAIL                    | 1. Can be empty<br>2.  Emails should be of the format `local-part@domain`, where `local-part` should:<br/>a .contain only alphanumeric characters and `+_.-`<br/>b. not start or end with `+_.-`<br/> c. not contain consecutive `+_.-`<br/>3. and `domain` is made of domain labels where each should:<br>a. be separated by `.`<br/>b. contain only alphanumeric characters and hyphens<br/>c. not contain consecutive hyphens<br/>d. start and end only with alphanumeric characters<br/>e. be at least 2 characters long for the last domain label<br/>   | case-*insensitive* comparison                                                                                                                   | Leading, trailing and internal whitespaces will be trimmed.                                                                                                                                                                                                |
+| ADDRESS                  | 1. Can be empty<br/>2.  Only alphanumeric characters, whitespaces and `#,-<`<br/> 3. At most 100 characters long                                                                                                                                                                                                                                                                                                                                                                                                                                              | case-*insensitive* comparison                                                                                                                   | 1. Leading and trailing whitespaces will be trimmed.<br/> 2. Internal whitespaces will be trimmed to 1.                                                                                                                                                    |
+| SALARY                   | 1. Can be empty<br/>2.  Only digits                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | digits match exactly                                                                                                                            | Leading, trailing and internal whitespaces will be trimmed.                                                                                                                                                                                                |
+| TAG                      | 1. Only alphanumeric characters and `!@#$?\|<>_*&:;=`<br/>2. At most 30 characters long                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | case-*sensitive* match                                                                                                                          | Leading and trailing whitespaces will be trimmed.                                                                                                                                                                                                          |
+| CERT_NAME                | 1. Only alphanumeric characters and whitespaces<br/>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | case-*sensitive* match                                                                                                                          | 1. Leading and trailing whitespaces will be trimmed.<br/> 2. Internal whitespaces will be trimmed to 1.                                                                                                                                                    |
+| CERT_EXPIRY_DATE         | 1. Must follow format `YYYY-MM-DD`<br/>2. Must be a valid date.<br/>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | same `YYYY-MM-DD`                                                                                                                               | Leading and trailing whitespaces will be trimmed.                                                                                                                                                                                                          |
+
+> **CAUTION**: When are 2 **persons** considered duplicates?<br>
+> Possible right after executing [add](#adding-a-new-contact--add) or [edit](#editing-an-existing-contact--edit) commands<br>
+> (1) `EMAIL` and `PHONE` are empty: duplicates if `NAME` are the same<br>
+> (2) Else, 2 persons are duplicates if their `NAME` & `PHONE` & `EMAIL` are the same<br><br>
+> **Good news**: there will be a warning pop-up message if duplicate persons are detected after executing a command. It is then up to you to delete duplicates.
 
 <br>
 
