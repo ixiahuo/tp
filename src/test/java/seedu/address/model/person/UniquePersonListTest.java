@@ -77,6 +77,21 @@ public class UniquePersonListTest {
     }
 
     @Test
+    public void setPerson_modifyOnlyNonIdentityFields_success() {
+        uniquePersonList.add(ALICE);
+        Person editedAlice = new PersonBuilder(ALICE).withAddress("New Address").build();
+        uniquePersonList.setPerson(ALICE, editedAlice);
+        assertEquals(editedAlice, uniquePersonList.asUnmodifiableObservableList().get(0));
+    }
+
+    @Test
+    public void setPersons_withDuplicatePersons_success() {
+        List<Person> duplicateList = Arrays.asList(ALICE, ALICE);
+        uniquePersonList.setPersons(duplicateList);
+        assertEquals(2, uniquePersonList.asUnmodifiableObservableList().size());
+    }
+
+    @Test
     public void setPerson_editedPersonIsSamePerson_success() {
         uniquePersonList.add(ALICE);
         uniquePersonList.setPerson(ALICE, ALICE);
