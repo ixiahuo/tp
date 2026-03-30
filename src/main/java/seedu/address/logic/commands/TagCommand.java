@@ -82,12 +82,12 @@ public class TagCommand extends Command {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
-        model.commitAddressBook();
         Person personToEdit = lastShownList.get(targetIndex.getZeroBased());
         Person editedPerson = modifyTagsForPerson(personToEdit, tagsToAdd, tagsToDelete);
         if (personToEdit.getTags().equals(editedPerson.getTags())) {
             throw new CommandException(MESSAGE_NOT_EDITED);
         }
+        model.commitAddressBook();
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
