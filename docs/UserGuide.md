@@ -68,6 +68,12 @@ Big Brother is a desktop app for managing employee contacts, optimized for use v
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE`, `p/PHONE n/NAME` is also acceptable.
 
+* Each prefix must not contain whitespaces between prefix symbol and `/`.<br>
+  e.g. `p/` is accepted, whereas `p /` is unaccepted.
+
+* Multiple prefixes must be separated by whitespaces.<br>
+  e.g. `p/ n/` is accepted, whereas `p/n/` is unaccepted.
+
 * Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
   e.g. if you input `help 123`, it will interpreted as just `help`.
 
@@ -100,7 +106,7 @@ Format: `help`
 ![add usage message](images/addUsageMessage.png)
 
 ### Adding a new contact : `add`
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/SALARY`
+Format: `add n/NAME [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [s/SALARY]`
 
 <box type="info" seamless>
 
@@ -109,12 +115,16 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/SALARY`
 > (1) **Cannot be empty**<br>
 > (2) Only letter, spaces, forward slash<br>
 > (3) Letters immediately beside forward slash must be uppercase<br>
-> Duplicate-handling: case-insensitive comparison<br>
+> 
+> > **Utility**: leading and trailing whitespaces will be trimmed, and internal whitespaces will be trimmed to 1<br><br>
+> **Duplicate-handling**: case-insensitive comparison<br>
 
 > [**PHONE_NUMBER**]<br>
 > (1) Can be empty<br>
-> (2) `+` followed by COUNTRY_CODE followed by space followed by 3 to 15 digits phone number<br>
-> Duplicate-handling: all digits match exactly<br>
+> (2) `+` followed by COUNTRY_CODE(1 to 3 digits) followed by space followed by PHONE_NUMBER(3 to 15 digits excluding spaces)<br>
+> 
+> > **Utility**: leading and trailing whitespaces will be trimmed. Whitespace between `+` and COUNTRY_CODE will be trimmed. Internal whitespaces for PHONE_NUMBER will be trimmed to 1<br><br>
+> **Duplicate-handling**: all digits and spaces match exactly<br>
 
 > [**EMAIL**]<br>
 > (1) Can be empty<br>
@@ -126,18 +136,21 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/SALARY`
 > * contain only alphanumeric characters and hyphens
 > * start and end only with alphanumeric characters
 > * be at least 2 characters long for the last domain label<br>
-> Duplicate-handling: exact match<br>
+> > **Utility**: leading, trailing and internal whitespaces will be trimmed<br><br>
+> **Duplicate-handling**: case-sensitive comparison<br>
 
 > [**ADDRESS**]<br>
 > (1) Can be empty<br>
 > (2) Only alphanumeric characters and `#,-`<br>
 > (3) At most 100 characters long<br>
-> Duplicate-handling: exact match<br>
+> > **Utility**: leading and trailing whitespaces will be trimmed. Internal whitespaces will be trimmed to 1<br><br>
+> **Duplicate-handling**: case-insensitive comparison<br>
 
 > [**SALARY**]<br>
 > (1) Can be empty<br>
 > (2) Only digits<br>
-> Duplicate-handling: exact match<br>
+> > **Utility**: leading and trailing whitespaces will be trimmed. Internal whitespaces will be trimmed<br><br>
+> **Duplicate-handling**: values are equal<br>
 
 > [**PERSON duplicate handling**]<br>
 > (1) EMAIL and PHONE_NUMBER are empty: duplicates if NAMEs are the same<br>
@@ -316,7 +329,7 @@ Furthermore, certain edits can cause the Big Brother to behave in unexpected way
 ## Command summary
 |Format|
 |------|
-`add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/SALARY`
+`add n/NAME [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [s/SALARY]`
 `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/SALARY]`
 `delete INDEX`
 `clear`

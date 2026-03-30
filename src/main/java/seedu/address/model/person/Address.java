@@ -12,7 +12,9 @@ public class Address {
     public static final String MESSAGE_CONSTRAINTS =
            "Addresses should consist of only alphanumeric characters,\n"
             + "and these three special characters # , -\n"
-            + "and should be at most 100 characters long.";
+            + "and should be at most 100 characters long.\n\n"
+            + "Utility:\nleading and trailing whitespaces will be trimmed."
+            + "Internal whitespaces will be trimmed to 1.";
 
     /**
      * (1) Must not exceed 100 characters.
@@ -61,7 +63,7 @@ public class Address {
         }
 
         Address otherAddress = (Address) other;
-        return value.equals(otherAddress.value);
+        return value.equalsIgnoreCase(otherAddress.value);
     }
 
     @Override

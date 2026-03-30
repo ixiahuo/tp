@@ -62,18 +62,24 @@ public class ParserUtil {
 
     /**
      * Parses a {@code String phone} into a {@code Phone}.
-     * Leading and trailing whitespaces will be trimmed.
-     * Extra internal whitespaces will be reduced to one.
+     * Leading, trailing, and redundant internal whitespaces will be trimmed to single spaces.
      *
      * @throws ParseException if the given {@code phone} is invalid.
      */
     public static Phone parsePhone(String phone) throws ParseException {
         requireNonNull(phone);
-        String trimmedPhone = normaliseWhiteSpace(phone);
-        if (!Phone.isValidPhone(trimmedPhone)) {
+        // 1. Trim edges and collapse all internal whitespace to single spaces
+        // "+  65   123    45" --> "+ 65 123 45"
+        String basicClean = phone.trim().replaceAll("\\s+", " ");
+
+        // 2. Remove the space between '+' and the country code digits
+        // "+ 65 123 45" --> "+65 123 45"
+        String formattedPhone = basicClean.replaceAll("^\\+\\s+(?=\\d)", "+");
+
+        if (!Phone.isValidPhone(formattedPhone)) {
             throw new ParseException(Phone.MESSAGE_CONSTRAINTS);
         }
-        return new Phone(trimmedPhone);
+        return new Phone(formattedPhone);
     }
 
     /**
@@ -94,14 +100,14 @@ public class ParserUtil {
 
     /**
      * Parses a {@code String email} into an {@code Email}.
-     * Leading and trailing whitespaces will be trimmed.
-     * Extra internal whitespaces will be reduced to one.
+     * Leading, trailing, and ALL internal whitespaces will be removed.
+     * e.g., " ha + 213 @ gmail . com " -> "ha+213@gmail.com"
      *
      * @throws ParseException if the given {@code email} is invalid.
      */
     public static Email parseEmail(String email) throws ParseException {
         requireNonNull(email);
-        String trimmedEmail = normaliseWhiteSpace(email);
+        String trimmedEmail = email.replaceAll("\\s+", "");
         if (!Email.isValidEmail(trimmedEmail)) {
             throw new ParseException(Email.MESSAGE_CONSTRAINTS);
         }
@@ -110,14 +116,14 @@ public class ParserUtil {
 
     /**
      * Parses a {@code String salary} into an {@code Salary}.
-     * Leading and trailing whitespaces will be trimmed.
-     * Extra internal whitespaces will be reduced to one.
+     * Leading, trailing, and ALL internal whitespaces will be removed.
+     * e.g., " 5 000 " -> "5000"
      *
      * @throws ParseException if the given {@code salary} is invalid.
      */
     public static Salary parseSalary(String salary) throws ParseException {
         requireNonNull(salary);
-        String trimmedSalary = normaliseWhiteSpace(salary);
+        String trimmedSalary = salary.replaceAll("\\s+", "");
         if (!Salary.isValidSalary(trimmedSalary)) {
             throw new ParseException(Salary.MESSAGE_CONSTRAINTS);
         }
@@ -217,6 +223,10 @@ public class ParserUtil {
         }
         //standardize internal whitespace to single spaces
         String basicNormalized = s.trim().replaceAll("\\s+", " ");
+
+        //remove space between '+' and the COUNTRY_CODE
+        //"+ 65 123 33" -> "+65 123 33"
+        String countryCodeFixed = basicNormalized.replaceAll("^\\+\\s+(?=\\d)", "+");
 
         //remove spaces around forward slashes (eg "S / O" -> "S/O")
         return basicNormalized.replaceAll("\\s*/\\s*", "/");
