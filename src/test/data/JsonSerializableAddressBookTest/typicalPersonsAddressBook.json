@@ -5,14 +5,26 @@
     "phone" : "+65 94351253",
     "email" : "alice@example.com",
     "address" : "123, Jurong West Ave 6, #08-111",
-    "tags" : [ "friends" ]
+    "tags" : [ {
+      "name" : "friends",
+      "colour" : "default"
+    } ],
+    "salary" : "",
+    "certs" : [ ]
   }, {
     "name" : "Benson Meier",
     "phone" : "+65 98765432",
     "email" : "johnd@example.com",
     "address" : "311, Clementi Ave 2, #02-25",
-    "tags" : [ "owesMoney", "friends" ],
-    "certificates" : [
+    "tags" : [ {
+      "name" : "owesMoney",
+      "colour" : "default"
+    }, {
+      "name" : "friends",
+      "colour" : "default"
+    } ],
+    "salary" : "",
+    "certs" : [
       {"name" : "Accounting", "expiry" : "2020-12-12"},
       {"name" : "Social Media", "expiry" : "2022-02-02"}
     ]
@@ -21,30 +33,43 @@
     "phone" : "+65 95352563",
     "email" : "heinz@example.com",
     "address" : "wall street",
-    "tags" : [ ]
+    "tags" : [ ],
+    "salary" : "",
+    "certs" : [ ]
   }, {
     "name" : "Daniel Meier",
     "phone" : "+65 87652533",
     "email" : "cornelia@example.com",
     "address" : "10th street",
-    "tags" : [ "friends" ]
+    "tags" : [ {
+      "name" : "friends",
+      "colour" : "default"
+    } ],
+    "salary" : "",
+    "certs" : [ ]
   }, {
     "name" : "Elle Meyer",
     "phone" : "+65 9482224",
     "email" : "werner@example.com",
     "address" : "michegan ave",
-    "tags" : [ ]
+    "tags" : [ ],
+    "salary" : "",
+    "certs" : [ ]
   }, {
     "name" : "Fiona Kunz",
     "phone" : "+65 9482427",
     "email" : "lydia@example.com",
     "address" : "little tokyo",
-    "tags" : [ ]
+    "tags" : [ ],
+    "salary" : "",
+    "certs" : [ ]
   }, {
     "name" : "George Best",
     "phone" : "+65 9482442",
     "email" : "anna@example.com",
     "address" : "4th street",
-    "tags" : [ ]
+    "tags" : [ ],
+    "salary" : "",
+    "certs" : [ ]
   } ]
 }

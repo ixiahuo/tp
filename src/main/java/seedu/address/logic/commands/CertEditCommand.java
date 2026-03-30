@@ -70,6 +70,8 @@ public class CertEditCommand extends Command {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
+        model.commitAddressBook();
+
         Person personToEdit = lastShownList.get(index.getZeroBased());
 
         if (!personToEdit.hasCert(toEdit)) {

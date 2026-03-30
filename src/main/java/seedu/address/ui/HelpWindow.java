@@ -27,7 +27,7 @@ public class HelpWindow extends UiPart<Stage> {
             + " * 'sort' : sorts the contact list based on given criteria\n"
             + " * 'find' : finds existing contacts based on given criteria\n"
             + "    'list' : lists all existing contacts\n"
-            + "    'exit' : exits the applications\n"
+            + "    'exit' : exits the application\n"
             + "    'help': shows this help menu\n\n"
             + "TIP: commands marked with * have detailed usage explanations.\n"
             + "Run such commands with no extra input to see their usage explanations (e.g. 'cert-add')";

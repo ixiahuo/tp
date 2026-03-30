@@ -18,6 +18,7 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Salary;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.TagColour;
 import seedu.address.model.tag.TagNameComparator;
@@ -217,5 +218,19 @@ public class ParserUtilTest {
 
         // Negative salary
         assertThrows(ParseException.class, () -> ParserUtil.parseSalary("-100"));
+    }
+
+    @Test
+    public void parseSalary_leadingZeros_returnsNormalizedSalary() throws Exception {
+        String salaryWithLeadingZeros = "0000004000";
+        Salary expectedSalary = new Salary("4000");
+        assertEquals(expectedSalary, ParserUtil.parseSalary(salaryWithLeadingZeros));
+    }
+
+    @Test
+    public void parseSalary_onlyLeadingZeros_returnsNormalizedSalary() throws Exception {
+        String salaryWithLeadingZeros = "0000000000";
+        Salary expectedSalary = new Salary("0");
+        assertEquals(expectedSalary, ParserUtil.parseSalary(salaryWithLeadingZeros));
     }
 }

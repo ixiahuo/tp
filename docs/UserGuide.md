@@ -6,7 +6,7 @@
 
 # Big Brother User Guide
 
-Big Brother is a desktop app for managing employee contacts, optimized for use via a Command Line Interface (CLI) while displaying the contacts efficiently via a Graphical User Interface (GUI).
+Big Brother is a desktop app for Human Resources to manage employee contacts, optimized for use via typing in a Command Line Interface (CLI) command box, while displaying the contacts efficiently via a Graphical User Interface (GUI).
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -24,32 +24,19 @@ Big Brother is a desktop app for managing employee contacts, optimized for use v
 1. Copy the file to the folder you want to use as the _home folder_ for Big Brother.
 
 1. Open a command terminal (you can search for it in the start menu) and change the working folder to the one you put the app in. All operating systems support this with the `cd` command:<br>
-   **Windows** `cd C:\Users\john\big_brother_home_folder`<br>
-   **Linux** `cd /home/john/big_brother_home_folder`<br>
-   **Mac** `cd /Users/john/big_brother_home_folder`<br>
+   **Windows** `cd C:\Users\your_username\big_brother_home_folder`<br>
+   **Linux** `cd /home/your_username/big_brother_home_folder`<br>
+   **Mac** `cd /Users/your_username/big_brother_home_folder`<br>
 
 1. Run the `java -jar bigbrother.jar` command to start the app.<br>
    Note the app name may be slightly different due to versions.<br>
-   A GUI similar to the below should appear in a few seconds.<br><br>
+   A GUI similar to the below should appear in a few seconds.<br>
+
    ![Ui](images/Ui.png)
 
-1. Type a command in the command box (the red-brown box at the top) and press Enter to execute it.
-   Some example commands you can try:
-
-   * `help` : Pops up an in-app help menu of available commands.
-
-   * `list` : Lists all contacts.
-
-   * `add n/John Doe p/+65 98765432 e/johnd@example.com a/Abc Rd, Blk 123, #01-01 s/3000` :<br>
-     Adds a new contact 'John Doe' with the given details (elaborated in the explanation for `add` [below](#adding-a-new-contact-add))
-
-   * `delete 3` : Deletes the 3rd contact shown in the currently displayed list.
-
-   * `clear` : Deletes all contacts. You can use this to clear the existing sample data.
-
-   * `exit` : Exits the app.
-
-1. Refer to the [Features](#features) below for details of each command.
+1. Type a command in the command box (the red-brown rectangle at the top) and press Enter to execute it.<br>
+   Refer to the [Features](#features) below for details of each command.<br>
+   Refer to the [Summary](#command-summary) below for a summary of all available commands.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -62,8 +49,11 @@ Big Brother is a desktop app for managing employee contacts, optimized for use v
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
   e.g. for `n/NAME`, `NAME` is the parameter.
 
-* Items in square brackets are optional. More explanations will be provided where they appear.<br>
-  e.g `tag INDEX [a/TAG_NAME] [d/TAG_NAME]`.
+* Arguments not in square brackets are compulsory.<br>
+  e.g. `n/NAME`, `INDEX`
+
+* Arguments in square brackets are optional. More explanations will be provided where they appear.<br>
+  e.g. `[a/TAGS_TO_ADD]`, `[d/TAGS_TO_DELETE]`
 
 * `INDEX` **must be a positive integer** 1, 2, 3, ...
 
@@ -76,14 +66,14 @@ Big Brother is a desktop app for managing employee contacts, optimized for use v
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </box>
 
-### Navigating the GUI:
+### Navigating the GUI
 * The GUI is structured such that the main contacts list is a big scrollable section, and the contact entries are smaller scollable sections.
 
 * You can hover your mouse cursor over the desired scroll bar, then scroll each section independently.
 
 * If you perform any commands that modify the contact list or contact details, all the scroll bars will automatically jump back to the top.
 
-* Mouseless-support in planned to be implemented in a future update.
+* Mouseless-support is planned to be implemented in a future update.
 
 ### Viewing in-app help menu : `help`
 Format: `help`
@@ -96,29 +86,42 @@ Format: `help`
 
 > You can automatically close the popups with Enter on Windows and Linux, or Spacebar on Mac.<br>
 
-> If you need more help with a command marked by a `*`, enter it with no arguments.
+> If you need more help with a command marked by a `*`, enter it with no arguments into the command box.
+> Example: to get more help for `add`, enter `add` into the command box.
 </box>
 
-![add usage message](images/addUsageMessage.png)
-
 ### Adding a new contact : `add`
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/SALARY`
+Format: `add n/NAME [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/SALARY]`
+* all four of the optional fields may be omitted
+
+Example: `add n/John Doe p/+65 98765432 e/johnd@example.com a/Abc Rd, Blk 123, #01-01 s/3000`
+
+Expected result (starting with the existing sample data):
+
+![add success](images/addSuccess.png)
+
+<box type="tip" seamless>
+
+**Tip on navigation**
+
+> As the app automatically resets the scroll bar to the top after the command, you will need to scroll down to see the newly added entry.
+</box>
 
 <box type="info" seamless>
 
 **Validation & Duplicate-handling Rules**
-> [**NAME**]<br>
-> (1) **Cannot be empty**<br>
+> **NAME**<br>
+> (1) *Cannot be empty*<br>
 > (2) Only letter, spaces, forward slash<br>
-> (3) Letters immediately closest to forward slash must be uppercase<br>
-> Duplicate-handling: case-insensitive comparison<br>
+> (3) Letters immediately beside forward slash must be uppercase (e.g. 'S/O')<br>
+> Duplicate-handling: case-*insensitive* match<br>
 
-> [**PHONE_NUMBER**]<br>
+> **PHONE**<br>
 > (1) Can be empty<br>
 > (2) `+` then immediately followed by COUNTRY_CODE followed by space followed by 3 to 15 digits phone number<br>
 > Duplicate-handling: all digits match exactly<br>
 
-> [**EMAIL**]<br>
+> **EMAIL**<br>
 > (1) Can be empty<br>
 > (2) Emails should be of the format 'local-part@domain', where 'local-part' should:<br>
 > * contain only alphanumeric characters and `+_.-`<br>
@@ -130,31 +133,25 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/SALARY`
 > * not contain consecutive hyphens
 > * start and end only with alphanumeric characters
 > * be at least 2 characters long for the last domain label<br>
-> Duplicate-handling: exact match<br>
+> Duplicate-handling: case-sensitive match<br>
 
-> [**ADDRESS**]<br>
+> **ADDRESS**<br>
 > (1) Can be empty<br>
 > (2) Only alphanumeric characters and `#,-`<br>
 > (3) At most 100 characters long<br>
-> Duplicate-handling: exact match<br>
+> Duplicate-handling: case-sensitive match<br>
 
-> [**SALARY**]<br>
+> **SALARY**<br>
 > (1) Can be empty<br>
 > (2) Only digits<br>
 > (3) No spaces between digits<br>
-> Duplicate-handling: exact match<br>
+> Duplicate-handling: all digits match<br>
 
-> [**PERSON duplicate handling**]<br>
-> (1) EMAIL and PHONE_NUMBER are empty: duplicates if NAMEs are the same<br>
-> (2) Else, 2 persons are duplicates if their NAME & PHONE_NUMBER & EMAIL are the same<br>
+> **PERSON**<br>
+> Duplicate-handling:<br>
+> (1) If two people have empty EMAIL and PHONE, they are duplicates if their NAME are the same<br>
+> (2) Otherwise, they are duplicates if their PHONE, EMAIL and NAME are all the same<br>
 </box>
-
-
-Examples:
-* `add n/John Doe p/+65 98765432 e/johnd@example.com a/John street, block 123, #01-01 s/`
-* `add n/Betsy Crowe s/ e/betsycrowe@example.com a/Newgate Prison p/+81 1234567`
-
-<br>
 
 ### Editing an existing contact : `edit`
 Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/SALARY]`
@@ -164,11 +161,9 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/SALARY]`
 * Existing values will be updated to the input values.
 * Input values can be the same as existing values (e.g. if person with `INDEX` 2 already has `SALARY` of `3000`, user can still perform `edit 2 s/3000`)
 
-Examples:
-*  `edit 1 p/+017 91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `+017 91234567` and `johndoe@example.com` respectively.
-*  `edit 2 n/Betsy Crower` Edits the name of the 2nd person to be `Betsy Crower`.
+Example: `edit 1 p/+017 91234567 e/johndoe@example.com`
 
-<br>
+* Edits the phone to `+017 91234567` and the email to `johndoe@example.com` for the first person.
 
 ### Deleting an existing contact : `delete`
 Format: `delete INDEX`
@@ -184,53 +179,56 @@ Examples:
 ### Searching contacts by criteria: `find`
 
 Finds persons based on the given criteria.
+1. `list` followed by `delete 2` deletes the second person in the results of the `list` command.
+2. `find n/John` followed by `delete 1` deletes the first person in the results of the `find` command.
 
+### Searching contacts by criteria : `find`
 Format: `find [n/NAME] [t/TAG] [c/CERT_NAME] [e/CERT_EXPIRY_DATE]`
 
-* At least one of the optional fields must be provided to search with
-* The search is case-insensitive
-* Partial words will be matched
-* Multiple values of the same field can be used to expand the search (i.e. `OR` search),
-except for `CERT_EXPIRY`.
-* Multiple fields can be used to narrow down the search (i.e `AND` search)
+* **At least one of the optional fields must be provided.**
+* For `NAME`, `TAG` and `CERT_NAME`, the match is case-insensitive and can match part of the word.
+  * e.g. 'john' will match 'Johny'
+* For `CERT_EXPIRY_DATE`, the match is for certificates that expire **before** the provided date.
+* A field can be used more than once to expand the search (i.e. `OR` search), except for `CERT_EXPIRY` (see Ex 1).
+  * Use repeated fields, not spaces, for `OR` (i.e. `find t/HR t/IT` and not `find t/HR IT`)
+* Multiple fields can be used to narrow down the search (i.e `AND` search) (see Ex 3).
 
 Examples:
-* `find n/Alex Y n/David` returns all persons whose name contains `Alex Y` or `David`
-* `find c/OSCP` returns all persons with certificate names containing `OSCP`
-* `find n/Alex t/IT e/2027-03-15` returns all persons whose name contains `Alex`, with tags that contain `IT` and with certificates that expire **before** 15th March 2027.
-
-<br>
+1. `find n/Alex Y n/David` returns all persons whose name contains `Alex Y` or `David`.
+2. `find c/OSCP` returns all persons with certificate names containing `OSCP`.
+3. `find n/Alex t/IT e/2027-03-15` returns all persons whose name contains `Alex`, with tags that contain `IT` and with certificates that expire before 15th March 2027.
 
 ### Listing all contacts : `list`
 Format: `list`
 
-<br>
+### Adding and deleting tags : `tag`
+Format: `tag INDEX [a/TAGS_TO_ADD] [c/COLOUR_OF_TAGS_TO_ADD] [d/TAGS_TO_DELETE]`
 
-### Adding and deleting tags of a contact: `tag`
-Format: `tag INDEX [a/TAGS TO ADD SEPARATED BY SPACE] [c/COLOUR OF TAGS TO BE ADDED] [d/TAGS TO DELETE SEPARATED BY SPACE]`
-
-* Add or delete tags of the person at the specified `INDEX` of the the displayed person list.
-* If multiple tags are to be added or deleted, they are to be separated by spaces.
-* There are 5 colour options for Tags: `RED`, `YELLOW`, `GREEN`, `BLUE`, `PURPLE`, the default colour is `BLUE`
-* **At least one of the `a/` or `d/` fields must be provided.** There is no need to have `c/` when only deleting tags
+* Adds or deletes tags of the person at the specified `INDEX` of the displayed person list.
+* **At least one of the `a/` or `d/` fields must be provided.**
+* If multiple tags are to be added or deleted, their names are to be separated by spaces.
+* There are 5 colour options: `RED`, `YELLOW`, `GREEN`, `BLUE` (default), and `PURPLE`.
+  * case-insensitive, so `c/red` and `c/RED` are both valid
+* When adding, specifying the optional `c/` field applies the colour to all tags that are being added.
+* When only deleting, do not use the `c/` field.
 
 Examples:
-* `tag 1 a/IT Intern c/red` adds two Tags `IT` and `Intern` with a **RED** Colouration
-* `tag 1 d/Best_Employee` deletes a Tag `Best_Employee`
-* `tag 1 a/HR Best_Employee d/IT` adds two Tags `HR` and `Best_Employee`, while deleting `IT`
+1. `tag 1 a/IT Intern c/RED` adds two tags `IT` and `Intern` with a **RED** colour.
+2. `tag 1 d/Best_Employee` deletes a tag `Best_Employee`.
+3. `tag 1 a/HR Best_Employee d/IT` adds two tags `HR` and `Best_Employee`, while deleting `IT`.
 
 <box type="info" seamless>
 
 **Validation & Duplicate-handling Rules**
 
-(1) Only alphanumeric characters and `!@#$?/|<>_*&:;=`<br>
-(2) At most 30 characters long<br>
-Duplicate-handling: exact match
+> (1) Only alphanumeric characters and `!@#$?|<>_*&:;=`<br>
+> (2) At most 30 characters long<br>
+> Duplicate-handling: case-sensitive match
 </box>
 
-<br>
-
 ### Adding certificates : `cert-add`
+Format `cert-add INDEX n/CERT_NAME e/CERT_EXPIRY_DATE`
+* Adds a certificate to the person at the specified `INDEX` of the displayed person list.
 
 Adds a Certificate to a person in the address book.
 
@@ -240,49 +238,62 @@ Format `cert-add INDEX [n/CERT_NAME] [e/CERT_EXPIRY_DATE]`
 * A Certificate must have both a name and an expiry date.
 * Expiry dates must be formatted as **YYYY-MM-DD**.
 
-Examples:
-* `cert-add 1 n/OSCP e/2028-03-05` adds a Certificate named OSCP with an expiry date on 5th March 2028 to the first person in the list.
+Example: `cert-add 1 n/OSCP e/2028-03-05`
+* Adds a certificate named OSCP with an expiry date on 5th March 2028 to the first person in the list.
 
+<box type="info" seamless>
 > Note that:
 > - Certificate names are case-sensitive and limited to alphanumeric characters only.
 > - Multiple instances of Certificates with the same name will be considered duplicates, even if the expiry dates are different.
+**Validation & Duplicate-handling Rules**
 
-<br>
+> (1) CERT_NAME : Only alphanumeric characters and spaces<br>
+> (2) CERT_EXPIRY_DATE : format `yyyy-mm-dd`<br>
+> Duplicate-handling: case-sensitive match of the name only; the expiry date is not considered
+</box>
 
 ### Deleting certificates : `cert-del`
+Format `cert-del INDEX n/CERT_NAME`
+* Deletes a certificate from the person at the specified `INDEX` of the displayed person list.
 
-Deletes a Certificate from a person in the address book.
+Example: `cert-del 1 n/OSCP`
+* Deletes the certificate named OSCP from the first person in the list.
 
 Format `cert-del INDEX [n/CERT_NAME]`
 * Deletes a Certificate from a person at the specified `INDEX`.
 * The index refers to the index number shown in the displayed person list.
 * The Certificate to be deleted is specified by only its name.
+### Editing certificates : `cert-edit`
+Format: `cert-edit INDEX n/CERT_NAME [ne/NEW_CERT_NAME] [ee/NEW_CERT_EXPIRY_DATE]`
 
-Examples:
-* `cert-del 1 n/OSCP` deletes the OSCP certificate from the first person in the displayed person list.
+* Edits a certificate of the person at the specified `INDEX` of the displayed person list.
+* The index refers to the index number shown in the displayed person list.
+* The Certificate to be edited is specified by its name using the `n/` parameter.
+* Either the `ne/` and/or the `ee/` flags must be included, depending on whether the name or the expiry date has to be edited.
+* It is possible to edit a certificate with details of an already existing certificate.
 
-<br>
-
-### Editing certificates: `cert-edit`
-
-Edit the details of a Certificate that a person in the address book holds.
+Example: `cert-edit 1 n/OSCP ne/OSCP2`
+* Edits the certificate originally named 'OSCP' held by the first person in the list, updating its name to 'OSCP2'.
 
 Format: `cert-edit INDEX [n/CERT_NAME] [ne/NEW_CERT_NAME] [ee/NEW_CERT_EXPIRY_DATE]`
 * Edits a Certificate that a person at the specified `INDEX` holds.
-* The index refers to the index number shown in the displayed person list.
-* The Certificate to be edited is specified by its name using the `n/` parameter.
-* It is optional to include `ne/` and `ee/` flags, depending on whether the name or the expiry date has to be edited.
-* It is possible to edit a certificate with details of an already existing certificate.
 
-Examples:
-* `cert-edit 1 n/OSCP ne/OSCP2` will edit the certificate originally named 'OSCP' held by the first person in the list, updating its name to 'OSCP2'.
 
-<br>
+### Restoring the contact list : `undo`
+Format: `undo`
+
+<box type="warning" seamless>
+**CAUTION:**
+* Limited to undoing **exactly one command** to restore the contact list to the immediate previous state.
+* Will do nothing if there is no change in previous state (e.g. just restarted the app; consecutive attempts to undo; after calling the `list`, `find` or `sort` commands).
+</box>
 
 ### Clearing all entries : `clear`
 Format: `clear`
 
+<box type="info" seamless>
 > Tip: if you accidentally ran `clear`, you can run `undo` to restore your immediate previous contact list.
+</box>
 
 <br>
 
@@ -306,8 +317,10 @@ Big Brother data is saved automatically as a JSON file `[JAR file location]/data
 
 <box type="warning" seamless>
 
-**Caution:**<br>
-If your changes to the data file makes its format invalid, Big Brother will discard all data and start with an empty data file at the next run.  Hence, it is **recommended to make a manual backup of the file before editing it**.<br><br>
+**CAUTION:**
+
+If your changes to the data file makes its format invalid, Big Brother will discard all data and start with an empty data file at the next run.  Hence, it is **recommended to make a manual backup of the file before editing it**. Support for the prevention of data loss in the event of corrupted or wrongly-formatted data is planned to be added in a future update.
+
 Furthermore, certain edits can cause the Big Brother to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
 
@@ -330,15 +343,15 @@ Furthermore, certain edits can cause the Big Brother to behave in unexpected way
 ## Command summary
 |Format|
 |------|
-`add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/SALARY`
+`add n/NAME [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/SALARY]`
 `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/SALARY]`
 `delete INDEX`
 `clear`
 `undo`
-`cert-add INDEX n/CERT_NAME e/CERT_EXPIRY`
-`cert-edit INDEX n/NAME [ne/EDITED_NAME] [ee/EDITED_EXPIRY]`
+`cert-add INDEX n/CERT_NAME e/CERT_EXPIRY_DATE`
+`cert-edit INDEX n/CERT_NAME [ne/NEW_CERT_NAME] [ee/NEW_CERT_EXPIRY_CERT]`
 `cert-del INDEX n/CERT_NAME`
-`tag INDEX [a/TAGS TO ADD SEPARATED BY SPACE] [c/COLOUR OF TAGS TO BE ADDED] [d/TAGS TO DELETE SEPARATED BY SPACE]`
+`tag INDEX [a/TAGS_TO_ADD] [c/COLOUR_OF_TAGS_TO_ADD] [d/TAGS_TO_DELETE]`
 `sort ...`
 `find [n/NAME] [t/TAG] [c/CERT_NAME] [e/CERT_EXPIRY_DATE]`
 `list`
