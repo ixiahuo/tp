@@ -62,7 +62,7 @@ public class AddressBookParserTest {
     public void parseCommand_tag() throws Exception {
         TagCommand command = (TagCommand) parser.parseCommand(
                 TagCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased() + " " + "a/TAG");
-        assertEquals(new TagCommand(INDEX_FIRST_PERSON, Set.of(new Tag("TAG")), Set.of()), command);
+        assertEquals(new TagCommand(INDEX_FIRST_PERSON, Set.of(new Tag("TAG")), true), command);
     }
 
     @Test

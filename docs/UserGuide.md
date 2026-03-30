@@ -151,6 +151,7 @@ Expected result (starting with the existing sample data):
 > Duplicate-handling:<br>
 > (1) If two people have empty EMAIL and PHONE, they are duplicates if their NAME are the same<br>
 > (2) Otherwise, they are duplicates if their PHONE, EMAIL and NAME are all the same<br>
+
 </box>
 
 ### Editing an existing contact : `edit`
@@ -176,15 +177,12 @@ Examples:
 
 <br>
 
-### Searching contacts by criteria: `find`
-
-Finds persons based on the given criteria.
-1. `list` followed by `delete 2` deletes the second person in the results of the `list` command.
-2. `find n/John` followed by `delete 1` deletes the first person in the results of the `find` command.
-
 ### Searching contacts by criteria : `find`
 Format: `find [n/NAME] [t/TAG] [c/CERT_NAME] [e/CERT_EXPIRY_DATE]`
 
+* Finds persons based on the given criteria.
+  1. `list` followed by `delete 2` deletes the second person in the results of the `list` command.
+  2. `find n/John` followed by `delete 1` deletes the first person in the results of the `find` command.
 * **At least one of the optional fields must be provided.**
 * For `NAME`, `TAG` and `CERT_NAME`, the match is case-insensitive and can match part of the word.
   * e.g. 'john' will match 'Johny'
@@ -205,9 +203,9 @@ Format: `list`
 Format: `tag INDEX [a/TAGS_TO_ADD] [c/COLOUR_OF_TAGS_TO_ADD] [d/TAGS_TO_DELETE]`
 
 * Adds or deletes tags of the person at the specified `INDEX` of the displayed person list.
-* **At least one of the `a/` or `d/` fields must be provided.**
+* **Either the `a/` or the `d/` field must be specified. Both fields cannot be specified at the same time.**
 * If multiple tags are to be added or deleted, their names are to be separated by spaces.
-* There are 5 colour options: `RED`, `YELLOW`, `GREEN`, `BLUE` (default), and `PURPLE`.
+* There are 5 colour options for `c/`: `RED`, `YELLOW`, `GREEN`, `BLUE` (default), and `PURPLE`.
   * case-insensitive, so `c/red` and `c/RED` are both valid
 * When adding, specifying the optional `c/` field applies the colour to all tags that are being added.
 * When only deleting, do not use the `c/` field.
@@ -215,16 +213,14 @@ Format: `tag INDEX [a/TAGS_TO_ADD] [c/COLOUR_OF_TAGS_TO_ADD] [d/TAGS_TO_DELETE]`
 Examples:
 1. `tag 1 a/IT Intern c/RED` adds two tags `IT` and `Intern` with a **RED** colour.
 2. `tag 1 d/Best_Employee` deletes a tag `Best_Employee`.
-3. `tag 1 a/HR Best_Employee d/IT` adds two tags `HR` and `Best_Employee`, while deleting `IT`.
-
-<box type="info" seamless>
+3. `tag 1 a/HR Best_Employee` adds two tags `HR` and `Best_Employee` with the default colouration.
 
 **Validation & Duplicate-handling Rules**
 
 > (1) Only alphanumeric characters and `!@#$?|<>_*&:;=`<br>
 > (2) At most 30 characters long<br>
 > Duplicate-handling: case-sensitive match
-</box>
+
 
 ### Adding certificates : `cert-add`
 Format `cert-add INDEX n/CERT_NAME e/CERT_EXPIRY_DATE`
@@ -242,27 +238,28 @@ Example: `cert-add 1 n/OSCP e/2028-03-05`
 * Adds a certificate named OSCP with an expiry date on 5th March 2028 to the first person in the list.
 
 <box type="info" seamless>
+
 > Note that:
 > - Certificate names are case-sensitive and limited to alphanumeric characters only.
 > - Multiple instances of Certificates with the same name will be considered duplicates, even if the expiry dates are different.
-**Validation & Duplicate-handling Rules**
 
+</box>
+
+**Validation & Duplicate-handling Rules**
 > (1) CERT_NAME : Only alphanumeric characters and spaces<br>
 > (2) CERT_EXPIRY_DATE : format `yyyy-mm-dd`<br>
 > Duplicate-handling: case-sensitive match of the name only; the expiry date is not considered
-</box>
+
 
 ### Deleting certificates : `cert-del`
-Format `cert-del INDEX n/CERT_NAME`
-* Deletes a certificate from the person at the specified `INDEX` of the displayed person list.
-
-Example: `cert-del 1 n/OSCP`
-* Deletes the certificate named OSCP from the first person in the list.
-
 Format `cert-del INDEX [n/CERT_NAME]`
 * Deletes a Certificate from a person at the specified `INDEX`.
 * The index refers to the index number shown in the displayed person list.
 * The Certificate to be deleted is specified by only its name.
+
+Example: `cert-del 1 n/OSCP`
+* Deletes the certificate named OSCP from the first person in the list.
+
 ### Editing certificates : `cert-edit`
 Format: `cert-edit INDEX n/CERT_NAME [ne/NEW_CERT_NAME] [ee/NEW_CERT_EXPIRY_DATE]`
 
@@ -282,17 +279,23 @@ Format: `cert-edit INDEX [n/CERT_NAME] [ne/NEW_CERT_NAME] [ee/NEW_CERT_EXPIRY_DA
 ### Restoring the contact list : `undo`
 Format: `undo`
 
+* Undo-es the last used command.
+
 <box type="warning" seamless>
-**CAUTION:**
-* Limited to undoing **exactly one command** to restore the contact list to the immediate previous state.
-* Will do nothing if there is no change in previous state (e.g. just restarted the app; consecutive attempts to undo; after calling the `list`, `find` or `sort` commands).
-</box>
+
+> **CAUTION:**
+> * Limited to undoing **exactly one command** to restore the contact list to the immediate previous state.
+> * Will do nothing if there is no change in previous state (e.g. just restarted the app; consecutive attempts to undo; after calling the `list`, `find` or `sort` commands).
+
+> * </box>
 
 ### Clearing all entries : `clear`
 Format: `clear`
 
 <box type="info" seamless>
+
 > Tip: if you accidentally ran `clear`, you can run `undo` to restore your immediate previous contact list.
+
 </box>
 
 <br>
@@ -305,9 +308,11 @@ Format: `exit`
 ### Accessing the offline help menu : `help`
 Format: `help`
 
+<box type="info" seamless>
+
 > Tip: If you cannot access the user guide, you can use the `help` command to know what commands are available. Commands marked with `*` have detailed usage explanations, which you can view by running the command itself with no other inputs (e.g. just `cert-add`)
 
-<br>
+</box>
 
 ### Saving the data
 Big Brother data is saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
@@ -317,11 +322,10 @@ Big Brother data is saved automatically as a JSON file `[JAR file location]/data
 
 <box type="warning" seamless>
 
-**CAUTION:**
+> **CAUTION:** <br>
+> If your changes to the data file makes its format invalid, Big Brother will discard all data and start with an empty data file at the next run.  Hence, it is **recommended to make a manual backup of the file before editing it**. Support for the prevention of data loss in the event of corrupted or wrongly-formatted data is planned to be added in a future update. <br><br>
+> Furthermore, certain edits can cause the Big Brother to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 
-If your changes to the data file makes its format invalid, Big Brother will discard all data and start with an empty data file at the next run.  Hence, it is **recommended to make a manual backup of the file before editing it**. Support for the prevention of data loss in the event of corrupted or wrongly-formatted data is planned to be added in a future update.
-
-Furthermore, certain edits can cause the Big Brother to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
 
 --------------------------------------------------------------------------------------------------------------------

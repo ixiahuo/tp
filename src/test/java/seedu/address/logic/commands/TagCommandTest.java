@@ -35,17 +35,19 @@ public class TagCommandTest {
 
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
+
     @Test
-    public void execute_allFieldsSpecifiedUnfilteredList_success() {
+    public void execute_addTagsFilteredList_success() {
+        showPersonAtIndex(model, INDEX_FIRST_PERSON);
         Person originalPerson = model.getFilteredPersonList().get(0);
 
         Set<Tag> toAdd = Set.of(new Tag("Test"));
-        Set<Tag> toDelete = Set.of(new Tag("friends"));
+        //Set<Tag> toDelete = Set.of(new Tag("friends"));
 
-        Set<Tag> newTags = new TreeSet<Tag>(new TagNameComparator());
+        Set<Tag> newTags = new TreeSet<>(new TagNameComparator());
         newTags.addAll(originalPerson.getTags());
+
         newTags.addAll(toAdd);
-        newTags.removeAll(toDelete);
 
         Person editedPerson = new Person(originalPerson.getName(),
                 originalPerson.getPhone(),
@@ -54,7 +56,7 @@ public class TagCommandTest {
                 newTags,
                 originalPerson.getSalary());
 
-        TagCommand tagCommand = new TagCommand(INDEX_FIRST_PERSON, toAdd, toDelete);
+        TagCommand tagCommand = new TagCommand(INDEX_FIRST_PERSON, toAdd, true);
 
         String expectedMessage = String.format(TagCommand.MESSAGE_TAG_EDIT_PERSON_SUCCESS,
                 Messages.format(editedPerson));
@@ -82,7 +84,7 @@ public class TagCommandTest {
                 newTags,
                 originalPerson.getSalary());
 
-        TagCommand tagCommand = new TagCommand(INDEX_FIRST_PERSON, toAdd, Set.of());
+        TagCommand tagCommand = new TagCommand(INDEX_FIRST_PERSON, toAdd, true);
 
         String expectedMessage = String.format(TagCommand.MESSAGE_TAG_EDIT_PERSON_SUCCESS,
                 Messages.format(editedPerson));
@@ -109,7 +111,7 @@ public class TagCommandTest {
                 Set.of(),
                 originalPerson.getSalary());
 
-        TagCommand tagCommand = new TagCommand(INDEX_FIRST_PERSON, Set.of(), toDelete);
+        TagCommand tagCommand = new TagCommand(INDEX_FIRST_PERSON, toDelete, false);
 
         String expectedMessage = String.format(TagCommand.MESSAGE_TAG_EDIT_PERSON_SUCCESS,
                 Messages.format(editedPerson));
@@ -134,38 +136,13 @@ public class TagCommandTest {
                 Set.of(),
                 originalPerson.getSalary());
 
-        TagCommand tagCommand = new TagCommand(INDEX_FIRST_PERSON, Set.of(), toDelete);
+        TagCommand tagCommand = new TagCommand(INDEX_FIRST_PERSON, toDelete, false);
 
-        String expectedMessage = String.format(TagCommand.MESSAGE_NOT_EDITED,
-                Messages.format(editedPerson));
-
-        assertCommandFailure(tagCommand, model, expectedMessage);
+        assertCommandFailure(tagCommand, model, TagCommand.MESSAGE_NO_TAGS_TO_DELETE);
     }
 
     @Test
-    public void execute_addDeleteSameTagUnfilteredList_failure() {
-        Person originalPerson = model.getFilteredPersonList().get(0);
-
-        Set<Tag> tags = new TreeSet<Tag>(new TagNameComparator());
-        tags.add(new Tag("Tag"));
-
-        Person editedPerson = new Person(originalPerson.getName(),
-                originalPerson.getPhone(),
-                originalPerson.getEmail(),
-                originalPerson.getAddress(),
-                Set.of(),
-                originalPerson.getSalary());
-
-        TagCommand tagCommand = new TagCommand(INDEX_FIRST_PERSON, tags, tags);
-
-        String expectedMessage = String.format(TagCommand.MESSAGE_NOT_EDITED,
-                Messages.format(editedPerson));
-
-        assertCommandFailure(tagCommand, model, expectedMessage);
-    }
-
-    @Test
-    public void execute_noFieldsSpecifiedUnfilteredList_failure() {
+    public void execute_emptySetSpecifiedUnfilteredList_failure() {
         Person originalPerson = model.getFilteredPersonList().get(0);
 
         Set<Tag> sameTags = new TreeSet<>(new TagNameComparator());
@@ -178,7 +155,7 @@ public class TagCommandTest {
                 sameTags,
                 originalPerson.getSalary());
 
-        TagCommand tagCommand = new TagCommand(INDEX_FIRST_PERSON, Set.of(), Set.of());
+        TagCommand tagCommand = new TagCommand(INDEX_FIRST_PERSON, Set.of(), true);
 
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE);
 
@@ -189,75 +166,33 @@ public class TagCommandTest {
     }
 
     @Test
-    public void execute_allFieldsFilteredList_success() {
-        showPersonAtIndex(model, INDEX_FIRST_PERSON);
-        Person originalPerson = model.getFilteredPersonList().get(0);
-
-        Set<Tag> toAdd = Set.of(new Tag("Test"));
-        Set<Tag> toDelete = Set.of(new Tag("friends"));
-
-        Set<Tag> newTags = new TreeSet<>(new TagNameComparator());
-        newTags.addAll(originalPerson.getTags());
-
-        newTags.addAll(toAdd);
-        newTags.removeAll(toDelete);
-
-        Person editedPerson = new Person(originalPerson.getName(),
-                originalPerson.getPhone(),
-                originalPerson.getEmail(),
-                originalPerson.getAddress(),
-                newTags,
-                originalPerson.getSalary());
-
-        TagCommand tagCommand = new TagCommand(INDEX_FIRST_PERSON, toAdd, toDelete);
-
-        String expectedMessage = String.format(TagCommand.MESSAGE_TAG_EDIT_PERSON_SUCCESS,
-                Messages.format(editedPerson));
-
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-        expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
-
-        assertCommandSuccess(tagCommand, model, expectedMessage, expectedModel);
-    }
-
-    @Test
     public void execute_duplicateTagUnfilteredList_failure() {
         Person originalPerson = model.getFilteredPersonList().get(0);
 
-        Person editedPerson = new Person(originalPerson.getName(),
-                originalPerson.getPhone(),
-                originalPerson.getEmail(),
-                originalPerson.getAddress(),
-                originalPerson.getTags(),
-                originalPerson.getSalary());
+        TagCommand tagCommand = new TagCommand(INDEX_SECOND_PERSON, originalPerson.getTags(), true);
 
-        Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        TagCommand tagCommand = new TagCommand(INDEX_SECOND_PERSON, originalPerson.getTags(), Set.of());
-
-        assertCommandFailure(tagCommand, model, TagCommand.MESSAGE_NOT_EDITED);
+        assertCommandFailure(tagCommand, model, TagCommand.MESSAGE_ALL_DUPLICATE_ADD);
     }
 
     @Test
     public void execute_invalidPersonIndexUnfilteredList_failure() {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
-        TagCommand tagCommand = new TagCommand(outOfBoundIndex, Set.of(new Tag("Test")), Set.of());
+        TagCommand tagCommand = new TagCommand(outOfBoundIndex, Set.of(new Tag("Test")), true);
 
         assertCommandFailure(tagCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
     }
 
     @Test
     public void equals() {
-        Set<Tag> toAdd = Set.of(new Tag(VALID_TAG_FRIEND));
-        Set<Tag> toDelete = Set.of(new Tag(VALID_TAG_HUSBAND));
+        Set<Tag> toUpdate = Set.of(new Tag(VALID_TAG_FRIEND));
+        Set<Tag> toUpdateAlt = Set.of(new Tag(VALID_TAG_HUSBAND));
 
-        final TagCommand standardCommand = new TagCommand(INDEX_FIRST_PERSON, toAdd, toDelete);
+        final TagCommand standardCommand = new TagCommand(INDEX_FIRST_PERSON, toUpdate, true);
 
         // same values -> returns true
-        Set<Tag> duplicateToAdd = Set.copyOf(toAdd);
-        Set<Tag> duplicateToDelete = Set.copyOf(toDelete);
+        Set<Tag> duplicateToAdd = Set.copyOf(toUpdate);
 
-        TagCommand commandWithSameValues = new TagCommand(INDEX_FIRST_PERSON,
-                duplicateToAdd, duplicateToDelete);
+        TagCommand commandWithSameValues = new TagCommand(INDEX_FIRST_PERSON, duplicateToAdd, true);
         assertTrue(standardCommand.equals(commandWithSameValues));
 
         // same object -> returns true
@@ -270,33 +205,36 @@ public class TagCommandTest {
         assertFalse(standardCommand.equals(new ClearCommand()));
 
         // different index -> returns false
-        assertFalse(standardCommand.equals(new TagCommand(INDEX_SECOND_PERSON, toAdd, toDelete)));
+        assertFalse(standardCommand.equals(new TagCommand(INDEX_SECOND_PERSON, toUpdate, true)));
+
+        // empty set -> returns false
+        assertFalse(standardCommand.equals(new TagCommand(INDEX_SECOND_PERSON, Set.of(), true)));
 
         // different descriptor -> returns false
-        assertFalse(standardCommand.equals(new TagCommand(INDEX_FIRST_PERSON, toDelete, toDelete)));
-        assertFalse(standardCommand.equals(new TagCommand(INDEX_FIRST_PERSON, toAdd, toAdd)));
+        assertFalse(standardCommand.equals(new TagCommand(INDEX_FIRST_PERSON, toUpdateAlt, true)));
+        assertFalse(standardCommand.equals(new TagCommand(INDEX_FIRST_PERSON, toUpdate, false)));
 
-        Set<Tag> moreTags = Set.of(new Tag(VALID_TAG_FRIEND), new Tag("MORE"));
+        TreeSet<Tag> moreTags = new TreeSet<>(new TagNameComparator());
+        moreTags.add(new Tag("MORE"));
+        moreTags.addAll(toUpdate);
+        final TagCommand moreTagsStandardCommand = new TagCommand(INDEX_FIRST_PERSON, moreTags, true);
 
-        final TagCommand moreTagsStandardCommand = new TagCommand(INDEX_FIRST_PERSON, toAdd, moreTags);
-
-        assertTrue(moreTagsStandardCommand.equals(new TagCommand(INDEX_FIRST_PERSON, toAdd, moreTags)));
+        assertTrue(moreTagsStandardCommand.equals(new TagCommand(INDEX_FIRST_PERSON, moreTags, true)));
 
         // Descriptors with extra or lesser Tags
-        assertFalse(moreTagsStandardCommand.equals(new TagCommand(INDEX_FIRST_PERSON, moreTags, moreTags)));
-        assertFalse(moreTagsStandardCommand.equals(new TagCommand(INDEX_FIRST_PERSON, toAdd, toAdd)));
+        assertFalse(moreTagsStandardCommand.equals(new TagCommand(INDEX_FIRST_PERSON, toUpdate, true)));
+        assertFalse(standardCommand.equals(moreTagsStandardCommand));
     }
 
     @Test
     public void toStringMethod() {
         Index index = Index.fromOneBased(1);
         Set<Tag> toAdd = Set.of(new Tag(VALID_TAG_FRIEND), new Tag("TEST"));
-        Set<Tag> toDelete = Set.of(new Tag(VALID_TAG_HUSBAND));
 
-        TagCommand tagCommand = new TagCommand(index, toAdd, toDelete);
+        TagCommand tagCommand = new TagCommand(index, toAdd, true);
         String expected = TagCommand.class.getCanonicalName() + "{targetIndex=" + index
-                + ", tagsToAdd=" + toAdd
-                + ", tagsToDelete=" + toDelete + "}";
+                + ", tagsToUpdate=" + toAdd
+                + ", isAdd=" + true + "}";
         assertEquals(expected, tagCommand.toString());
     }
 

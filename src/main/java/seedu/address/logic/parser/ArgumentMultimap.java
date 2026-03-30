@@ -75,4 +75,32 @@ public class ArgumentMultimap {
             throw new ParseException(Messages.getErrorMessageForDuplicatePrefixes(duplicatedPrefixes));
         }
     }
+
+    /**
+     * Throws a {@code ParseException} if any of the prefixes given in {@code prefixes} appeared together
+     * with another distinct Prefix from {@code prefixes}, among the arguments.
+     */
+    public void verifyNoPrefixCombinationFor(Prefix... prefixes)
+            throws ParseException {
+
+        Prefix[] foundPrefixes = Stream.of(prefixes).distinct().filter(argMultimap::containsKey)
+                .toArray(Prefix[]::new);
+
+        if (foundPrefixes.length > 1) {
+            throw new ParseException(Messages.getErrorMessageForInvalidPrefixCombination(foundPrefixes));
+        }
+    }
+
+    /**
+     * Throws a {@code ParseException} if none of the prefixes given in {@code prefixes} appeared among the arguments.
+     */
+    public void verifyAtLeastOnePrefixFor(Prefix... prefixes)
+            throws ParseException {
+
+        List<Prefix> foundPrefixes = Stream.of(prefixes).distinct().filter(argMultimap::containsKey).toList();
+
+        if (foundPrefixes.isEmpty()) {
+            throw new ParseException(Messages.getErrorMessageForAtLeaseOnePrefixRequired(prefixes));
+        }
+    }
 }

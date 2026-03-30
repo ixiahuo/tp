@@ -35,13 +35,7 @@ public class SortCommand extends Command {
      * Overloaded constructor for SortCommand. Implements the default sort.
      */
     public SortCommand() {
-        this.sortingComparator = new Comparator<Person>() {
-            public int compare(Person p1, Person p2) {
-                Name name1 = p1.getName();
-                Name name2 = p2.getName();
-                return name1.compareTo(name2);
-            }
-        };
+        this.sortingComparator = new SortCommandDefaultComparator();
     }
 
     @Override
@@ -67,5 +61,18 @@ public class SortCommand extends Command {
     @Override
     public String toString() {
         return SortCommand.class.getCanonicalName();
+    }
+
+    private static class SortCommandDefaultComparator implements Comparator<Person> {
+        public int compare(Person p1, Person p2) {
+            Name name1 = p1.getName();
+            Name name2 = p2.getName();
+            return name1.compareTo(name2);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return (obj instanceof SortCommandDefaultComparator);
+        }
     }
 }

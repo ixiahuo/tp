@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
@@ -34,35 +35,36 @@ import seedu.address.model.tag.TagNameComparator;
 public class TagCommand extends Command {
 
     public static final String COMMAND_WORD = "tag";
-
     public static final String MESSAGE_USAGE = String.format(
             "%s : adds or deletes tags from an existing contact according to the currently displayed list\n\n"
             + "Format : %s INDEX [%sTAGS_TO_ADD] [%sCOLOUR OF ADDED TAGS] [%sTAGS_TO_DELETE] \n"
-            + "Example : %s 1 %sJunior_Dev Cloud Project_1 %s%s %sIntern\n\n"
+            + "Example : %s 1 %sJunior_Dev Cloud Project_1 %s%s\n\n"
             + "Multiple tags are separated with spaces.\n%s",
             COMMAND_WORD,
             COMMAND_WORD, PREFIX_ADD_TAG, PREFIX_COLOUR_TAG, PREFIX_DELETE_TAG,
-            COMMAND_WORD, PREFIX_ADD_TAG, PREFIX_COLOUR_TAG, TagColour.RED.name(), PREFIX_DELETE_TAG,
+            COMMAND_WORD, PREFIX_ADD_TAG, PREFIX_COLOUR_TAG, TagColour.RED.name(),
             TagColour.MESSAGE_COLOUR_OPTIONS);
 
     public static final String MESSAGE_TAG_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
-    public static final String MESSAGE_NOT_EDITED = "No Tags were changed.";
+    public static final String MESSAGE_ALL_DUPLICATE_ADD = "All of the tags were duplicates and hence were"
+            + " not added.\n Note: If you are trying to recolour tags, delete them first, then add them back";
+
+    public static final String MESSAGE_NO_TAGS_TO_DELETE = "No tags were deleted (there were no matching tags)";
 
     private final Index targetIndex;
-    private final Set<Tag> tagsToAdd;
-    private final Set<Tag> tagsToDelete;
+    private final Set<Tag> tagsToUpdate;
+    private final boolean isAdd;
 
     /**
      * Adds or Deletes Tag(s) from a Person
      */
-    public TagCommand(Index targetIndex, Set<Tag> tagsToAdd, Set<Tag> tagsToDelete) {
+    public TagCommand(Index targetIndex, Set<Tag> tagsToUpdate, boolean isAdd) {
         requireNonNull(targetIndex);
-        requireNonNull(tagsToAdd);
-        requireNonNull(tagsToDelete);
+        requireNonNull(tagsToUpdate);
 
         this.targetIndex = targetIndex;
-        this.tagsToAdd = tagsToAdd;
-        this.tagsToDelete = tagsToDelete;
+        this.tagsToUpdate = tagsToUpdate;
+        this.isAdd = isAdd;
     }
 
     @Override
@@ -70,12 +72,8 @@ public class TagCommand extends Command {
         requireNonNull(model);
         List<Person> lastShownList = model.getFilteredPersonList();
 
-        if (tagsToAdd.isEmpty() && tagsToDelete.isEmpty()) {
+        if (tagsToUpdate.isEmpty()) {
             throw new CommandException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE));
-        }
-
-        if (tagsToAdd.equals(tagsToDelete)) {
-            throw new CommandException(String.format(MESSAGE_NOT_EDITED));
         }
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
@@ -84,13 +82,23 @@ public class TagCommand extends Command {
 
         model.commitAddressBook();
         Person personToEdit = lastShownList.get(targetIndex.getZeroBased());
-        Person editedPerson = modifyTagsForPerson(personToEdit, tagsToAdd, tagsToDelete);
-        if (personToEdit.getTags().equals(editedPerson.getTags())) {
-            throw new CommandException(MESSAGE_NOT_EDITED);
+
+        Set<Tag> updatedTags = new TreeSet<>(new TagNameComparator());
+        updatedTags.addAll(personToEdit.getTags());
+        Set<Tag> sharedTags = updatedTags.stream().filter(tagsToUpdate::contains)
+                .collect(Collectors.toSet());
+
+        Person editedPerson = modifyTagsForPerson(personToEdit, tagsToUpdate, isAdd);
+
+        if (isAdd && !sharedTags.isEmpty()) {
+            throw new CommandException(MESSAGE_ALL_DUPLICATE_ADD);
+        } else if (!isAdd && sharedTags.isEmpty()) {
+            throw new CommandException(MESSAGE_NO_TAGS_TO_DELETE);
         }
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+
         return new CommandResult(String.format(MESSAGE_TAG_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)));
     }
 
@@ -98,8 +106,7 @@ public class TagCommand extends Command {
      * Creates and returns a {@code Person} with newly added tags from {@code tagsToAdd}
      * and newly deleted tags from {@code tagsToDelete}.
      */
-    private static Person modifyTagsForPerson(Person personToEdit,
-                                              Set<Tag> tagsToAdd, Set<Tag> tagsToDelete) {
+    private static Person modifyTagsForPerson(Person personToEdit, Set<Tag> tagsToUpdate, boolean isAdd) {
         assert personToEdit != null;
 
         Name name = personToEdit.getName();
@@ -110,9 +117,13 @@ public class TagCommand extends Command {
         ArrayList<Certificate> existingCerts = personToEdit.getCertificates();
 
         Set<Tag> updatedTags = new TreeSet<>(new TagNameComparator());
-        updatedTags.addAll(tagsToAdd);
         updatedTags.addAll(personToEdit.getTags());
-        updatedTags.removeAll(tagsToDelete);
+
+        if (isAdd) {
+            updatedTags.addAll(tagsToUpdate);
+        } else {
+            updatedTags.removeAll(tagsToUpdate);
+        }
 
         return new Person(name, phone, email, address, updatedTags, updatedSalary, existingCerts);
     }
@@ -124,22 +135,21 @@ public class TagCommand extends Command {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof TagCommand)) {
+        if (!(other instanceof TagCommand otherTagCommand)) {
             return false;
         }
 
-        TagCommand otherTagCommand = (TagCommand) other;
         return targetIndex.equals(otherTagCommand.targetIndex)
-                && tagsToAdd.equals(otherTagCommand.tagsToAdd)
-                && tagsToDelete.equals(otherTagCommand.tagsToDelete);
+                && tagsToUpdate.equals(otherTagCommand.tagsToUpdate)
+                && isAdd == otherTagCommand.isAdd;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
                 .add("targetIndex", targetIndex)
-                .add("tagsToAdd", tagsToAdd)
-                .add("tagsToDelete", tagsToDelete)
+                .add("tagsToUpdate", tagsToUpdate)
+                .add("isAdd", isAdd)
                 .toString();
     }
 }
