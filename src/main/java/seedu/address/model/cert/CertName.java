@@ -51,7 +51,8 @@ public class CertName {
         }
 
         CertName otherName = (CertName) other;
-        return certificateName.equals(otherName.certificateName);
+        return certificateName.toLowerCase()
+                .equals(otherName.certificateName.toLowerCase());
     }
 
     @Override
