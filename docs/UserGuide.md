@@ -277,7 +277,26 @@ Format: `undo`
 > * Limited to undoing **exactly one command** to restore the contact list to the immediate previous state.
 > * Will do nothing if there is no change in previous state (e.g. just restarted the app; consecutive attempts to undo; after calling the `list`, `find` or `sort` commands).
 
-> * </box>
+</box>
+
+### Sorting employee profiles : `sort`
+Format: `sort`
+
+* Sorts the employee profile list by alphabetical order of names.
+
+<box type="warning" seamless>
+
+> **CAUTION:**
+> * Executing `sort` will rearrange the employee profiles in the save file.
+> * This is intentional for convenience and preventing having to execute `sort` repeatedly if nothing has changed.
+
+</box>
+
+<box type="info" seamless>
+
+> Tip: if the above behaviour is undesired, you can run `undo` immediately to restore the previous order.
+
+</box>
 
 ### Clearing all entries : `clear`
 Format: `clear`
