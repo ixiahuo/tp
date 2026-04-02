@@ -43,7 +43,7 @@ public class TagCommandParserTest {
                 MESSAGE_AT_LEAST_ONE_FIELD + "a/ d/"));
 
         // no index and no field specified
-        assertParseFailure(parser, "", ParserUtil.MESSAGE_INVALID_INDEX + "\n\n"
+        assertParseFailure(parser, "", ParserUtil.MESSAGE_NO_INDEX + "\n\n"
                 + TagCommand.MESSAGE_USAGE);
 
         // only colour specified

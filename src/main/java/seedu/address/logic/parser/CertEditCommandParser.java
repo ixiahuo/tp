@@ -42,8 +42,8 @@ public class CertEditCommandParser {
         Index index;
         try {
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
-        } catch (ParseException pe) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, CertEditCommand.MESSAGE_USAGE), pe);
+        } catch (ParseException parseException) {
+            throw new ParseException(parseException.getMessage() + "\n\n" + CertEditCommand.MESSAGE_USAGE);
         }
 
         CertName name = ParserUtil.parseCertName(argMultimap.getValue(PREFIX_CERT_NAME).get());

@@ -36,8 +36,8 @@ public class CertAddCommandParser implements Parser<CertAddCommand> {
         Index index;
         try {
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
-        } catch (ParseException pe) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, CertAddCommand.MESSAGE_USAGE), pe);
+        } catch (ParseException parseException) {
+            throw new ParseException(parseException.getMessage() + "\n\n" + CertAddCommand.MESSAGE_USAGE);
         }
 
         CertName name = ParserUtil.parseCertName(argMultimap.getValue(PREFIX_CERT_NAME).get());
