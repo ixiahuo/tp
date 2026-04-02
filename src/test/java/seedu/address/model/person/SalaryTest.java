@@ -7,6 +7,8 @@ import static seedu.address.testutil.Assert.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.logic.parser.ParserUtil;
+
 public class SalaryTest {
     @Test
     public void constructor_null_throwsNullPointerException() {
@@ -36,6 +38,7 @@ public class SalaryTest {
         // invalid salary
         assertFalse(Salary.isValidSalary("two thousand")); // non-numeric
         assertFalse(Salary.isValidSalary("9011p")); // alphabets within digits
+        assertFalse(Salary.isValidSalary("5 000")); //although ParserUtil will eventually trim internal spaces
 
         // valid salary
         assertTrue(Salary.isValidSalary(null));
@@ -44,5 +47,19 @@ public class SalaryTest {
         assertTrue(Salary.isValidSalary("0"));
         assertTrue(Salary.isValidSalary("5000"));
         assertTrue(Salary.isValidSalary("123456789012345")); // long numbers
+    }
+
+    @Test
+    public void parseSalary_leadingZeros_returnsNormalizedSalary() throws Exception {
+        String salaryWithLeadingZeros = "0000004000";
+        Salary expectedSalary = new Salary("4000");
+        assertEquals(expectedSalary, ParserUtil.parseSalary(salaryWithLeadingZeros));
+    }
+
+    @Test
+    public void parseSalary_onlyLeadingZeros_returnsNormalizedSalary() throws Exception {
+        String salaryWithLeadingZeros = "0000000000";
+        Salary expectedSalary = new Salary("0");
+        assertEquals(expectedSalary, ParserUtil.parseSalary(salaryWithLeadingZeros));
     }
 }

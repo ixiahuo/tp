@@ -28,15 +28,20 @@ public class NameTest {
         assertFalse(Name.isValidName("")); // empty String
         assertFalse(Name.isValidName(" ")); // spaces only
         assertFalse(Name.isValidName("^")); // not alphabetical or valid forward slash string
+        assertFalse(Name.isValidName("     /  ")); // only forward slash and extra spaces
         assertFalse(Name.isValidName("123")); // not alphabetical or valid forward slash string
         assertFalse(Name.isValidName("peter*")); // contains non-alphanumeric characters
-        assertFalse(Name.isValidName("/")); //only contains '/' which is invalid
+        assertFalse(Name.isValidName("/")); //only contains forward slash
         assertFalse(Name.isValidName("john s/o diva")); //non-capital letters before and after '/' char
+        assertFalse(Name.isValidName("S / O Tan")); // ParserUtil should have removed these spaces
 
         // valid name
         assertTrue(Name.isValidName("peter jack")); // alphabets only
         assertTrue(Name.isValidName("Capital Tan")); // with capital letters
         assertTrue(Name.isValidName("cApiTal tAn")); // with mix of small and big alphabets
+        assertTrue(Name.isValidName("S/O Tan"));
+        assertTrue(Name.isValidName("Tan S/O John"));
+        assertTrue(Name.isValidName("S/O"));
     }
 
     @Test

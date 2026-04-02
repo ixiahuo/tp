@@ -24,7 +24,7 @@ public class HelpWindow extends UiPart<Stage> {
             + " * 'cert-edit' : edits a certificate of an existing contact\n"
             + " * 'cert-del' : deletes a certificate from an existing contact\n"
             + " * 'tag' : adds or deletes tags from an existing contact\n"
-            + " * 'sort' : sorts the contact list based on given criteria\n"
+            + "    'sort' : sorts the contact list by alphabetical order of names\n"
             + " * 'find' : finds existing contacts based on given criteria\n"
             + "    'list' : lists all existing contacts\n"
             + "    'exit' : exits the application\n"

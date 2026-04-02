@@ -217,12 +217,12 @@ The following sequence diagram shows how an `undo` operation goes through the `L
 
 </box>
 
-###  \[Proposed\] Redo Feature
+###  \[Proposed\] Multiple Undo Feature
 
-To support a `redo` feature, the current single-state backup in `ModelManager` would need to be upgraded to a state history list (similar to the original AB3 proposal). This would involve:
+The current single-state backup in `ModelManager` can only support undoing a maximum of one command. To support a multiple `undo` feature, the current single-state backup in `ModelManager` would need to be upgraded to a state history list (similar to the original AB3 proposal). This would involve:
 
 1. Replacing `previousAddressBook` with an `addressBookStateList` and a `currentStatePointer`.
-2. Implementing `Model#redoAddressBook()`, which moves the pointer forward in the history list to restore a previously undone state.
+2. Changing the implementation of `Model#undoAddressBook()`, to move the pointer backward in the history list to restore a previous state.
 3. Updating the "Purge" logic: If a new data-modifying command is executed after an `undo`, all "redoable" states at the end of the list must be deleted.
 
 #### Design considerations:
@@ -237,12 +237,7 @@ To support a `redo` feature, the current single-state backup in `ModelManager` w
   * Pros: Very memory efficient.
   * Cons: Highly complex to implement correctly, especially for commands that modify multiple internal states simultaneously.
 
-_{more aspects and alternatives to be added}_
-
-### \[Proposed\] Data archiving
-
-_{Explain here how the data archiving feature will be implemented}_
-
+Due to time constraints, Alternative 1 was implemented.
 
 --------------------------------------------------------------------------------------------------------------------
 

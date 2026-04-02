@@ -1,11 +1,13 @@
 package seedu.address.logic.parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Set;
@@ -14,6 +16,8 @@ import java.util.TreeSet;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.cert.CertExpiry;
+import seedu.address.model.cert.CertName;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
@@ -82,6 +86,13 @@ public class ParserUtilTest {
         String nameWithWhitespace = WHITESPACE + VALID_NAME + WHITESPACE;
         Name expectedName = new Name(VALID_NAME);
         assertEquals(expectedName, ParserUtil.parseName(nameWithWhitespace));
+    }
+
+    @Test
+    public void parseName_slashWithExtraWhitespace_returnsNormalizedName() throws Exception {
+        String nameWithMessySlash = "  John    S    /    O   ";
+        Name expectedName = new Name("John S/O");
+        assertEquals(expectedName, ParserUtil.parseName(nameWithMessySlash));
     }
 
     @Test
@@ -218,6 +229,109 @@ public class ParserUtilTest {
 
         // Negative salary
         assertThrows(ParseException.class, () -> ParserUtil.parseSalary("-100"));
+    }
+
+    @Test
+    public void parseCertName_invalidValue_throwsParseException() {
+        String invalidCertName = "OSCP@2026";
+        assertThrows(ParseException.class, () -> ParserUtil.parseCertName(invalidCertName));
+    }
+
+    @Test
+    public void parseCertExpiry_invalidValue_throwsParseException() {
+        String invalidDate = "2026-13-45";
+        assertThrows(ParseException.class, () -> ParserUtil.parseCertExpiry(invalidDate));
+    }
+
+    @Test
+    public void normaliseWhiteSpace_nullInput_returnsNull() throws Exception {
+        java.lang.reflect.Method method = ParserUtil.class.getDeclaredMethod("normaliseWhiteSpace", String.class);
+        method.setAccessible(true);
+        Object result = method.invoke(null, (String) null);
+        assertNull(result);
+    }
+
+    @Test
+    public void parseName_extraWhitespace_returnsNormalizedName() throws Exception {
+        String nameWithSpaces = "  Mary    Lee  ";
+        Name expectedName = new Name("Mary Lee");
+        assertEquals(expectedName, ParserUtil.parseName(nameWithSpaces));
+    }
+
+    @Test
+    public void parsePhone_extraWhitespace_returnsNormalizedPhone() throws Exception {
+        String phoneWithSpaces = "   +65    91093749  ";
+        Phone expectedPhone = new Phone("+65 91093749");
+        assertEquals(expectedPhone, ParserUtil.parsePhone(phoneWithSpaces));
+    }
+
+    @Test
+    public void parseEmail_extraWhitespace_returnsNormalizedEmail() throws Exception {
+        String emailWithSpaces = "  riceMedia@gmail.com  ";
+        Email expectedEmail = new Email("riceMedia@gmail.com");
+        assertEquals(expectedEmail, ParserUtil.parseEmail(emailWithSpaces));
+    }
+
+    @Test
+    public void parseAddress_extraWhitespace_returnsNormalizedAddress() throws Exception {
+        String addressWithSpaces = "  Blk   8  #08-109    Tah Ching   Road   S642928   ";
+        Address expectedAddress = new Address("Blk 8 #08-109 Tah Ching Road S642928");
+        assertEquals(expectedAddress, ParserUtil.parseAddress(addressWithSpaces));
+    }
+
+    @Test
+    public void parseSalary_extraWhitespace_returnsNormalizedSalary() throws Exception {
+        String salaryWithSpaces = "  8000   ";
+        Salary expectedSalary = new Salary("8000");
+        assertEquals(expectedSalary, ParserUtil.parseSalary(salaryWithSpaces));
+    }
+
+    @Test
+    public void parseTags_extraWhitespace_returnsNormalizedTags() throws Exception {
+        String tagsWithSpaces = "  HR     hr  ";
+        Set<Tag> expectedTagSet = new TreeSet<>(new TagNameComparator());
+        expectedTagSet.add(new Tag("HR"));
+        expectedTagSet.add(new Tag("hr"));
+        Set<Tag> actualTagSet = ParserUtil.parseTags(Arrays.asList("  HR     ", "hr  "));
+        assertEquals(expectedTagSet, actualTagSet);
+    }
+
+    @Test
+    public void parseCertName_extraWhitespace_returnsNormalizedCertName() throws Exception {
+        String certNameWithSpaces = "  Accounting    Essentials   ";
+        CertName expectedCertName = new CertName("Accounting Essentials");
+        assertEquals(expectedCertName, ParserUtil.parseCertName(certNameWithSpaces));
+    }
+
+    @Test
+    public void parseCertExpiry_extraWhitespace_returnsNormalizedCertExpiry() throws Exception {
+        String certExpiryWithSpaces = "  2026-02-08   ";
+        CertExpiry expectedCertExpiry = new CertExpiry(LocalDate.parse("2026-02-08"));
+        assertEquals(expectedCertExpiry, ParserUtil.parseCertExpiry(certExpiryWithSpaces));
+    }
+
+    @Test
+    public void parsePhone_messyInput_cleansCorrectly() throws Exception {
+        String messyPhone = "   +    65  123      45     ";
+        String expectedPhone = "+65 123 45";
+        assertEquals(new Phone(expectedPhone), ParserUtil.parsePhone(messyPhone));
+
+        // Test no space between + and digits remains same
+        assertEquals(new Phone("+65 123"), ParserUtil.parsePhone("+65 123"));
+    }
+
+    @Test
+    public void parseEmail_internalSpaces_stripsCorrectly() throws Exception {
+        String messyEmail = "  ha + 213 @ gmail . com  ";
+        String expectedEmail = "ha+213@gmail.com";
+        assertEquals(new Email(expectedEmail), ParserUtil.parseEmail(messyEmail));
+    }
+
+    @Test
+    public void parseSalary_internalSpaces_stripsCorrectly() throws Exception {
+        String messySalary = "  5 000  ";
+        String expectedSalary = "5000";
+        assertEquals(new Salary(expectedSalary), ParserUtil.parseSalary(messySalary));
     }
 
     @Test

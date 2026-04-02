@@ -36,6 +36,8 @@ public class CertEditCommandParser {
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_CERT_NAME, PREFIX_CERT_EXPIRY,
                 PREFIX_CERT_EDIT_NAME, PREFIX_CERT_EDIT_DATE);
+        argMultimap.verifyAtLeastOnePrefixFor(PREFIX_CERT_NAME);
+        argMultimap.verifyAtLeastOnePrefixFor(PREFIX_CERT_EDIT_NAME, PREFIX_CERT_EDIT_DATE);
 
         Index index;
         try {

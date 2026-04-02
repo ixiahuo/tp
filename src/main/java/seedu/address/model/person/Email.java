@@ -15,14 +15,13 @@ public class Email {
             "Emails should be of the format 'local-part@domain', where 'local-part' should\n"
             + "  1) contain only alphanumeric characters and " + SPECIAL_CHARACTERS + "\n"
             + "  2) not start or end with " + SPECIAL_CHARACTERS + "\n"
-            + "  3) not contain consecutive " + SPECIAL_CHARACTERS + "\n"
             + "and 'domain' is made of domain labels where each should\n"
             + "  1) be separated by .\n"
             + "  2) contain only alphanumeric characters and hyphens\n"
-            + "  3) not contain consecutive hyphens\n"
-            + "  4) start and end only with alphanumeric characters\n"
-            + "  5) be at least 2 characters long for the last domain label\n"
-            + "Example: j.doe@hr-example.co";
+            + "  3) start and end only with alphanumeric characters\n"
+            + "  4) be at least 2 characters long for the last domain label\n"
+            + "Example: j.doe@hr-example.co\n\n"
+            + "Utility: leading, trailing and internal whitespaces are trimmed to prevent typos.";
 
     // alphanumeric and special characters
     private static final String ALPHANUMERIC_NO_UNDERSCORE = "[^\\W_]+"; // alphanumeric characters except underscore

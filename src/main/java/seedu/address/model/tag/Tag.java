@@ -13,7 +13,8 @@ public class Tag {
 
     public static final String MESSAGE_CONSTRAINTS =
             "Tag names should consist of only alphanumeric characters,\n"
-            + "and these special characters !@#$?|<>_*&:;=";
+            + "and these special characters !@#$?|<>_*&:;=\n\n"
+            + "Utility: leading and trailing whitespaces are trimmed.";
 
     public static final String MESSAGE_CONSTRAINTS_LENGTH =
             "Tags names should be at most 30 characters long.";

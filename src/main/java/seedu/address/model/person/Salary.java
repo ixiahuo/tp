@@ -9,7 +9,8 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class Salary {
     public static final String MESSAGE_CONSTRAINTS =
-            "Salaries should contain only digits, without spaces between digits.";
+            "Salaries should contain only digits.\n\n"
+            + "Utility: leading, trailing and internal whitespaces will be trimmed.";
 
     public static final String VALIDATION_REGEX = "\\d+";
     public final String value;

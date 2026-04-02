@@ -39,7 +39,8 @@ public class EditCommand extends Command {
     public static final String MESSAGE_USAGE = String.format(
             "%s : edits an existing contact according to the currently displayed list\n\n"
             + "Format : %s INDEX [%sNAME] [%sPHONE] [%sEMAIL] [%sADDRESS] [%sSALARY]\n"
-            + "Example : %s 1 %s5500",
+            + "Example : %s 1 %s5500\n"
+            + "Warning: inputting an empty value for a prefix would result in that value being deleted.",
             COMMAND_WORD,
             COMMAND_WORD, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_SALARY,
             COMMAND_WORD, PREFIX_SALARY);
@@ -72,13 +73,14 @@ public class EditCommand extends Command {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
-        model.commitAddressBook();
         Person personToEdit = lastShownList.get(index.getZeroBased());
         Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
 
         if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
+
+        model.commitAddressBook();
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
