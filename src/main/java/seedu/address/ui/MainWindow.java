@@ -175,6 +175,13 @@ public class MainWindow extends UiPart<Stage> {
             CommandResult commandResult = logic.execute(commandText);
             logger.info("Result: " + commandResult.getFeedbackToUser());
 
+            if (commandResult.isWarning()) {
+                String warningMessage = "Warning: A duplicate contact already exists.\n"
+                        + "Please verify if this person is a duplicate and remove if necessary!";
+                helpWindow.setHelpMessage(warningMessage);
+                handleHelp();
+            }
+
             if (commandResult.isShowHelp()) {
                 helpWindow.setHelpMessage(HelpWindow.HELP_MESSAGE);
                 handleHelp();

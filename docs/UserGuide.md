@@ -56,6 +56,8 @@ Big Brother is a desktop app for Human Resources to manage employee contacts, op
 * Arguments in square brackets are optional. More explanations will be provided where they appear.<br>
   e.g. `[a/TAGS_TO_ADD]`, `[d/TAGS_TO_DELETE]`
 
+* `INDEX` **must be a positive integer** 1, 2, 3, ...
+
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE`, `p/PHONE n/NAME` is also acceptable.
 
@@ -130,6 +132,9 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/SALARY]`
 * Existing values will be updated to the input values.
 * Warning: inputting an empty value for a prefix would result in that value being deleted.
 * Input values can be the same as existing values (e.g. if person with `INDEX` 2 already has `SALARY` of `3000`, user can still perform `edit 2 s/3000`)
+
+> **Duplicate Warning**: If you `edit` a contact such that it now matches another existing contact in your list, Big Brother will perform the edit but will trigger a **Warning pop-up** to alert you of the duplicate. You can choose to keep the duplicate or delete it later.
+</box>
 
 Example: `edit 1 p/+017 91234567 e/johndoe@example.com`
 

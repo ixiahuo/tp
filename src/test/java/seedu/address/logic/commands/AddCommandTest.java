@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.logic.Messages;
-import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
@@ -46,12 +45,17 @@ public class AddCommandTest {
     }
 
     @Test
-    public void execute_duplicatePerson_throwsCommandException() {
+    public void execute_duplicatePerson_successWithWarning() throws Exception {
+        ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
         Person validPerson = new PersonBuilder().build();
-        AddCommand addCommand = new AddCommand(validPerson);
-        ModelStub modelStub = new ModelStubWithPerson(validPerson);
+        modelStub.addPerson(validPerson);
 
-        assertThrows(CommandException.class, AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
+        CommandResult commandResult = new AddCommand(validPerson).execute(modelStub);
+        String expectedFeedback = AddCommand.MESSAGE_WARNING_DUPLICATE + "\n\n"
+                + String.format(AddCommand.MESSAGE_SUCCESS, Messages.format(validPerson));
+        assertEquals(expectedFeedback, commandResult.getFeedbackToUser());
+        assertTrue(commandResult.isWarning());
+        assertEquals(2, modelStub.personsAdded.size());
     }
 
     @Test

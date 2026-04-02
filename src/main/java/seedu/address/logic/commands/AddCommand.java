@@ -39,6 +39,8 @@ public class AddCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
+    public static final String MESSAGE_WARNING_DUPLICATE = "Warning: A duplicate contact already exists.\n"
+            + "Please verify if this person is a duplicate and remove if necessary!";
     private static final Logger logger = LogsCenter.getLogger(AddCommand.class);
     private final Person toAdd;
 
@@ -56,15 +58,16 @@ public class AddCommand extends Command {
 
         assert toAdd != null : "Person to add cannot be null at execution";
 
-        if (model.hasPerson(toAdd)) {
-            logger.info("AddCommand failed: Duplicate person detected - " + toAdd.getName());
-            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
-        }
+        boolean isPossibleDuplicate = model.hasPerson(toAdd);
 
         model.commitAddressBook();
         model.addPerson(toAdd);
+        String feedback = String.format(MESSAGE_SUCCESS, Messages.format(toAdd));
+        if (isPossibleDuplicate) {
+            feedback = MESSAGE_WARNING_DUPLICATE + "\n\n" + feedback;
+        }
         logger.info("AddCommand successful: Added " + toAdd.getName());
-        return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
+        return new CommandResult(feedback, isPossibleDuplicate);
     }
 
     @Override

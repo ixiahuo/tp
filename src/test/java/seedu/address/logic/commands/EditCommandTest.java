@@ -102,24 +102,61 @@ public class EditCommandTest {
     }
 
     @Test
-    public void execute_duplicatePersonUnfilteredList_failure() {
+    public void execute_duplicatePersonUnfilteredList_successWithWarning() {
         Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(firstPerson).build();
+        Person secondPerson = model.getFilteredPersonList().get(INDEX_SECOND_PERSON.getZeroBased());
+        Person editedPerson = new Person(
+                firstPerson.getName(), firstPerson.getPhone(), firstPerson.getEmail(),
+                firstPerson.getAddress(), secondPerson.getTags(), firstPerson.getSalary(),
+                secondPerson.getCertificates());
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(editedPerson).build();
         EditCommand editCommand = new EditCommand(INDEX_SECOND_PERSON, descriptor);
 
-        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_DUPLICATE_PERSON);
+        String expectedMessage = AddCommand.MESSAGE_WARNING_DUPLICATE + "\n\n"
+                + String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+
+        CommandResult expectedCommandResult = new CommandResult(expectedMessage, true);
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.commitAddressBook();
+
+        Person targetInExpectedModel = expectedModel.getFilteredPersonList().get(INDEX_SECOND_PERSON.getZeroBased());
+        expectedModel.setPerson(targetInExpectedModel, editedPerson);
+        expectedModel.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS);
+
+        assertCommandSuccess(editCommand, model, expectedCommandResult, expectedModel);
     }
 
     @Test
-    public void execute_duplicatePersonFilteredList_failure() {
+    public void execute_duplicatePersonFilteredList_successWithWarning() {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
 
-        // edit person in filtered list into a duplicate in address book
-        Person personInList = model.getAddressBook().getPersonList().get(INDEX_SECOND_PERSON.getZeroBased());
-        EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON,
-                new EditPersonDescriptorBuilder(personInList).build());
+        Person targetInFilteredList = model.getFilteredPersonList().get(0);
+        Person personToCopy = model.getAddressBook().getPersonList().get(INDEX_SECOND_PERSON.getZeroBased());
 
-        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_DUPLICATE_PERSON);
+        Person editedPerson = new Person(
+                personToCopy.getName(), personToCopy.getPhone(), personToCopy.getEmail(),
+                personToCopy.getAddress(), targetInFilteredList.getTags(), personToCopy.getSalary(),
+                targetInFilteredList.getCertificates());
+
+        EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON,
+                new EditPersonDescriptorBuilder(editedPerson).build());
+
+        String expectedMessage = AddCommand.MESSAGE_WARNING_DUPLICATE + "\n\n"
+                + String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+
+        CommandResult expectedCommandResult = new CommandResult(expectedMessage, true);
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        showPersonAtIndex(expectedModel, INDEX_FIRST_PERSON);
+        expectedModel.commitAddressBook();
+
+        Person targetInExpectedModel = expectedModel.getFilteredPersonList().get(0);
+        expectedModel.setPerson(targetInExpectedModel, editedPerson);
+        expectedModel.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS);
+
+        assertCommandSuccess(editCommand, model, expectedCommandResult, expectedModel);
     }
 
     @Test

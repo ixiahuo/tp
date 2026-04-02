@@ -161,13 +161,13 @@ public class Person {
         // both persons have no email and no phone, check name
         if (!p1HasPhone && !p2HasPhone) {
             if (!p1HasEmail && !p2HasEmail) {
-                return otherPerson.getName().equals(getName());
+                return getName().equals(otherPerson.getName());
             }
         }
 
-        return otherPerson.getPhone().equals(getPhone())
+        return otherPerson.getName().equals(getName())
                 && otherPerson.getEmail().equals(getEmail())
-                && otherPerson.getName().equals(getName());
+                && otherPerson.getPhone().equals(getPhone());
     }
 
     /**
