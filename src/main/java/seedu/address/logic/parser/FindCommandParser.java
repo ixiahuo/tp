@@ -22,6 +22,7 @@ import seedu.address.model.cert.Certificate;
 import seedu.address.model.person.CertContainsDatePredicate;
 import seedu.address.model.person.CertContainsKeywordsPredicate;
 import seedu.address.model.person.CombinedPredicate;
+import seedu.address.model.person.Name;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.TagContainsKeywordsPredicate;
@@ -76,11 +77,22 @@ public class FindCommandParser implements Parser<FindCommand> {
         return Stream.of(prefixes).anyMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
-    private NameContainsKeywordsPredicate getNamePredicate(ArgumentMultimap argMultimap) {
-        List<String> names = argMultimap.getAllValues(PREFIX_NAME)
-            .stream().map(String::strip).collect(Collectors.toList());
-        names.replaceAll(String::trim);
-        return new NameContainsKeywordsPredicate(names);
+    private NameContainsKeywordsPredicate getNamePredicate(ArgumentMultimap argMultimap) throws ParseException {
+        try {
+            List<String> names = argMultimap.getAllValues(PREFIX_NAME)
+                .stream().map(String::trim).map(nameStr -> checkValidName(nameStr)).collect(Collectors.toList());
+            return new NameContainsKeywordsPredicate(names);
+        } catch (RuntimeException re) {
+            throw new ParseException(Name.MESSAGE_CONSTRAINTS);
+        }
+    }
+
+    private String checkValidName(String input) {
+        try {
+            return ParserUtil.parseName(input).fullName;
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private TagContainsKeywordsPredicate getTagPredicate(ArgumentMultimap argMultimap) {
