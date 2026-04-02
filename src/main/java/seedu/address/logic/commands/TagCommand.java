@@ -80,7 +80,6 @@ public class TagCommand extends Command {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
-        model.commitAddressBook();
         Person personToEdit = lastShownList.get(targetIndex.getZeroBased());
 
         Set<Tag> updatedTags = new TreeSet<>(new TagNameComparator());
@@ -95,6 +94,7 @@ public class TagCommand extends Command {
         } else if (!isAdd && sharedTags.isEmpty()) {
             throw new CommandException(MESSAGE_NO_TAGS_TO_DELETE);
         }
+        model.commitAddressBook();
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);

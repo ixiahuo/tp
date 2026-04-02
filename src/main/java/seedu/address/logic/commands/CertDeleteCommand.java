@@ -61,13 +61,13 @@ public class CertDeleteCommand extends Command {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
-        model.commitAddressBook();
-
         Person personToDeleteFrom = lastShownList.get(index.getZeroBased());
 
         if (!personToDeleteFrom.hasCert(toDel)) {
             throw new CommandException(MESSAGE_MISSING_CERT);
         }
+        model.commitAddressBook();
+
         Person personDeletedFrom = deleteCertFromPerson(personToDeleteFrom, toDel);
 
         model.setPerson(personToDeleteFrom, personDeletedFrom);
