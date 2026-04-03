@@ -37,7 +37,7 @@ public class TagCommand extends Command {
     public static final String COMMAND_WORD = "tag";
     public static final String MESSAGE_USAGE = String.format(
             "%s : adds or deletes tags from an existing contact according to the currently displayed list\n\n"
-            + "Format : %s INDEX [%sTAGS_TO_ADD] [%sCOLOUR OF ADDED TAGS] [%sTAGS_TO_DELETE] \n"
+            + "Format : %s INDEX [%sTAGS_TO_ADD] [%sCOLOUR_OF_TAGS_TO_ADD] [%sTAGS_TO_DELETE] \n"
             + "Example : %s 1 %sJunior_Dev Cloud Project_1 %s%s\n\n"
             + "Multiple tags are separated with spaces.\n%s",
             COMMAND_WORD,
