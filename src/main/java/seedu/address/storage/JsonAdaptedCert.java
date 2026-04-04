@@ -44,6 +44,13 @@ class JsonAdaptedCert {
      * @throws IllegalValueException if there were any data constraints violated in the adapted Certificate.
      */
     public Certificate toModelType() throws IllegalValueException {
+        if (!CertName.isValidCertName(certName)) {
+            throw new IllegalValueException(CertName.MESSAGE_CONSTRAINTS);
+        }
+        CertName modelName = new CertName(certName);
+        if (certExpiry == null || certExpiry.equals("No Expiry")) {
+            return new Certificate(modelName, new CertExpiry(null));
+        }
         if (!CertExpiry.isValidCertExpiry(certExpiry)) {
             throw new IllegalValueException(CertExpiry.MESSAGE_CONSTRAINTS);
         }

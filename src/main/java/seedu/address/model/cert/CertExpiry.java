@@ -78,6 +78,9 @@ public class CertExpiry {
     }
 
     public String getDisplayDateString() {
+        if (expiryDate == null) {
+            return "No Expiry";
+        }
         return expiryDate.toString();
     }
 }
