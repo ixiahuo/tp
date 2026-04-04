@@ -87,7 +87,6 @@ public class PersonListPanel extends UiPart<Region> {
             }
         }
 
-        this.scrollPane.setVvalue(0); // reset scroll to top
         logger.info("----------------[PersonListPanel][Display updated]");
     }
 
