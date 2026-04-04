@@ -32,7 +32,7 @@ Big Brother is a desktop app for Human Resources to manage employee contacts, op
    Note the app name may be slightly different due to versions.<br>
    A GUI similar to the below should appear in a few seconds.<br>
 
-   ![Ui](images/Ui.png)
+<img src="images/Ui.png" width="750" />
 
 6. Type a command in the command box (the red-brown rectangle at the top) and press Enter to execute it.<br>
 * Refer to the [Features](#features) below for details of each command.<br>
@@ -47,7 +47,7 @@ Big Brother is a desktop app for Human Resources to manage employee contacts, op
 
 **Notes about the command format:**<br>
 
-* Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
+* Words in `UPPER_CASE` are the parameters to be supplied by you.<br>
   e.g. for `n/NAME`, `NAME` is the parameter.
 
 * Arguments not in square brackets are compulsory.<br>
@@ -78,20 +78,22 @@ Big Brother is a desktop app for Human Resources to manage employee contacts, op
 
 * You can hover your mouse cursor over the desired scroll bar, then scroll each section independently.
 
-* If you perform any commands that modify the contact list or contact details, all the scroll bars will automatically jump back to the top.
+* When you perform a command that modifies the contact list or a contact entry, all the contact entries will scroll to the top.
+
+* The main contact list **does not have autoscroll**, so you may need to scroll manually to see the changes after performing a command (e.g. after `add`, the newly added contact is at the bottom).
 
 * Mouseless-support is planned to be implemented in a future update.
 
 ### Viewing in-app help menu : `help`
 Format: `help`
 
-![help message](images/helpMessage.png)
+<img src="images/helpMessage.png" width="750" />
 
 <box type="tip" seamless>
 
 **Tips for in-app help**
 
-> You can automatically close the popups with Enter on Windows and Linux, or space bar on Mac.<br>
+> You can automatically close the pop-ups with Enter on Windows and Linux, or space bar on Mac.<br>
 
 > If you need more help with a command marked by a `*`, enter it with no arguments into the command box.
 > Example: to get more help for `add`, enter `add` into the command box.
@@ -107,22 +109,7 @@ Example: `add n/John Doe p/+65 98765432 e/johnd@example.com a/Abc Rd, Blk 123, #
 
 Expected result (starting with the existing sample data):
 
-![add success](images/addSuccess.png)
-
-<box type="tip" seamless>
-
-**Tip on navigation**
-
-> As the app automatically resets the scroll bar to the top after the command, you will need to scroll down to see the newly added entry.
-</box>
-
-<box type="info" seamless>
-
-Examples:
-* `add n/John Doe p/+65 98765432 e/johnd@example.com a/John street, block 123, #01-01 s/`
-* `add n/Betsy Crowe s/ e/betsycrowe@example.com a/Newgate Prison p/+81 1234567`
-
-<br>
+<img src="images/addSuccess.png" width="750" style="margin-bottom:30px"/>
 
 ### Editing an existing contact : `edit`
 Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/SALARY]`
@@ -130,15 +117,19 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/SALARY]`
 * Edits the person at the specified `INDEX` of the displayed person list.
 * **At least one of the optional fields must be provided.**
 * Existing values will be updated to the input values.
-* Warning: inputting an empty value for a prefix would result in that value being deleted.
-* Input values can be the same as existing values (e.g. if person with `INDEX` 2 already has `SALARY` of `3000`, user can still perform `edit 2 s/3000`)
-
-> **Duplicate Warning**: If you `edit` a contact such that it now matches another existing contact in your list, Big Brother will perform the edit but will trigger a **Warning pop-up** to alert you of the duplicate. You can choose to keep the duplicate or delete it later.
-</box>
+* **Inputting an empty value for a prefix would result in that value being deleted.**
+* Input values can be the same as existing values (e.g. if person with `INDEX` 2 already has `SALARY` of `3000`, you can still perform `edit 2 s/3000`)
 
 Example: `edit 1 p/+017 91234567 e/johndoe@example.com`
 
 * Edits the phone to `+017 91234567` and the email to `johndoe@example.com` for the first person.
+
+<box type="tip" seamless>
+
+**Tip on duplicate warning**
+
+> If you `edit` a contact such that it now matches another existing contact in your list, Big Brother will perform the edit but will trigger a **warning pop-up** to alert you of the duplicate. You can choose to keep the duplicate or delete it later.
+</box>
 
 <br>
 
@@ -148,8 +139,8 @@ Format: `delete INDEX`
 * Deletes the person at the specified `INDEX` of the displayed person list.
 
 Examples:
-* `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find n/Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command, if present.
+1. `list` followed by `delete 2` deletes the 2nd person in the address book.
+2. `find n/Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command, if present.
 
 <br>
 
@@ -157,8 +148,6 @@ Examples:
 Format: `find [n/NAME] [t/TAG] [c/CERT_NAME] [e/CERT_EXPIRY_DATE]`
 
 * Finds persons based on the given criteria.
-  1. `list` followed by `delete 2` deletes the second person in the results of the `list` command.
-  2. `find n/John` followed by `delete 1` deletes the first person in the results of the `find` command.
 * **At least one of the optional fields must be provided.**
 * For `NAME`, `TAG` and `CERT_NAME`, the match is case-insensitive and can match part of the word.
   * e.g. 'john' will match 'Johny'
@@ -184,26 +173,6 @@ Format: `list`
 
 <br>
 
-### Sorting all contacts : `sort`
-Format: `sort`
-* Sorts the employee profile list by alphabetical order of names.
-
-<box type="warning" seamless>
-
-> **CAUTION:**
-> * Executing `sort` will rearrange the employee profiles in the save file.
-> * This is intentional for convenience and preventing having to execute `sort` repeatedly if nothing has changed.
-
-</box>
-
-<box type="info" seamless>
-
-> Tip: if the above behaviour is undesired, you can run `undo` immediately to restore the previous order.
-
-</box>
-
-<br>
-
 ### Adding and deleting tags : `tag`
 Format: `tag INDEX [a/TAGS_TO_ADD] [c/COLOUR_OF_TAGS_TO_ADD] [d/TAGS_TO_DELETE]`
 
@@ -213,7 +182,7 @@ Format: `tag INDEX [a/TAGS_TO_ADD] [c/COLOUR_OF_TAGS_TO_ADD] [d/TAGS_TO_DELETE]`
 * There are 5 colour options for `c/`: `RED`, `YELLOW`, `GREEN`, `BLUE` (default), and `PURPLE`.
   * case-insensitive, so `c/red` and `c/RED` are both valid
 * When adding, specifying the optional `c/` field applies the colour to all tags that are being added.
-* When only deleting, do not use the `c/` field.
+* When deleting, do not use the `c/` field.
 
 Examples:
 1. `tag 1 a/IT Intern c/RED` adds two tags `IT` and `Intern` with a **RED** colour.
@@ -223,7 +192,7 @@ Examples:
 <br>
 
 ### Adding certificates : `cert-add`
-Format `cert-add INDEX n/CERT_NAME [e/CERT_EXPIRY_DATE]`
+Format: `cert-add INDEX n/CERT_NAME [e/CERT_EXPIRY_DATE]`
 * Adds a Certificate to a person at the specified `INDEX`.
 * A Certificate must have a name(which is case-insensitive), whereas expiry date is optional.
 * Expiry dates must be formatted as **YYYY-MM-DD**.
@@ -241,7 +210,7 @@ Examples:<br>
 <br>
 
 ### Deleting certificates : `cert-del`
-Format `cert-del INDEX [n/CERT_NAME]`
+Format: `cert-del INDEX n/CERT_NAME`
 * Deletes a Certificate from a person at the specified `INDEX`.
 * The Certificate to be deleted is specified by only its name, which is case-insensitive.
 
@@ -255,8 +224,8 @@ Format: `cert-edit INDEX n/CERT_NAME [ne/NEW_CERT_NAME] [ee/NEW_CERT_EXPIRY_DATE
 
 * Edits a certificate of the person at the specified `INDEX` of the displayed person list.
 * The Certificate to be edited is specified by its name using the `n/` parameter, which is case-insensitive.
-* Either the `ne/` and/or the `ee/` flags **must** be included, depending on whether the name or the expiry date has to be edited.
-* If the new expiry date is to be updated to "No Expiry", user input after `ee/` is left empty.
+* At least one of the `ne/` and/or the `ee/` flags **must** be included, depending on whether the name or the expiry date has to be edited.
+* If the new expiry date is to be updated to "No Expiry", user input after `ee/` is left empty(e.g. `cert-edit 1 n/Marketing ee/`).
 * Overwriting a Certificate with the same CERT_NAME and CERT_EXPIRY_DATE is allowed.
 
 Example: `cert-edit 1 n/OSCP ne/OSCP2`
@@ -267,32 +236,27 @@ Example: `cert-edit 1 n/OSCP ne/OSCP2`
 ### Restoring the contact list : `undo`
 Format: `undo`
 
-* Undoes the last used command.
+* Undoes the most recently used command which changed the state of the contact list.
 
 <box type="warning" seamless>
 
 > **CAUTION:**
-> * Limited to undoing **exactly one command** to restore the contact list to the immediate previous state.
-> * Will do nothing if there is no change in previous state (e.g. just restarted the app; consecutive attempts to undo; after calling the `list` or `find` commands).
+> `list` and `find` do not change the state of the contact list, so an `undo` will undo the most recent command that changed the state (e.g. `add` followed by `find` followed by `undo` will undo `add`)
+> When an `undo` succeeds, another `undo` cannot be run until another command that changes the state is run (e.g. `undo` followed by `add` followed by `undo`)
 
 </box>
 
-### Sorting employee profiles : `sort`
+### Sorting all contacts : `sort`
 Format: `sort`
+* Sorts the contact list in alphabetical order of name.
+* Uppercase is prioritised over lowercase (i.e. "Bob" would be positioned before "alice").
+* The full contact list will be sorted, however filtered entries remain filtered.
+  * e.g. if `find` was called before `sort`, only the found contacts remain displayed.
 
-* Sorts the employee profile list by alphabetical order of names.
+<box type="tip" seamless>
 
-<box type="warning" seamless>
-
-> **CAUTION:**
-> * Executing `sort` will rearrange the employee profiles in the save file.
-> * This is intentional for convenience and preventing having to execute `sort` repeatedly if nothing has changed.
-
-</box>
-
-<box type="info" seamless>
-
-> Tip: if the above behaviour is undesired, you can run `undo` immediately to restore the previous order.
+**Tip on state of the contact list**
+> `sort` will change the state of the contact list, so that further commands will be built on the sorted list. If this is undesired, you can run `undo` immediately to restore the previous order.
 
 </box>
 
@@ -301,10 +265,10 @@ Format: `sort`
 ### Clearing all entries : `clear`
 Format: `clear`
 
-<box type="info" seamless>
+<box type="tip" seamless>
 
-> Tip: if you accidentally ran `clear`, you can run `undo` to restore your immediate previous contact list.
-
+**Tip on accidental clear**
+> If you accidentally ran `clear`, you can run `undo` to restore the cleared entries.
 </box>
 
 <br>
@@ -314,18 +278,7 @@ Format: `exit`
 
 <br>
 
-### Accessing the offline help menu : `help`
-Format: `help`
-
-<box type="info" seamless>
-
-> Tip: If you cannot access the user guide, you can use the `help` command to know what commands are available. Commands marked with `*` have detailed usage explanations, which you can view by running the command itself with no other inputs (e.g. just `cert-add`)
-
-</box>
-
-<br>
-
-## Input Validation, Duplicate Handling and Utilities
+### Input Validation, Duplicate Handling and Utilities
 | Parameter        | Input Validation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Duplicate Handling                   | Whitespace Trimming Utility                                                                                                                                                                                                                                |
 |------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | NAME             | 1. Cannot be empty<br>2. Only letter, whitespaces and forward slash<br/>3. Letters immediately beside forward slash must be uppercase (e.g. `S/O`)                                                                                                                                                                                                                                                                                                                                                                                                          | case-*insensitive* comparison        | 1. Leading, trailing and internal whitespaces for `/` will be trimmed (e.g.   `S   /  O` will be trimmed to `S/O`). <br/> 2.Internal whitespaces between words will be trimmed to 1.                                                                       |
@@ -338,15 +291,19 @@ Format: `help`
 | CERT_EXPIRY_DATE | 1. If used in a compulsory prefix, must follow format `YYYY-MM-DD` or be empty <br/>2. If not empty, must be a valid date.<br/>                                                                                                                                                                                                                                                                                                                                                                                                                             | same `YYYY-MM-DD` or is empty        | Leading and trailing whitespaces will be trimmed.                                                                                                                                                                                                          |
 | INDEX            | 1. Must be a positive integer (e.g. 1)<br/>2. No internal whitespaces are allowed (e.g. if contact list has a person with index `10`, INDEX `10` is valid while `1 0` is invalid)                                                                                                                                                                                                                                                                                                                                                                           | N.A.                                 | Leading and trailing whitespaces will be trimmed.                                                                                                                                                                                                          |
 
-> **CAUTION**: When are 2 **persons** considered duplicates?<br><br>
+<box type="info" seamless>
+
+**Additional infomation on duplicate persons**
 > Possible right after executing [add](#adding-a-new-contact--add) or [edit](#editing-an-existing-contact--edit) commands<br>
 > (1) `EMAIL` and `PHONE` are empty: duplicates if `NAME` are the same<br>
 > (2) Else, 2 persons are duplicates if their `NAME` & `PHONE` & `EMAIL` are the same<br><br>
 > **Good news**: there will be a warning pop-up message if duplicate persons are detected after executing a command. It is then up to you to delete duplicates.
 
-> **CAUTION**: When are 2 **certificates** considered duplicates?<br>
-> * Possible right after executing [cert-add](#adding-certificates--cert-add) or [cert-edit](#editing-certificates--cert-edit) commands<br>
-> * Certificates are duplicates if `CERT_NAME` are duplicates. `CERT_EXPIRY_DATE` is not taken into account. 
+**Additional infomation on duplicate certificates**
+> Possible right after executing [cert-add](#adding-certificates--cert-add) or [cert-edit](#editing-certificates--cert-edit) commands<br>
+> Certificates are duplicates if `CERT_NAME` are duplicates. `CERT_EXPIRY_DATE` is not taken into account. 
+
+</box>
 
 <br>
 
@@ -358,9 +315,10 @@ Big Brother data is saved automatically as a JSON file `[JAR file location]/data
 
 <box type="warning" seamless>
 
-> **CAUTION:** <br>
+**CAUTION:**
 > If your changes to the data file makes its format invalid, Big Brother will discard all data and start with an empty data file at the next run.  Hence, it is **recommended to make a manual backup of the file before editing it**. Support for the prevention of data loss in the event of corrupted or wrongly-formatted data is planned to be added in a future update. <br><br>
 > Furthermore, certain edits can cause the Big Brother to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
+
 </box>
 
 --------------------------------------------------------------------------------------------------------------------
@@ -375,7 +333,6 @@ Big Brother data is saved automatically as a JSON file `[JAR file location]/data
 ## Known issues
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
-2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
 
 --------------------------------------------------------------------------------------------------------------------
 
