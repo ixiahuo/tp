@@ -5,7 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.model.cert.CertName;
 import seedu.address.model.cert.Certificate;
+import seedu.address.testutil.Assert;
 
 public class JsonAdaptedCertTest {
     @Test
@@ -26,5 +29,12 @@ public class JsonAdaptedCertTest {
 
         assertFalse(modelCert.getExpiry().hasExpiry());
         assertEquals("Marketing", modelCert.getName().toString());
+    }
+
+    @Test
+    public void toModelType_invalidCertName_throwsIllegalValueException() {
+        JsonAdaptedCert cert = new JsonAdaptedCert(" ", "2029-01-01");
+        String expectedMessage = CertName.MESSAGE_CONSTRAINTS;
+        Assert.assertThrows(IllegalValueException.class, expectedMessage, cert::toModelType);
     }
 }
