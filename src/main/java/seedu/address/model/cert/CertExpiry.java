@@ -70,7 +70,7 @@ public class CertExpiry {
 
     @Override
     public int hashCode() {
-        return java.util.Objects.hashCode(expiryDate);
+        return expiryDate.hashCode();
     }
 
     @Override
