@@ -9,7 +9,7 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class CertName {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Certificate names should consist of only alphanumeric characters and spaces.\n\n"
+            "Certificate names should not be empty, and consist of only alphanumeric characters and spaces.\n\n"
             + "Utility: leading and trailing whitespaces are trimmed. Internal whitespaces are trimmed to 1.\n";
 
     public static final String VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum} ]*";
