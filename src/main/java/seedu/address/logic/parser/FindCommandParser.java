@@ -80,7 +80,7 @@ public class FindCommandParser implements Parser<FindCommand> {
     private NameContainsKeywordsPredicate getNamePredicate(ArgumentMultimap argMultimap) throws ParseException {
         try {
             List<String> names = argMultimap.getAllValues(PREFIX_NAME)
-                .stream().map(String::trim).map(nameStr -> checkValidName(nameStr)).collect(Collectors.toList());
+                .stream().map(String::trim).map(nameStr -> parseValidName(nameStr)).collect(Collectors.toList());
             return new NameContainsKeywordsPredicate(names);
         } catch (RuntimeException re) {
             throw new ParseException(re.getCause().getMessage());
@@ -102,7 +102,7 @@ public class FindCommandParser implements Parser<FindCommand> {
         try {
             List<Certificate> certsList = argMultimap.getAllValues(PREFIX_CERT)
                 .stream().map(name -> name.trim()).filter(name -> !name.isEmpty())
-                .map(name -> new Certificate(checkVaildCertName(name))).collect(Collectors.toList());
+                .map(name -> new Certificate(parseVaildCertName(name))).collect(Collectors.toList());
             ArrayList<Certificate> certs = new ArrayList<>(certsList);
             return new CertContainsKeywordsPredicate(certs);
         } catch (RuntimeException re) {
@@ -116,7 +116,7 @@ public class FindCommandParser implements Parser<FindCommand> {
         return new CertContainsDatePredicate(expiry);
     }
 
-    private String checkValidName(String input) {
+    private String parseValidName(String input) {
         try {
             return ParserUtil.parseName(input).fullName;
         } catch (ParseException e) {
@@ -124,25 +124,25 @@ public class FindCommandParser implements Parser<FindCommand> {
         }
     }
 
-    private Tag checkValidTag(String input) {
+    private Tag parseValidTag(String input) {
         try {
-            return new Tag(input);
-        } catch (RuntimeException e) {
+            return ParserUtil.parseTag(input);
+        } catch (ParseException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private CertName checkVaildCertName(String input) {
+    private CertName parseVaildCertName(String input) {
         try {
             return ParserUtil.parseCertName(input);
-        } catch (Exception e) {
+        } catch (ParseException e) {
             throw new RuntimeException(e);
         }
     }
 
     private Set<Tag> parseAndGroupTags(String tagEntry) {
         return Arrays.stream(tagEntry.trim().split("\\s+"))
-                .map(tagStr -> checkValidTag(tagEntry))
+                .map(tagStr -> parseValidTag(tagEntry))
                 .collect(Collectors.toSet());
     }
 
