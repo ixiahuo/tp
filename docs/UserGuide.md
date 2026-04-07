@@ -183,21 +183,23 @@ Format: `tag INDEX [a/TAGS_TO_ADD] [c/COLOUR_OF_TAGS_TO_ADD] [d/TAGS_TO_DELETE]`
 * **Either the `a/` or the `d/` field must be specified. Both fields cannot be specified at the same time.**
 * If multiple tags are to be added or deleted, their names are to be separated by spaces.
 * There are 5 colour options for `c/`: `RED`, `YELLOW`, `GREEN`, `BLUE` (default), and `PURPLE`.
+  * either specify one colour per tag (separated by space, i.e `c/RED GREEN`), or specify one single colour to be applied to all tags
   * case-insensitive, so `c/red` and `c/RED` are both valid
-* When adding, specifying the optional `c/` field applies the colour to all tags that are being added.
 * When deleting, do not use the `c/` field.
 
 Examples:
 1. `tag 1 a/IT Intern c/RED` adds two tags `IT` and `Intern` with a **RED** colour.
 2. `tag 1 d/Best_Employee` deletes a tag `Best_Employee`.
 3. `tag 1 a/HR Best_Employee` adds two tags `HR` and `Best_Employee` with the default colouration.
-
+4. `tag 1 a/Admin HR c/YELLOW GREEN` adds one **YELLOW** tag named `Admin` and one **GREEN** tag named `HR`.
 <box type="info" seamless>
 
-**Notes on no duplicate warning**
+**Notes on duplicate handling**
 > Duplicate tag(s) (i.e. the contact already has a tag of that name, regardless of colour) will be silently ignored when adding a mix of duplicate and non-duplicate tag(s). 
 
 > Likewise, non-existent tag(s) (i.e. the contact does not have a tag with that name) will be silently ignored when deleting a mix of existing and non-existing tag(s).
+
+> Trying to add duplicate tag names, even with different colours, will throw an error. (i.e. `tag 1 a/TAG TAG c/RED BLUE` is not allowed)
 
 </box>
 <br>

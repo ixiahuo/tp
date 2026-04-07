@@ -3,7 +3,6 @@ package seedu.address.storage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -18,7 +17,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Salary;
 import seedu.address.model.tag.Tag;
-import seedu.address.model.tag.TagNameComparator;
+import seedu.address.model.tag.TagSet;
 
 /**
  * Jackson-friendly version of {@link Person}.
@@ -120,8 +119,7 @@ class JsonAdaptedPerson {
         }
         final Address modelAddress = new Address(address);
 
-        final Set<Tag> modelTags = new TreeSet<>(new TagNameComparator());
-        modelTags.addAll(personTags);
+        final Set<Tag> modelTags = new TagSet(personTags);
 
         final String effectiveSalary = (salary == null) ? "" : salary;
         if (!Salary.isValidSalary(effectiveSalary)) {

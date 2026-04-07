@@ -3,11 +3,13 @@ package seedu.address.logic.parser;
 import static java.util.Objects.requireNonNull;
 
 import java.time.LocalDate;
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.TreeSet;
+import java.util.logging.Logger;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -20,7 +22,7 @@ import seedu.address.model.person.Phone;
 import seedu.address.model.person.Salary;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.TagColour;
-import seedu.address.model.tag.TagNameComparator;
+import seedu.address.model.tag.TagSet;
 
 /**
  * Contains utility methods used for parsing strings in the various *Parser classes.
@@ -29,6 +31,13 @@ public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
     public static final String MESSAGE_NO_INDEX = "Index not provided.";
+
+    public static final String MESSAGE_DUPLICATE_TAGNAME = "Duplicate tag names are not allowed!";
+    public static final String MESSAGE_TAGNAME_NUMBER_AND_COLOUR_NUMBERS_DIFF = "The number of tags to add must match"
+            + " the number of colours specified (Unless all tags are to be the same colour, in that case,"
+            + " specify only ONE colour)";
+
+    private static final Logger logger = LogsCenter.getLogger(TagCommandParser.class);
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it.
@@ -136,50 +145,105 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String tag} into a {@code Tag}.
+     * Parses a {@code String tagName} and {@code TagColour } into a {@code Tag}.
      * Leading and trailing whitespaces will be trimmed.
      * Extra internal whitespaces will be reduced to one.
      *
      * @throws ParseException if the given {@code tag} is invalid.
      */
-    public static Tag parseTag(String tag, TagColour tagColour) throws ParseException {
-        requireNonNull(tag);
-        String trimmedTag = normaliseWhiteSpace(tag);
+    public static Tag parseTag(String tagName, TagColour tagColour) throws ParseException {
+        requireNonNull(tagName);
+        requireNonNull(tagColour);
+
+        String trimmedTag = normaliseWhiteSpace(tagName);
+
+        logger.finest("Attempting to create Tag: " + trimmedTag + " " + tagColour.name());
         if (!Tag.isValidTagName(trimmedTag)) {
+            logger.finer("Invalid TagName " + trimmedTag);
             throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
         }
         if (!Tag.isValidTagLength(trimmedTag)) {
+            logger.finer("Invalid Tag Length " + trimmedTag);
             throw new ParseException(Tag.MESSAGE_CONSTRAINTS_LENGTH);
         }
         return new Tag(trimmedTag, tagColour);
     }
 
     /**
+     * Parses a {@code String tagName} into a {@code Tag}.
+     * Leading and trailing whitespaces will be trimmed.
+     * Extra internal whitespaces will be reduced to one.
+     *
+     * @throws ParseException if the given {@code tag} is invalid.
+     */
+    public static Tag parseTag(String tagName) throws ParseException {
+        requireNonNull(tagName);
+        return new Tag(tagName, TagColour.DEFAULT);
+    }
+
+    /**
      * Parses {@code Collection<String> tags} into a {@code Set<Tag>}.
      */
-    public static Set<Tag> parseTags(Collection<String> tags) throws ParseException {
+    public static Set<Tag> parseTags(List<String> tags) throws ParseException {
         return parseTags(tags, TagColour.DEFAULT);
     }
 
     /**
      * Parses {@code Collection<String> tags} into a {@code Set<Tag>}.
      */
-    public static Set<Tag> parseTags(Collection<String> tags, String userInputTagColour) throws ParseException {
-        requireNonNull(userInputTagColour);
-        Optional<TagColour> colour = TagColour.getTagColourByUserInputName(userInputTagColour);
+    public static Set<Tag> parseTags(List<String> tags, List<String> userInputTagColours) throws ParseException {
+        requireNonNull(tags);
+        requireNonNull(userInputTagColours);
+        assert(!tags.isEmpty());
+        assert(!userInputTagColours.isEmpty());
 
-        if (colour.isPresent()) {
-            return parseTags(tags, colour.get());
+        if (hasDuplicateTags(tags)) {
+            logger.finer("Duplicate Tags specified");
+            throw new ParseException(MESSAGE_DUPLICATE_TAGNAME);
         }
 
-        throw new ParseException(TagColour.MESSAGE_INVALID_COLOUR);
+        boolean isUsingOneColour = (userInputTagColours.size() == 1);
+        logger.finest("Detect only one colour?: " + isUsingOneColour);
 
+        Optional<TagColour> currentColour = TagColour.getTagColourByUserInputName(userInputTagColours.get(0));
+        if (isUsingOneColour && currentColour.isPresent()) {
+            logger.finest("Detected only one valid colour. " + currentColour.get());
+            return parseTags(tags, currentColour.get());
+        }
+
+        if (userInputTagColours.size() != tags.size()) {
+            logger.finer("Invalid number of colours. Number of colours specified: "
+                    + userInputTagColours.size() + "\nNumber of tags specified: " + tags.size());
+            throw new ParseException(MESSAGE_TAGNAME_NUMBER_AND_COLOUR_NUMBERS_DIFF);
+        }
+
+        String colourName;
+        final Set<Tag> tagSet = new TagSet();
+        for (int i = 0; i < tags.size(); i += 1) {
+            colourName = userInputTagColours.get(i);
+            currentColour = TagColour.getTagColourByUserInputName(colourName);
+
+            if (currentColour.isEmpty()) {
+                logger.finer("Invalid Colour Detected: " + colourName);
+                throw new ParseException(TagColour.MESSAGE_INVALID_COLOUR);
+            }
+
+            tagSet.add(parseTag(tags.get(i), currentColour.get()));
+        }
+
+        logger.finer("Colours successfully parsed");
+        return tagSet;
     }
 
-    private static Set<Tag> parseTags(Collection<String> tags, TagColour tagColour) throws ParseException {
+    private static Set<Tag> parseTags(List<String> tags, TagColour tagColour) throws ParseException {
         requireNonNull(tags);
+        assert(!tags.isEmpty());
 
-        final Set<Tag> tagSet = new TreeSet<>(new TagNameComparator());
+        if (hasDuplicateTags(tags)) {
+            throw new ParseException(MESSAGE_DUPLICATE_TAGNAME);
+        }
+
+        final Set<Tag> tagSet = new TagSet();
         for (String tagName : tags) {
             tagSet.add(parseTag(tagName, tagColour));
         }
@@ -235,5 +299,15 @@ public class ParserUtil {
 
         //remove spaces around forward slashes (eg "S / O" -> "S/O")
         return basicNormalized.replaceAll("\\s*/\\s*", "/");
+    }
+
+    private static boolean hasDuplicateTags(List<String> tagNames) {
+        Set<String> distinctTagNames = new HashSet<>();
+        for (String tagName : tagNames) {
+            if (!distinctTagNames.add(tagName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
