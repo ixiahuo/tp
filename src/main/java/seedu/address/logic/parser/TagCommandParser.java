@@ -6,8 +6,9 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADD_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_COLOUR_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DELETE_TAG;
 
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -22,8 +23,6 @@ import seedu.address.model.tag.Tag;
  * Parses input arguments and creates a new TagCommand object
  */
 public class TagCommandParser implements Parser<TagCommand> {
-    public static final String MESSAGE_USELESS_COLOUR = "Colours are invalid when not creating Tags.\n\n"
-            + TagCommand.MESSAGE_USAGE;
 
     private static final Logger logger = LogsCenter.getLogger(TagCommandParser.class);
 
@@ -35,7 +34,7 @@ public class TagCommandParser implements Parser<TagCommand> {
      */
     public TagCommand parse(String args) throws ParseException {
         requireNonNull(args);
-        logger.finer("Parsing Tag Commands");
+        logger.finer("Parsing Tag Command");
 
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_ADD_TAG, PREFIX_DELETE_TAG, PREFIX_COLOUR_TAG);
@@ -56,22 +55,24 @@ public class TagCommandParser implements Parser<TagCommand> {
         Set<Tag> tagsToUpdate;
         Optional<String> tagsAsStringToAdd = argMultimap.getValue(PREFIX_ADD_TAG);
         Optional<String> tagsAsStringToDelete = argMultimap.getValue(PREFIX_DELETE_TAG);
-        Optional<String> colourGiven = argMultimap.getValue(PREFIX_COLOUR_TAG);
+        Optional<String> coloursAsStringToAdd = argMultimap.getValue(PREFIX_COLOUR_TAG);
 
         if (tagsAsStringToAdd.isPresent()) {
-            if (colourGiven.isPresent()) {
-                tagsToUpdate = parseTagsForEdit(Set.of(tagsAsStringToAdd.get().split("\\s+")),
-                        colourGiven.get());
+            logger.finest("Preparing to add tags: ");
+            if (coloursAsStringToAdd.isPresent()) {
+                tagsToUpdate = parseTagsForEdit(List.of(tagsAsStringToAdd.get().split("\\s+")),
+                        Arrays.stream(coloursAsStringToAdd.get().split("\\s+")).toList());
             } else {
-                tagsToUpdate = parseTagsForEdit(Set.of(tagsAsStringToAdd.get().split("\\s+")));
+                tagsToUpdate = parseTagsForEdit(List.of(tagsAsStringToAdd.get().split("\\s+")));
             }
-            logger.finest("Adding tags: " + tagsToUpdate.toString());
+            logger.finer("Adding tags: " + tagsToUpdate.toString());
             return new TagCommand(index, tagsToUpdate, true);
         }
 
         if (tagsAsStringToDelete.isPresent()) {
-            tagsToUpdate = parseTagsForEdit(Set.of(tagsAsStringToDelete.get().split("\\s+")));
-            logger.finest("Tags to delete: " + tagsToUpdate.toString());
+            logger.finest("Preparing to delete tags: ");
+            tagsToUpdate = parseTagsForEdit(List.of(tagsAsStringToDelete.get().split("\\s+")));
+            logger.finer("Tags to delete: " + tagsToUpdate.toString());
             return new TagCommand(index, tagsToUpdate, false);
         }
         logger.finer("ERROR: TagCommandParser has no add or delete any tags fields.");
@@ -83,21 +84,21 @@ public class TagCommandParser implements Parser<TagCommand> {
      * If {@code tags} contain only one element which is an empty string, it will be parsed into a
      * {@code Set<Tag>} containing zero tags.
      */
-    private Set<Tag> parseTagsForEdit(Collection<String> tags, String colour) throws ParseException {
-        return ParserUtil.parseTags(processTagStrings(tags), colour);
+    private Set<Tag> parseTagsForEdit(List<String> tags, List<String> colours) throws ParseException {
+        return ParserUtil.parseTags(processTagStrings(tags), colours);
     }
 
-    private Set<Tag> parseTagsForEdit(Collection<String> tags) throws ParseException {
+    private Set<Tag> parseTagsForEdit(List<String> tags) throws ParseException {
         return ParserUtil.parseTags(processTagStrings(tags));
     }
 
-    private Collection<String> processTagStrings(Collection<String> tags) {
+    private List<String> processTagStrings(List<String> tags) {
         assert tags != null;
 
         if (tags.isEmpty()) {
-            return Set.of();
+            return List.of();
         }
 
-        return tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
+        return tags.size() == 1 && tags.contains("") ? Collections.emptyList() : tags;
     }
 }
