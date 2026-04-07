@@ -126,4 +126,5 @@ public class CertContainsDatePredicateTest {
         CertContainsDatePredicate predicate = new CertContainsDatePredicate(dateToCompare);
         String expected = CertContainsDatePredicate.class.getCanonicalName() + "{expiry date=" + dateToCompare + "}";
         assertEquals(expected, predicate.toString());
+    }
 }
