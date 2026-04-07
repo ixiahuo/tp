@@ -17,7 +17,7 @@
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Setting up, getting started**
+## **Setting Up, Getting Started**
 
 Refer to the guide [_Setting up and getting started_](SettingUp.md).
 
@@ -225,7 +225,7 @@ The current single-state backup in `ModelManager` can only support undoing a max
 2. Changing the implementation of `Model#undoAddressBook()`, to move the pointer backward in the history list to restore a previous state.
 3. Updating the "Purge" logic: If a new data-modifying command is executed after an `undo`, all "redoable" states at the end of the list must be deleted.
 
-#### Design considerations:
+#### Design Considerations:
 
 **Aspect: How undo executes:**
 
@@ -241,7 +241,7 @@ Due to time constraints, Alternative 1 was implemented.
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Documentation, logging, testing, configuration, dev-ops**
+## **Documentation, Logging, Testing, Configuration, Dev-Ops**
 
 * [Documentation guide](Documentation.md)
 * [Testing guide](Testing.md)
@@ -253,7 +253,7 @@ Due to time constraints, Alternative 1 was implemented.
 
 ## **Appendix: Requirements**
 
-### Product scope
+### Product Scope
 
 **Target user profile**:
 
@@ -270,7 +270,7 @@ The app does not support managing larger workgroups beyond the average startup s
 and will only manage critical employee-related information such as contact details, departments,
 team structures and salaries.
 
-### User stories
+### User Stories
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
@@ -306,7 +306,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* `     | user who wants to check employees with missing details                        | view highlighted missing details of employees                                                                      | efficiently see missing information that I have to fill in                                                    |
 | `* `     | user who is dealing with employee qualifications                              | filter out "No Expiry" certificates during an expiry search                                                        | only see employees whose certifications are actually past a deadline                                          |
 
-### Use cases
+### Use Cases
 
 (For all use cases below, the **System** is the `Big Brother` and the **Actor** is the `user`, unless specified otherwise)
 
@@ -421,6 +421,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 *{More to be added}*
 
 ### Non-Functional Requirements
+
 #### Environment
 1.  Should work on any _mainstream OS_ as long as it has Java `17` installed.
 2.  Should be fully usable offline, without remote services nor servers.
@@ -460,7 +461,11 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Appendix: Instructions for manual testing**
+## **Appendix: Planned Enhancements**
+
+--------------------------------------------------------------------------------------------------------------------
+
+## **Appendix: Instructions for Manual Testing**
 
 Given below are instructions to test the app manually.
 
@@ -471,7 +476,7 @@ testers are expected to do more *exploratory* testing
 
 </box>
 
-### Launch and shutdown
+### Launch and Shutdown
 
 1. Initial launch
 
