@@ -10,7 +10,6 @@ import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import seedu.address.commons.core.index.Index;
@@ -27,7 +26,8 @@ import seedu.address.model.person.Phone;
 import seedu.address.model.person.Salary;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.TagColour;
-import seedu.address.model.tag.TagNameComparator;
+import seedu.address.model.tag.TagSet;
+
 
 /**
  * Tag or DeTag a person identified using it's displayed index from the address book.
@@ -39,7 +39,7 @@ public class TagCommand extends Command {
             "%s : adds or deletes tags from an existing contact according to the currently displayed list\n\n"
             + "Format : %s INDEX [%sTAGS_TO_ADD] [%sCOLOUR_OF_TAGS_TO_ADD] [%sTAGS_TO_DELETE] \n"
             + "Example : %s 1 %sJunior_Dev Cloud Project_1 %s%s\n\n"
-            + "Multiple tags are separated with spaces.\n%s",
+            + "Multiple tags (and colours) are separated with spaces.\n%s",
             COMMAND_WORD,
             COMMAND_WORD, PREFIX_ADD_TAG, PREFIX_COLOUR_TAG, PREFIX_DELETE_TAG,
             COMMAND_WORD, PREFIX_ADD_TAG, PREFIX_COLOUR_TAG, TagColour.RED.name(),
@@ -82,8 +82,7 @@ public class TagCommand extends Command {
 
         Person personToEdit = lastShownList.get(targetIndex.getZeroBased());
 
-        Set<Tag> updatedTags = new TreeSet<>(new TagNameComparator());
-        updatedTags.addAll(personToEdit.getTags());
+        Set<Tag> updatedTags = new TagSet(personToEdit.getTags());
         Set<Tag> sharedTags = updatedTags.stream().filter(tagsToUpdate::contains)
                 .collect(Collectors.toSet());
 
@@ -116,8 +115,7 @@ public class TagCommand extends Command {
         Salary updatedSalary = personToEdit.getSalary();
         ArrayList<Certificate> existingCerts = personToEdit.getCertificates();
 
-        Set<Tag> updatedTags = new TreeSet<>(new TagNameComparator());
-        updatedTags.addAll(personToEdit.getTags());
+        Set<Tag> updatedTags = new TagSet(personToEdit.getTags());
 
         if (isAdd) {
             updatedTags.addAll(tagsToUpdate);

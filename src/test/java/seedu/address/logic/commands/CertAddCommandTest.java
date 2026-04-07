@@ -9,7 +9,6 @@ import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
 import java.util.ArrayList;
-import java.util.TreeSet;
 
 import org.junit.jupiter.api.Test;
 
@@ -27,8 +26,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Salary;
-import seedu.address.model.tag.Tag;
-import seedu.address.model.tag.TagNameComparator;
+import seedu.address.model.tag.TagSet;
 import seedu.address.testutil.PersonBuilder;
 
 public class CertAddCommandTest {
@@ -62,7 +60,7 @@ public class CertAddCommandTest {
         ArrayList<Certificate> certList = new ArrayList<>();
         certList.add(new Certificate(new CertName("cert")));
         Person personWithCert = new Person(new Name("John"), new Phone("+65 88888888"),
-                new Email("john@gmail.com"), new Address("yishun"), new TreeSet<Tag>(new TagNameComparator()),
+                new Email("john@gmail.com"), new Address("yishun"), new TagSet(),
                 new Salary("2000"), certList);
         Model model = new ModelManager(new AddressBook(), new UserPrefs());
         model.addPerson(personWithCert);

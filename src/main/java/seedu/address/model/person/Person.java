@@ -6,12 +6,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
-import java.util.TreeSet;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.cert.Certificate;
 import seedu.address.model.tag.Tag;
-import seedu.address.model.tag.TagNameComparator;
+import seedu.address.model.tag.TagSet;
 
 /**
  * Represents a Person in the address book.
@@ -64,7 +63,7 @@ public class Person {
      * Chains to the main constructor with an empty HashSet.
      */
     public Person(Name name, Phone phone, Email email, Address address, Salary salary) {
-        this(name, phone, email, address, new TreeSet<>(new TagNameComparator()), salary);
+        this(name, phone, email, address, new TagSet(), salary);
     }
 
     /**
