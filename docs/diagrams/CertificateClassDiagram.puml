@@ -20,6 +20,6 @@ Class CertExpiry #9abbf8 {
 }
 
 Certificate *--> "1" CertName
-Certificate *--> "1" CertExpiry
+Certificate *--> "0..1" CertExpiry
 
 @enduml

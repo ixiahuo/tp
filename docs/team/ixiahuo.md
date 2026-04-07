@@ -10,10 +10,10 @@ Big Brother is a desktop address book application used for managing employee det
 Given below are my contributions to the project.
 
 * **New Feature**: Added the ability to sort records.
-  * What it does: This feature allows the user to sort records according to a certain criteria. By default, the records are displayed according to the most updated list order.
+  * What it does: This feature allows the user to sort records by alphabetical name order. 
+  * By default, the records are displayed according to the most updated list order.
   * Justification: This feature improves the product significantly because a user can have a clear and structured view of records that require more attention or are of higher priority.
   * Highlights: This enhancement affects existing commands and commands to be added in future. It required an in-depth analysis of design alternatives. The implementation too was challenging as it required changes to existing commands.
-  * Credits: *{mention here if you reused any code/ideas from elsewhere or if a third-party library is heavily used in the feature so that a reader can make a more accurate judgement of how much effort went into the feature}*
 
 * **New Feature**: Added the ability to add/delete/edit certificates for a person.
 * What it does: This feature allows the user to add/delete/edit certificates for a person. Certificates comprise of a name and an expiry date.
@@ -22,7 +22,7 @@ Given below are my contributions to the project.
 * **Code contributed**: [RepoSense link]()
 
 * **Project management**:
-  * Managed release `v1.1` on GitHub
+  * Managed release `v1.1`, `v1.4` and `v1.5` on GitHub
 
 * **Enhancements to existing features**:
   * -- TODO --
@@ -34,7 +34,9 @@ Given below are my contributions to the project.
     * cert-edit
     * sort
   * Developer Guide:
-    * -- TODO --
+    * Certificate field and class diagram
+    * Find feature
+    * Proposed feature: multiple undo
 
 * **Community**:
   * PRs reviewed (with non-trivial review comments): -- TODO --

@@ -162,6 +162,34 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### Certificate field
+
+A `Person` can now contain an `ArrayList<Certificate>` to keep track of the certificates that a person holds. A `Certificate` must comprise of a `CertName`, representing the name of the certificate, and may contain an optional `CertExpiry`, representing the expiration date of the certificate.
+
+<puml src="diagrams/CertificateClassDiagram.puml" alt="CertificateClassDiagram" />
+
+### Find feature
+
+The `find` mechanism is implemented within ModelManager. It allows the user to display only profiles in the address book that satisfy a specified criteria.
+
+### Implementation
+
+The `find` mechanism is facilitated by ModelManager which implements the `updateFilteredPersonList(Predicate<Person>)` method. The `FindCommand` object supplies the predicate to this method based on the parameters given. Below is a class diagram displaying the predicates that may be contained by the `FindCommand` object.
+
+<puml src="diagrams/FindClassDiagram.puml" alt="FindClassDiagram" />
+
+Given below are the internal steps taken to execute the `find` feature in an example use scenario.
+
+Step 1. The user executes the command `find n/John`. The `AddressBookParser` extracts the command word `find` and constructs a `FindCommandParser`.
+
+Step 2. The `FindCommandParser` extracts the parameter value `John` and constructs a `Predicate<Person>` that tests if the `Person` object has a `Name` that contains the value `John`. 
+
+Step 3. The `FindCommandParser` creates a `FindCommand` object with the predicate and calls `FindCommand#execute(Model)`
+
+Step 4. `FindCommand#execute(Model)` executes the `updateFilteredPersonList(Predicate<Person>)` method that tests all `Persons` with the predicate.
+
+Step 5. Only `Persons` that return `true` with the supplied predicate are kept in the filtered list.
+
 ###  Undo feature
 
 The `undo` mechanism is implemented within ModelManager. It allows the user to restore the address book to its immediate previous state after a data-modifying command, but only once.

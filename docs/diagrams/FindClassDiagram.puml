@@ -60,7 +60,7 @@ TagContainsKeywordsPredicate .up.|> Predicate
 CertContainsKeywordsPredicate .up.|> Predicate
 CertContainsDatePredicate .up.|> Predicate
 
-CombinedPredicate o--> "*" Predicate : composite
+CombinedPredicate *--> "*" Predicate
 
 ' Dependency on Person
 Predicate .down.> Person : tests >
