@@ -24,7 +24,7 @@ public class CombinedPredicateTest {
         CertExpiry dateToCompare = new CertExpiry(LocalDate.parse("2020-03-04"));
         CertContainsDatePredicate datePredicate = new CertContainsDatePredicate(dateToCompare);
 
-        ArrayList<Certificate> keywords = new ArrayList<>(List.of(new Certificate(new CertName("First Aid"), null)));
+        ArrayList<Certificate> keywords = new ArrayList<>(List.of(new Certificate(new CertName("First Aid"))));
         CertContainsKeywordsPredicate keywordPredicate = new CertContainsKeywordsPredicate(keywords);
 
         CombinedPredicate combinedPredicate = new CombinedPredicate(Arrays.asList(datePredicate, keywordPredicate));
