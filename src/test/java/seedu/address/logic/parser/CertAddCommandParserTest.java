@@ -29,14 +29,12 @@ public class CertAddCommandParserTest {
     }
 
     @Test
-    public void parse_noExpiryDate_failure() {
-        try {
-            CertAddCommand certAddCommand = parser.parse("1 n/Accounting");
-        } catch (ParseException e) {
-            assertEquals(new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, CertAddCommand.MESSAGE_USAGE)).getMessage(),
-                    e.getMessage());
-        }
+    public void parse_noExpiryDate_success() throws Exception {
+        CertAddCommand certAddCommand = parser.parse("1 n/Accounting");
+        CertAddCommand expectedCommand = new CertAddCommand(Index.fromOneBased(1),
+                new Certificate(new CertName("Accounting"),
+                        new CertExpiry(null)));
+        assertEquals(expectedCommand, certAddCommand);
     }
 
     @Test
