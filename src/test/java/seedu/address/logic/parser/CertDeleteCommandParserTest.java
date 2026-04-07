@@ -27,7 +27,7 @@ public class CertDeleteCommandParserTest {
     @Test
     public void parse_noName_failure() {
         try {
-            CertDeleteCommand certDeleteCommand = parser.parse("1 e/2028-03-05");
+            parser.parse("1 e/2028-03-05");
         } catch (ParseException e) {
             assertEquals(new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, CertDeleteCommand.MESSAGE_USAGE)).getMessage(),
@@ -38,7 +38,7 @@ public class CertDeleteCommandParserTest {
     @Test
     public void parse_noIndex_failure() {
         try {
-            CertDeleteCommand certDeleteCommand = parser.parse("n/Accounting");
+            parser.parse("n/Accounting");
         } catch (ParseException e) {
             assertEquals(new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, CertDeleteCommand.MESSAGE_USAGE)).getMessage(),
@@ -49,7 +49,7 @@ public class CertDeleteCommandParserTest {
     @Test
     public void parse_duplicateName_failure() {
         try {
-            CertDeleteCommand certDeleteCommand = parser.parse("1 n/Accounting n/Marketing");
+            parser.parse("1 n/Accounting n/Marketing");
         } catch (ParseException e) {
             assertEquals(new ParseException(Messages.getErrorMessageForDuplicatePrefixes(PREFIX_CERT_NAME))
                     .getMessage(),

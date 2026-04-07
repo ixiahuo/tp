@@ -145,32 +145,31 @@ public class FindCommandTest {
         assertEquals(Arrays.asList(ALICE, BENSON, DANIEL), model.getFilteredPersonList());
     }
 
-    // @Test
-    // public void execute_multipleCertPhrases_multiplePersonsFound() {
-    //     // Test logic: (Cert: "AWS Cloud") OR (Cert: "Java Developer")
-    //     String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 2);
-    //     CertContainsKeywordsPredicate certPredicate = new CertContainsKeywordsPredicate(
-    //             new ArrayList<>(Arrays.asList(new Certificate(new CertName("AWS Cloud")),
-    //                 new Certificate(new CertName("Java Developer")))));
-    //     CombinedPredicate combined = new CombinedPredicate(List.of(certPredicate));
-    //     FindCommand command = new FindCommand(combined);
-    //     expectedModel.updateFilteredPersonList(combined);
-    //     assertCommandSuccess(command, model, expectedMessage, expectedModel);
-    // }
+    @Test
+    public void execute_multipleCertPhrases_multiplePersonsFound() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
+        CertContainsKeywordsPredicate certPredicate = new CertContainsKeywordsPredicate(
+                new ArrayList<>(Arrays.asList(new Certificate(new CertName("Account")),
+                    new Certificate(new CertName("Social")))));
+        CombinedPredicate combined = new CombinedPredicate(List.of(certPredicate));
+        FindCommand command = new FindCommand(combined);
+        expectedModel.updateFilteredPersonList(combined);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+    }
 
-    // @Test
-    // public void execute_combinedNameAndCert_personFound() {
-    //     // Test logic: (Name: "Alice") AND (Cert: "AWS Cloud")
-    //     String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
-    //     NameContainsKeywordsPredicate namePredicate = new NameContainsKeywordsPredicate(List.of("Alice"));
-    //     CertContainsKeywordsPredicate certPredicate = new CertContainsKeywordsPredicate(
-    //             new ArrayList<>(List.of(new Certificate(new CertName("AWS Cloud")))));
-    //     CombinedPredicate combined = new CombinedPredicate(List.of(namePredicate, certPredicate));
-    //     FindCommand command = new FindCommand(combined);
+    @Test
+    public void execute_combinedNameAndCert_personFound() {
+        // Test logic: (Name: "Benson") AND (Cert: "Social")
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
+        NameContainsKeywordsPredicate namePredicate = new NameContainsKeywordsPredicate(List.of("Benson"));
+        CertContainsKeywordsPredicate certPredicate = new CertContainsKeywordsPredicate(
+                new ArrayList<>(List.of(new Certificate(new CertName("Social")))));
+        CombinedPredicate combined = new CombinedPredicate(List.of(namePredicate, certPredicate));
+        FindCommand command = new FindCommand(combined);
 
-    //     expectedModel.updateFilteredPersonList(combined);
-    //     assertCommandSuccess(command, model, expectedMessage, expectedModel);
-    // }
+        expectedModel.updateFilteredPersonList(combined);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+    }
 
     @Test
     public void cert_equals() {

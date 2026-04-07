@@ -8,6 +8,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+// import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -22,7 +23,6 @@ import seedu.address.model.cert.Certificate;
 import seedu.address.model.person.CertContainsDatePredicate;
 import seedu.address.model.person.CertContainsKeywordsPredicate;
 import seedu.address.model.person.CombinedPredicate;
-import seedu.address.model.person.Name;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.TagContainsKeywordsPredicate;
@@ -80,33 +80,35 @@ public class FindCommandParser implements Parser<FindCommand> {
     private NameContainsKeywordsPredicate getNamePredicate(ArgumentMultimap argMultimap) throws ParseException {
         try {
             List<String> names = argMultimap.getAllValues(PREFIX_NAME)
-                .stream().map(String::trim).map(nameStr -> checkValidName(nameStr)).collect(Collectors.toList());
+                .stream().map(String::trim).map(nameStr -> parseValidName(nameStr)).collect(Collectors.toList());
             return new NameContainsKeywordsPredicate(names);
         } catch (RuntimeException re) {
-            throw new ParseException(Name.MESSAGE_CONSTRAINTS);
+            throw new ParseException(re.getCause().getMessage());
         }
     }
 
-    private String checkValidName(String input) {
+    private TagContainsKeywordsPredicate getTagPredicate(ArgumentMultimap argMultimap) throws ParseException {
         try {
-            return ParserUtil.parseName(input).fullName;
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
+            List<Set<Tag>> tagGroups = argMultimap.getAllValues(PREFIX_TAG)
+                .stream().map(this::parseAndGroupTags).collect(Collectors.toList());
+            return new TagContainsKeywordsPredicate(tagGroups);
+        } catch (RuntimeException re) {
+            throw new ParseException(re.getCause().getMessage());
         }
+
     }
 
-    private TagContainsKeywordsPredicate getTagPredicate(ArgumentMultimap argMultimap) {
-        List<Set<Tag>> tagGroups = argMultimap.getAllValues(PREFIX_TAG)
-            .stream().map(this::parseAndGroupTags).collect(Collectors.toList());
-        return new TagContainsKeywordsPredicate(tagGroups);
-    }
+    private CertContainsKeywordsPredicate getCertPredicate(ArgumentMultimap argMultimap) throws ParseException {
+        try {
+            List<Certificate> certsList = argMultimap.getAllValues(PREFIX_CERT)
+                .stream().map(name -> name.trim()).filter(name -> !name.isEmpty())
+                .map(name -> new Certificate(parseVaildCertName(name))).collect(Collectors.toList());
+            ArrayList<Certificate> certs = new ArrayList<>(certsList);
+            return new CertContainsKeywordsPredicate(certs);
+        } catch (RuntimeException re) {
+            throw new ParseException(re.getCause().getMessage());
+        }
 
-    private CertContainsKeywordsPredicate getCertPredicate(ArgumentMultimap argMultimap) {
-        List<Certificate> certsList = argMultimap.getAllValues(PREFIX_CERT)
-            .stream().map(name -> name.trim()).filter(name -> !name.isEmpty())
-            .map(name -> new Certificate(new CertName(name))).collect(Collectors.toList());
-        ArrayList<Certificate> certs = new ArrayList<>(certsList);
-        return new CertContainsKeywordsPredicate(certs);
     }
 
     private CertContainsDatePredicate getCertExpPredicate(ArgumentMultimap argMultimap) throws ParseException {
@@ -114,9 +116,33 @@ public class FindCommandParser implements Parser<FindCommand> {
         return new CertContainsDatePredicate(expiry);
     }
 
+    private String parseValidName(String input) {
+        try {
+            return ParserUtil.parseName(input).fullName;
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Tag parseValidTag(String input) {
+        try {
+            return ParserUtil.parseTag(input);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private CertName parseVaildCertName(String input) {
+        try {
+            return ParserUtil.parseCertName(input);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private Set<Tag> parseAndGroupTags(String tagEntry) {
         return Arrays.stream(tagEntry.trim().split("\\s+"))
-                .map(Tag::new)
+                .map(tagStr -> parseValidTag(tagEntry))
                 .collect(Collectors.toSet());
     }
 

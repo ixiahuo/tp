@@ -23,7 +23,6 @@ public class JsonAdaptedPersonTest {
     private static final String INVALID_PHONE = "+651234";
     private static final String INVALID_ADDRESS = "9*1 Tah Ching Road";
     private static final String INVALID_EMAIL = "example.com";
-    private static final String INVALID_TAG = "friend, family";
     private static final String INVALID_SALARY = "two thousand";
     private static final String INVALID_CERTIFICATE_EXPIRY = "9999-99-99";
 

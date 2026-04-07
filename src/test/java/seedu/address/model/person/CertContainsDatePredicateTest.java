@@ -1,5 +1,6 @@
 package seedu.address.model.person;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -28,8 +29,6 @@ public class CertContainsDatePredicateTest {
         Certificate futureMonth = new Certificate(new CertName("A"), new CertExpiry(LocalDate.parse("2020-04-02")));
         Certificate futureYear = new Certificate(new CertName("A"), new CertExpiry(LocalDate.parse("2021-04-02")));
 
-        Certificate currentDate = new Certificate(new CertName("A"), dateToCompare);
-
         // Test on dates after
         assertFalse(predicate.test(new PersonBuilder().withCertificates(new ArrayList<Certificate>(
                 List.of(futureDay, futureMonth, futureYear))).build()));
@@ -44,7 +43,6 @@ public class CertContainsDatePredicateTest {
         Certificate pastMonth = new Certificate(new CertName("A"), new CertExpiry(LocalDate.parse("2020-02-02")));
         Certificate pastYear = new Certificate(new CertName("A"), new CertExpiry(LocalDate.parse("2019-03-02")));
         Certificate futureDate = new Certificate(new CertName("A"), new CertExpiry(LocalDate.parse("2020-06-01")));
-
 
 
         assertTrue(predicate.test(new PersonBuilder().withCertificates(new ArrayList<Certificate>(
@@ -95,5 +93,38 @@ public class CertContainsDatePredicateTest {
 
         // return false since a permanent cert never expires
         assertFalse(predicate.test(person));
+    }
+
+    @Test
+    public void equals() {
+        CertExpiry firstDate = new CertExpiry(LocalDate.parse("2020-03-04"));
+        CertExpiry secondDate = new CertExpiry(LocalDate.parse("2020-05-05"));
+
+        CertContainsDatePredicate firstPredicate = new CertContainsDatePredicate(firstDate);
+        CertContainsDatePredicate secondPredicate = new CertContainsDatePredicate(secondDate);
+
+        // same object -> returns true
+        assertTrue(firstPredicate.equals(firstPredicate));
+
+        // same values -> returns true
+        CertContainsDatePredicate firstPredicateCopy = new CertContainsDatePredicate(firstDate);
+        assertTrue(firstPredicate.equals(firstPredicateCopy));
+
+        // different types -> returns false
+        assertFalse(firstPredicate.equals(1));
+
+        // null -> returns false
+        assertFalse(firstPredicate.equals(null));
+
+        // different date -> returns false
+        assertFalse(firstPredicate.equals(secondPredicate));
+    }
+
+    @Test
+    public void toStringMethod() {
+        CertExpiry dateToCompare = new CertExpiry(LocalDate.parse("2020-03-04"));
+        CertContainsDatePredicate predicate = new CertContainsDatePredicate(dateToCompare);
+        String expected = CertContainsDatePredicate.class.getCanonicalName() + "{expiry date=" + dateToCompare + "}";
+        assertEquals(expected, predicate.toString());
     }
 }

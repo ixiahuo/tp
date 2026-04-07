@@ -35,7 +35,7 @@ public class CertEditCommandParserTest {
     @Test
     public void parse_noName_failure() {
         try {
-            CertEditCommand certEditCommand = parser.parse("1 ee/2028-03-05");
+            parser.parse("1 ee/2028-03-05");
         } catch (ParseException e) {
             assertEquals(new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, CertEditCommand.MESSAGE_USAGE)).getMessage(),
@@ -46,7 +46,7 @@ public class CertEditCommandParserTest {
     @Test
     public void parse_noIndex_failure() {
         try {
-            CertEditCommand certEditCommand = parser.parse("n/Accounting ee/2028-03-05");
+            parser.parse("n/Accounting ee/2028-03-05");
         } catch (ParseException e) {
             assertEquals(new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, CertEditCommand.MESSAGE_USAGE)).getMessage(),
@@ -57,7 +57,7 @@ public class CertEditCommandParserTest {
     @Test
     public void parse_badDate_failure() {
         try {
-            CertEditCommand certEditCommand = parser.parse("1 n/Accounting ee/2028-31-05");
+            parser.parse("1 n/Accounting ee/2028-31-05");
         } catch (ParseException e) {
             assertEquals(new ParseException(CertExpiry.MESSAGE_CONSTRAINTS).getMessage(),
                     e.getMessage());
@@ -67,7 +67,7 @@ public class CertEditCommandParserTest {
     @Test
     public void parse_duplicateName_failure() {
         try {
-            CertEditCommand certEditCommand = parser.parse("1 n/Accounting n/Marketing ee/2028-31-05");
+            parser.parse("1 n/Accounting n/Marketing ee/2028-31-05");
         } catch (ParseException e) {
             assertEquals(new ParseException(Messages.getErrorMessageForDuplicatePrefixes(PREFIX_CERT_NAME))
                     .getMessage(),
@@ -78,7 +78,7 @@ public class CertEditCommandParserTest {
     @Test
     public void parse_duplicateNewName_failure() {
         try {
-            CertEditCommand certEditCommand = parser.parse("1 n/Accounting ne/Marketing ne/OSCP");
+            parser.parse("1 n/Accounting ne/Marketing ne/OSCP");
         } catch (ParseException e) {
             assertEquals(new ParseException(Messages.getErrorMessageForDuplicatePrefixes(PREFIX_CERT_EDIT_NAME))
                     .getMessage(),
@@ -89,7 +89,7 @@ public class CertEditCommandParserTest {
     @Test
     public void parse_duplicateNewExpiry_failure() {
         try {
-            CertEditCommand certEditCommand = parser.parse("1 n/Accounting ee/2028-03-05 ee/2028-03-06");
+            parser.parse("1 n/Accounting ee/2028-03-05 ee/2028-03-06");
         } catch (ParseException e) {
             assertEquals(new ParseException(Messages.getErrorMessageForDuplicatePrefixes(PREFIX_CERT_EDIT_DATE))
                     .getMessage(),

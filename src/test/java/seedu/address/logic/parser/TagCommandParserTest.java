@@ -20,8 +20,6 @@ import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.TagColour;
 
 public class TagCommandParserTest {
-    private static final String MESSAGE_INVALID_FORMAT =
-            String.format("%1$s", TagCommand.MESSAGE_USAGE);
 
     private TagCommandParser parser = new TagCommandParser();
 

@@ -178,7 +178,7 @@ public class ParserUtil {
      */
     public static Tag parseTag(String tagName) throws ParseException {
         requireNonNull(tagName);
-        return new Tag(tagName, TagColour.DEFAULT);
+        return parseTag(tagName, TagColour.DEFAULT);
     }
 
     /**

@@ -137,13 +137,6 @@ public class AddCommandParserTest {
 
     @Test
     public void parse_compulsoryFieldMissing_failure() {
-        Person expectedPerson = new PersonBuilder()
-                .withName(VALID_NAME_BOB)
-                .withPhone(VALID_PHONE_BOB)
-                .withEmail(VALID_EMAIL_BOB)
-                .withAddress(VALID_ADDRESS_BOB)
-                .withSalary("") // matches the hardcoded parser value
-                .build();
 
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE);
 

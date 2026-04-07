@@ -121,17 +121,9 @@ public class TagCommandTest {
 
     @Test
     public void execute_deleteNonexistentTagsUnfilteredList_failure() {
-        Person originalPerson = model.getFilteredPersonList().get(0);
 
         Set<Tag> toDelete = new TagSet();
         toDelete.add(new Tag("Non-existent"));
-
-        Person editedPerson = new Person(originalPerson.getName(),
-                originalPerson.getPhone(),
-                originalPerson.getEmail(),
-                originalPerson.getAddress(),
-                Set.of(),
-                originalPerson.getSalary());
 
         TagCommand tagCommand = new TagCommand(INDEX_FIRST_PERSON, toDelete, false);
 
