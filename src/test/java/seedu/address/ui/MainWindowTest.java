@@ -30,7 +30,7 @@ import seedu.address.model.person.Person;
 class MainWindowTest {
     private static final double DEFAULT_HEIGHT = 600;
     private static final double DEFAULT_WIDTH = 740;
-    private static final Path DEFAULT_PATH = Paths.get("data" , "addressbook.json");
+    private static final Path DEFAULT_PATH = Paths.get("data", "addressbook.json");
     private static final ObservableList<Person> EMPTY_LIST = FXCollections.observableArrayList();
 
     private MainWindow mainWindow;
@@ -46,12 +46,19 @@ class MainWindowTest {
         stage.show();
     }
 
+    /**
+     * Tests that a MainWindow can be constructed correctly with given dimensions.
+     */
     @Test
     void constructMainWindow_defaultDimensions_success() {
         assertEquals(DEFAULT_WIDTH, mainWindow.getRoot().getWidth());
         assertEquals(DEFAULT_HEIGHT, mainWindow.getRoot().getHeight());
     }
 
+    /**
+     * Tests that a MainWindow is correctly filled with the 3 components:
+     * personListPanelPlaceholder, statusbarPlaceholder, commandBoxPlaceholder.
+     */
     @Test
     void execute_fillInnerParts_success(FxRobot robot) throws TimeoutException {
         FxToolkit.setupFixture(() -> {
@@ -71,6 +78,9 @@ class MainWindowTest {
         });
     }
 
+    /**
+     * Tests that the MainWindow can be correctly shown.
+     */
     @Test
     void execute_show_success() throws TimeoutException {
         FxToolkit.setupFixture(() -> {
@@ -80,6 +90,9 @@ class MainWindowTest {
         });
     }
 
+    /**
+     * Tests that the helpWindow remains correctly shown on multiple calls.
+     */
     @Test
     void execute_handleHelp_success() throws TimeoutException {
         FxToolkit.setupFixture(() -> {
