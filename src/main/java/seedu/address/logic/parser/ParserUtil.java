@@ -37,6 +37,9 @@ public class ParserUtil {
             + " the number of colours specified (Unless all tags are to be the same colour, in that case,"
             + " specify only ONE colour)";
 
+    public static final String MESSAGE_EMPTY_TAG_LIST = "A Tag must be specified!";
+    public static final String MESSAGE_EMPTY_TAG_COLOUR_LIST = "A Tag must be specified!";
+
     private static final Logger logger = LogsCenter.getLogger(TagCommandParser.class);
 
     /**
@@ -185,6 +188,11 @@ public class ParserUtil {
      * Parses {@code Collection<String> tags} into a {@code Set<Tag>}.
      */
     public static Set<Tag> parseTags(List<String> tags) throws ParseException {
+
+        if (tags.isEmpty()) {
+            throw new ParseException(MESSAGE_EMPTY_TAG_LIST);
+        }
+
         return parseTags(tags, TagColour.DEFAULT);
     }
 
@@ -194,8 +202,14 @@ public class ParserUtil {
     public static Set<Tag> parseTags(List<String> tags, List<String> userInputTagColours) throws ParseException {
         requireNonNull(tags);
         requireNonNull(userInputTagColours);
-        assert(!tags.isEmpty());
-        assert(!userInputTagColours.isEmpty());
+
+        if (tags.isEmpty()) {
+            throw new ParseException(MESSAGE_EMPTY_TAG_LIST);
+        }
+
+        if (userInputTagColours.isEmpty()) {
+            throw new ParseException(MESSAGE_EMPTY_TAG_COLOUR_LIST);
+        }
 
         if (hasDuplicateTags(tags)) {
             logger.finer("Duplicate Tags specified");
