@@ -563,7 +563,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 1.  Should not rely on database management systems.
 2.  Should be formatted in human-readable format.
 3.  Should be saved locally in human-editable text file.
-4.  Should be recoverable in the event of corruption.
 
 ### Glossary
 
