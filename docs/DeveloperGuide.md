@@ -186,11 +186,15 @@ Step 2. The `FindCommandParser` extracts the parameter value `John` and construc
 
 Step 3. `FindCommandParser` adds both predicates into a `List<Predicate<Person>>` which is used to construct a `CombinedPredicate` object. A `CombinedPredicate` implements the interface `Predicate<Person>` and tests a `Person` against all predicates in the supplied list.
 
-Step 4. The `FindCommandParser` creates a `FindCommand` object with the `CombinedPredicate` object and calls `FindCommand#execute(Model)`
+Step 4. The `FindCommandParser` creates a `FindCommand` object with the `CombinedPredicate` object
 
-Step 5. `FindCommand#execute(Model)` executes the `updateFilteredPersonList(Predicate<Person>)` method that tests all `Persons` with the predicate.
+Step 5. The `FindCommand` object is passed to `LogicManager` by `FindCommandParser`
 
-Step 6. Only `Persons` that return `true` with the supplied predicate are kept in the filtered list.
+Step 6. `FindCommand#execute(Model)` is called by `LogicManager`
+
+Step 7. The `FindCommand` object executes the `updateFilteredPersonList(Predicate<Person>)` method that tests all `Persons` with the predicate.
+
+Step 8. Only `Persons` that return `true` with the supplied predicate are kept in the filtered list.
 
 ### Tagging feature
 
