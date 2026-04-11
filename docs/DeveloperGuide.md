@@ -588,6 +588,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 6. **Enhance the `undo` command's visual feedback**: After an `undo` operation, it can be difficult to see which entry changed. We plan to implement a brief highlight effect on the affected `PersonCard` in the UI.
 7. **Prevent certificate names from being purely numeric**: To avoid confusion with indices in commands, we plan to restrict certificate names so they cannot consist entirely of numbers (e.g. `cert-add 1 n/12345` would be rejected). This ensures the parser doesn't misinterpret names as purely indices in future command expansions. This would improve input validation.
 8. **Improve scrolling performance for contacts with many certificates**: For employees with a very high number of qualifications, the individual scrollable contact box can sometimes lag during window resizing. We plan to optimize the `PersonListPanel` to use a more efficient cell-rendering strategy for the `FlowPane` containing certificates.
+9. **Add more flexibility to Name validation**: Currently, the Name field does not accept hyphens, apostrophes, numbers and some other unique names that appear in reality. We plan to accept more of such unique names by increasing the flexibility of our Name input validation in the future.
 
 --------------------------------------------------------------------------------------------------------------------
 
