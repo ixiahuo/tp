@@ -403,7 +403,7 @@ Big Brother's data is saved automatically as a JSON file `[JAR file location]/da
 ## Command summary
 | Format                                                                                                        |
 |---------------------------------------------------------------------------------------------------------------|
-| [`add INDEX n/NAME [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/SALARY]`](#adding-a-new-contact-add)                    |
+| [`add n/NAME [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/SALARY]`](#adding-a-new-contact-add)                          |
 | [`edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/SALARY]`](#editing-an-existing-contact-edit)         |
 | [`delete INDEX`](#deleting-an-existing-contact-delete)                                                        |
 | [`clear`](#clearing-all-entries-clear)                                                                        |
