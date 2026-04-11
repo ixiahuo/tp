@@ -67,7 +67,7 @@ Big Brother allows you to manage employee contacts, on your desktop, with keyboa
 * Prefix symbol and `/` **cannot** be separated by whitespaces.<br>
   e.g. if the command specifies `n/NAME`, `n /NAME` is not acceptable.
 
-* Extraneous parameters for commands that do not take in arguments (such as [`help`](#viewing-in-app-help-menu-help) , [`list`](#listing-all-contacts-list), [`exit`](#exiting-the-program-exit) and [`clear`](#clearing-all-entries-clear)) will be ignored.<br>
+* Extraneous parameters for commands that do not take in arguments (such as [`help`](#viewing-in-app-help-menu-help) , [`list`](#listing-all-contacts-list), [`exit`](#exiting-the-program-exit), [`undo`](#restoring-the-contact-list--undo), [`sort`](#sorting-all-contacts--sort) and [`clear`](#clearing-all-entries-clear)) will be ignored.<br>
   e.g. if you input `help 123`, it will be interpreted as just [`help`](#viewing-in-app-help-menu-help) .
 
 * If you encounter any validation issues, refer to [Input Validation, Duplicate Handling and Utilities](#input-validation-duplicate-handling-and-utilities) for clarification.
