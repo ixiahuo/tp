@@ -138,7 +138,7 @@ Parameters:
 * Edits the person at the specified [`INDEX`](#input-validation-duplicate-handling-and-utilities) of the displayed person list.
 * **You must provide at least one of the optional arguments.**
 * Once you enter the command, existing values will be updated to your input values.
-* **You may clear attributes by entering an empty prefix.** (see Ex 2)
+* You may clear attributes by entering an empty prefix, **except** for `NAME` (see Ex 2)
 * Input values can be the same as existing values (e.g. if person with [`INDEX`](#input-validation-duplicate-handling-and-utilities) 2 already has [`SALARY`](#input-validation-duplicate-handling-and-utilities) of `3000`, you can still perform `edit 2 sal/3000`)
 
 Example:
