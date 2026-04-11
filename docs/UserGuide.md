@@ -80,11 +80,15 @@ Big Brother allows you to manage employee contacts, on your desktop, with keyboa
 
 * You can hover your mouse cursor over the desired scroll bar, then scroll each section independently.
 
+* You can hover your mouse cursor over the main scroll bar (rightmost), to scroll the list as a whole.
+
 * When you type and enter a command that modifies the contact list or a contact entry, every individual contact entry will scroll to the top.
 
 * The main contact list **does not have autoscroll**, so you may need to scroll manually to see the changes after performing a command (e.g. after [`add`](#adding-a-new-contact-add), the newly added contact is at the bottom).
 
 * Mouseless-support is planned to be implemented in a future update.
+
+* When adjusting the display size, the contact entries temporarily disappear. They will reappear once the size has stabilized.
 
 ### Viewing in-app help menu : `help`
 Format: `help`
