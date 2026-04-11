@@ -176,4 +176,13 @@ public class AddCommandParserTest {
                 + ADDRESS_DESC_BOB,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
     }
+
+    @Test
+    public void parse_unrecognizedPrefix_failure() {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE);
+
+        // unrecognized prefix 'y/' between valid fields
+        assertParseFailure(parser, NAME_DESC_BOB + " y/2002 " + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB,
+                expectedMessage);
+    }
 }
