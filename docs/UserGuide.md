@@ -304,6 +304,8 @@ Format: `undo`
 
 > When an `undo` succeeds, another `undo` cannot be run until another command that changes the state is run (e.g. `undo` followed by [`add`](#adding-a-new-contact-add) followed by `undo`)
 
+> `undo` only works after a data-modifying command occurred in the **current** user session. Meaning that if you ran `clear`, then exited the app, then reopened the app to run `undo`, the new session will **not** track the previous session's `clear` command, causing `undo` to fail in this new user session. 
+
 </box>
 
 <br>
