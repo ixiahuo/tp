@@ -231,7 +231,7 @@ Step 11. `TagCommand` returns a `CommandResult` object to indicate success or a 
 
 ###  Undo feature
 
-The `undo` mechanism is implemented within ModelManager. It allows the user to restore the address book to its immediate previous state after a data-modifying command, but only once.
+The `undo` mechanism is implemented within ModelManager. It allows the user to restore the address book to its immediate previous state after a data-modifying command, but only once, and **within the same** user session.
 
 #### Implementation
 
@@ -672,10 +672,10 @@ Prerequisites: List all persons using the `list` command. Multiple persons in th
 1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
 2. Adding/Editing Salary
-   1. Test case: `edit 1 s/5500 0`
+   1. Test case: `edit 1 sal/5500 0`
    2. Expected: The salary for the first employee is updated to 55000.
 
-   3. Test case: `edit 1 s/-100`
+   3. Test case: `edit 1 sal/-100`
    4. Expected: Error message indicates that salary must only contain digits and no special characters.
 
 ### Undo Functionality

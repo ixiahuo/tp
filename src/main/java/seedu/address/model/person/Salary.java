@@ -9,7 +9,7 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class Salary {
     public static final String MESSAGE_CONSTRAINTS =
-            "Salaries should contain only digits and no special characters.\n\n"
+            "Salaries should be an integer and no special characters are allowed.\n\n"
             + "Utility: leading, trailing and internal whitespaces will be trimmed.";
 
     public static final String VALIDATION_REGEX = "\\d+";

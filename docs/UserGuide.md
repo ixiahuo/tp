@@ -61,6 +61,9 @@ Big Brother allows you to manage employee contacts, on your desktop, with keyboa
 * Arguments can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE`, `p/PHONE n/NAME` is also acceptable.
 
+* Prefixes must be specified in lowercase letters.<br>
+  e.g. if name prefix is to be specified, `n/` is accepted whereas `N/` is unaccepted.
+
 * Multiple prefixes must be separated by whitespaces.<br>
   e.g. if the command specifies `n/NAME p/PHONE`, `n/NAMEp/PHONE` is not acceptable.
 
@@ -104,7 +107,7 @@ Format: `help`
 <br>
 
 ### Adding a new contact : `add`
-Format: `add n/NAME [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/SALARY]`
+Format: `add n/NAME [p/PHONE] [e/EMAIL] [a/ADDRESS] [sal/SALARY]`
 <br>
 Parameters:
 <a href="#input-validation-duplicate-handling-and-utilities" class="badge bg-primary">NAME</a>
@@ -115,14 +118,14 @@ Parameters:
 * Adds a person, with your specified attributes, to the contact list.
 * You may omit any (or all) of the optional arguments.
 
-Example: `add n/John Doe p/+65 98765432 e/johnd@example.com a/Abc Rd, Blk 123, #01-01 s/3000`
+Example: `add n/John Doe p/+65 98765432 e/johnd@example.com a/Abc Rd, Blk 123, #01-01 sal/3000`
 
 Expected result (starting with the existing sample data):
 
 <img src="images/addSuccess.png" width="750" style="margin-bottom:30px"/>
 
 ### Editing an existing contact : `edit`
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/SALARY]`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [sal/SALARY]`
 <br>
 Parameters:
 <a href="#input-validation-duplicate-handling-and-utilities" class="badge bg-primary">INDEX</a>
@@ -135,8 +138,13 @@ Parameters:
 * Edits the person at the specified [`INDEX`](#input-validation-duplicate-handling-and-utilities) of the displayed person list.
 * **You must provide at least one of the optional arguments.**
 * Once you enter the command, existing values will be updated to your input values.
-* **You may clear attributes by entering an empty prefix.** (see Ex 2)
-* Input values can be the same as existing values (e.g. if person with [`INDEX`](#input-validation-duplicate-handling-and-utilities) 2 already has [`SALARY`](#input-validation-duplicate-handling-and-utilities) of `3000`, you can still perform `edit 2 s/3000`)
+* You may clear attributes by entering an empty prefix, **except** for `NAME` (see Ex 2)
+* Input values can be the same as existing values (e.g. if person with [`INDEX`](#input-validation-duplicate-handling-and-utilities) 2 already has [`SALARY`](#input-validation-duplicate-handling-and-utilities) of `3000`, you can still perform `edit 2 sal/3000`)
+
+**Note when editing multiple same persons**
+> 1. Duplicated persons and same persons **do not** mean the same; same persons are persons with exact same fields (e.g. Index 1 and 2 are same persons with `NAME` John with `SALARY` of 4000).<br>
+> 2. When there are multiple same persons, `edit` will modify the person with the smallest index between the same persons, regardless of the INDEX specified.<br>
+> 3. Since the persons are the same after all, the intended outcome of the user is still achieved.<br>
 
 Example:
 1. `edit 1 p/+017 91234567 e/johndoe@example.com` edits person 1's [`PHONE`](#input-validation-duplicate-handling-and-utilities) number to `+017 91234567` and the [`EMAIL`](#input-validation-duplicate-handling-and-utilities) to `johndoe@example.com`
@@ -301,6 +309,8 @@ Format: `undo`
 
 > When an `undo` succeeds, another `undo` cannot be run until another command that changes the state is run (e.g. `undo` followed by [`add`](#adding-a-new-contact-add) followed by `undo`)
 
+> `undo` only works after a data-modifying command occurred in the **current** user session. Meaning that if you ran `clear`, then exited the app, then reopened the app to run `undo`, the new session will **not** track the previous session's `clear` command, causing `undo` to fail in this new user session. 
+
 </box>
 
 <br>
@@ -342,11 +352,11 @@ Format: `exit`
 ### Input Validation, Duplicate Handling and Utilities
 | Parameter        | Input Validation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Duplicate Handling                                               | Whitespace Trimming Utility                                                                                                                                                                                                                                |
 |------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| NAME             | 1. Cannot be empty<br>2. Only letter, whitespaces and forward slash<br/>3. Letters immediately beside forward slash must be uppercase (e.g. `S/O`) <br>4. Non-english names can be romanised.                                                                                                                                                                                                                                                                                                                                                               | case-*insensitive* comparison                                    | 1. Leading, trailing and internal whitespaces for `/` will be trimmed (e.g.   `S   /  O` will be trimmed to `S/O`). <br/> 2.Internal whitespaces between words will be trimmed to 1.                                                                       |
+| NAME             | 1. Cannot be empty<br>2. Only letter, whitespaces and forward slash<br/>3. Letters immediately beside forward slash must be uppercase (e.g. `S/O`)<br>4. Non-english names should be romanised before input.<br>5. To protect against incorrect parsing, names should not contain any substring that matches a command prefix case-sensitively (e.g. `sal/`, `p/`, `e/`, `a/`, `n/`, etc.) unless intended as a new field.                                                                                                                                  | case-*insensitive* comparison                                    | 1. Leading, trailing and internal whitespaces for `/` will be trimmed (e.g.   `S   /  O` will be trimmed to `S/O`). <br/> 2.Internal whitespaces between words will be trimmed to 1.                                                                       |
 | PHONE            | 1. Can be empty<br>2.  `+` then immediately followed by COUNTRY_CODE(1 to 3 digits) followed by space followed by PHONE(3 to 15 digits)<br/>                                                                                                                                                                                                                                                                                                                                                                                                                | digits and whitespaces match exactly                             | 1. Leading and trailing whitespaces will be trimmed.<br/>2. Internal whitespaces between `+` and COUNTRY_CODE will be trimmed. <br/>3. Internal whitespaces in PHONE will be trimmed to 1.<br/>(e.g. ` +  33 22 34 55 ` will be trimmed to `+33 22 34 55`) |
 | EMAIL            | 1. Can be empty<br>2.  Emails should be of the format `local-part@domain`, where `local-part` should:<br/>a .contain only alphanumeric characters and `+_.-`<br/>b. not start or end with `+_.-`<br/> c. not contain consecutive `+_.-`<br/>3. and `domain` is made of domain labels where each should:<br>a. be separated by `.`<br/>b. contain only alphanumeric characters and hyphens<br/>c. not contain consecutive hyphens<br/>d. start and end only with alphanumeric characters<br/>e. be at least 2 characters long for the last domain label<br/> | case-*sensitive* comparison                                      | Leading, trailing and internal whitespaces will be trimmed.                                                                                                                                                                                                |
 | ADDRESS          | 1. Can be empty<br/>2.  Only alphanumeric characters, whitespaces and `#,-<`<br/> 3. At most 100 characters long                                                                                                                                                                                                                                                                                                                                                                                                                                            | case-*insensitive* comparison                                    | 1. Leading and trailing whitespaces will be trimmed.<br/> 2. Internal whitespaces will be trimmed to 1.                                                                                                                                                    |
-| SALARY           | 1. Can be empty<br/>2.  Only digits and no special characters                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | digits match exactly                                             | Leading, trailing and internal whitespaces will be trimmed.                                                                                                                                                                                                |
+| SALARY           | 1. Can be empty<br/>2.  Only integers and no special characters <br/>3. Round-off salaries with decimals to the nearest integer                                                                                                                                                                                                                                                                                                                                                                                                                             | digits match exactly                                             | Leading, trailing and internal whitespaces will be trimmed.                                                                                                                                                                                                |
 | TAG              | 1. Only alphanumeric characters and `!@#$?\|<>_*&:;=`<br/>2. At most 30 characters long                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | case-*sensitive* match.<br>Colours do not affect duplicate match | Leading and trailing whitespaces will be trimmed.                                                                                                                                                                                                          |
 | CERT_NAME        | 1. Only alphanumeric characters and whitespaces<br/>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | case-*insensitive* match                                         | 1. Leading and trailing whitespaces will be trimmed.<br/> 2. Internal whitespaces will be trimmed to 1.                                                                                                                                                    |
 | CERT_EXPIRY_DATE | 1. If used in a compulsory prefix, must follow format `YYYY-MM-DD` or be empty <br/>2. If not empty, must be a valid date.<br/>                                                                                                                                                                                                                                                                                                                                                                                                                             | same `YYYY-MM-DD` or is empty                                    | Leading and trailing whitespaces will be trimmed.                                                                                                                                                                                                          |
@@ -403,8 +413,8 @@ Big Brother's data is saved automatically as a JSON file `[JAR file location]/da
 ## Command summary
 | Format                                                                                                        |
 |---------------------------------------------------------------------------------------------------------------|
-| [`add n/NAME [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/SALARY]`](#adding-a-new-contact-add)                          |
-| [`edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/SALARY]`](#editing-an-existing-contact-edit)         |
+| [`add n/NAME [p/PHONE] [e/EMAIL] [a/ADDRESS] [sal/SALARY]`](#adding-a-new-contact-add)                        |
+| [`edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [sal/SALARY]`](#editing-an-existing-contact-edit)       |
 | [`delete INDEX`](#deleting-an-existing-contact-delete)                                                        |
 | [`clear`](#clearing-all-entries-clear)                                                                        |
 | [`undo`](#restoring-the-contact-list-undo)                                                                    |
