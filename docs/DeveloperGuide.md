@@ -11,6 +11,8 @@
 
 --------------------------------------------------------------------------------------------------------------------
 
+<div style="page-break-after: always;"></div>
+
 ## **Acknowledgements**
 
 * This project evolved from the [AddressBook-Level3 project](https://github.com/se-edu/addressbook-level3) created by the [SE-EDU initiative](https://se-education.org).
@@ -52,6 +54,8 @@ The bulk of the app's work is done by the following four components:
 
 [**`Commons`**](#common-classes) represents a collection of classes used by multiple other components.
 
+<div style="page-break-after: always;"></div>
+
 **How the architecture components interact with each other**
 
 The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
@@ -68,6 +72,8 @@ For example, the `Logic` component defines its API in the `Logic.java` interface
 <puml src="diagrams/ComponentManagers.puml" width="300" />
 
 The sections below give more details of each component.
+
+<div style="page-break-after: always;"></div>
 
 ### UI component
 
@@ -89,6 +95,8 @@ The `UI` component,
 The sequence diagram below illustrates the interactions within the `UI` component when the window is resized, to dynamically change the number of displayed columns of contacts.
 
 <puml src="diagrams/ResizingSequenceDiagram.puml" alt="Interactions within the UI component during a window resizing" />
+
+<div style="page-break-after: always;"></div>
 
 ### Logic component
 
@@ -123,6 +131,8 @@ How the parsing works:
 * When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
+<div style="page-break-after: always;"></div>
+
 ### Model component
 **API** : [`Model.java`](https://github.com/AY2526S2-CS2103T-T09-1/tp/tree/master/src/main/java/seedu/address/model/Model.java)
 
@@ -144,6 +154,7 @@ The `Model` component,
 
 </box>
 
+<div style="page-break-after: always;"></div>
 
 ### Storage component
 
@@ -171,6 +182,8 @@ This section describes some noteworthy details on how certain features are imple
 A `Person` can now contain an `ArrayList<Certificate>` to keep track of the certificates that a person holds. A `Certificate` must comprise of a `CertName`, representing the name of the certificate, and may contain an optional `CertExpiry`, representing the expiration date of the certificate.
 
 <puml src="diagrams/CertificateClassDiagram.puml" alt="CertificateClassDiagram" />
+
+<div style="page-break-after: always;"></div>
 
 ### Find feature
 
@@ -200,12 +213,13 @@ Step 7. The `FindCommand` object executes the `updateFilteredPersonList(Predicat
 
 Step 8. Only `Persons` that return `true` with the supplied predicate are kept in the filtered list.
 
+<div style="page-break-after: always;"></div>
+
 ### Tagging feature
 
 The `tag` command allows for both adding or deleting of tags (but not both at the same time). Colours for these tags can be specified by the user
 
 ### Implementation
-
 
 <puml src="diagrams/TaggingSequenceDiagram.puml" alt="TaggingSequenceDiagram" />
 
@@ -232,6 +246,8 @@ Step 9. `TagCommand` calls `modifyTagsForPerson(Person, Set<Tag>, boolean)`, whi
 Step 10. `TagCommand` calls `Model#setPerson(Person, Person)` to overwrite the old `personToEdit` with a new copy that has the updated `Set` of `Tags`
 
 Step 11. `TagCommand` returns a `CommandResult` object to indicate success or a warning.
+
+<div style="page-break-after: always;"></div>
 
 ###  Undo feature
 
@@ -295,6 +311,8 @@ The current single-state backup in `ModelManager` can only support undoing a max
 1. Replacing `previousAddressBook` with an `addressBookStateList` and a `currentStatePointer`.
 2. Changing the implementation of `Model#undoAddressBook()`, to move the pointer backward in the history list to restore a previous state.
 3. Updating the "Purge" logic: If a new data-modifying command is executed after an `undo`, all "redoable" states at the end of the list must be deleted.
+
+<div style="page-break-after: always;"></div>
 
 #### Design Considerations:
 
@@ -654,6 +672,8 @@ Prerequisites: List all persons using the `list` command. Multiple persons in th
    1. Prerequisites: Person at index 1 has an "CISSP" certificate, with expiry date "2027-01-01".
    2. Test case (Reset to No Expiry): `cert-edit 1 n/CISSP ee/`
    3. Expected: CISSP certificate expiry is cleared and now displays "No Expiry".
+
+<div style="page-break-after: always;"></div>
 
 ### Deleting a person
 
