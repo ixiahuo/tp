@@ -2,7 +2,10 @@ package seedu.address.logic.parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_CERT_EXPIRY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CERT_NAME;
+import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
+import static seedu.address.logic.parser.Parser.MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE;
 import static seedu.address.logic.parser.ParserUtil.MESSAGE_NO_INDEX;
 
 import java.time.LocalDate;
@@ -80,5 +83,18 @@ public class CertAddCommandParserTest {
                     .getMessage(),
                     e.getMessage());
         }
+    }
+
+    @Test
+    public void parse_prefixMissingPreceedingSpace_failure() {
+        // cert name
+        assertParseFailure(parser,
+                "1n/OSCP Plus e/2028-01-01",
+                PREFIX_CERT_NAME + MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE);
+
+        // cert expiry
+        assertParseFailure(parser,
+                "1 n/OSCP Pluse/2028-01-01",
+                PREFIX_CERT_EXPIRY + MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE);
     }
 }

@@ -3,6 +3,8 @@ package seedu.address.logic.parser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CERT_NAME;
+import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
+import static seedu.address.logic.parser.Parser.MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE;
 import static seedu.address.logic.parser.ParserUtil.MESSAGE_NO_INDEX;
 
 import org.junit.jupiter.api.Test;
@@ -57,5 +59,13 @@ public class CertDeleteCommandParserTest {
                     .getMessage(),
                     e.getMessage());
         }
+    }
+
+    @Test
+    public void parse_prefixMissingPreceedingSpace_failure() {
+        // cert name
+        assertParseFailure(parser,
+                "1n/OSCP Plus",
+                PREFIX_CERT_NAME + MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE);
     }
 }

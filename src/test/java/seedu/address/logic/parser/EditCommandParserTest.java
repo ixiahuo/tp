@@ -21,9 +21,12 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_SALARY_AMY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_SALARY;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static seedu.address.logic.parser.Parser.MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
@@ -179,5 +182,33 @@ public class EditCommandParserTest {
 
         assertParseFailure(parser, userInput,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS));
+    }
+
+    @Test
+    public void parse_prefixMissingPreceedingSpace_failure() {
+        // name
+        assertParseFailure(parser,
+                "1n/John p/+65 123 e/john@example.co a/earth sal/1000",
+                PREFIX_NAME + MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE);
+
+        // phone
+        assertParseFailure(parser,
+                "1 n/Johnp/+65 123 e/john@example.co a/earth sal/1000",
+                PREFIX_PHONE + MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE);
+
+        // email
+        assertParseFailure(parser,
+                "1 n/John p/+65 123e/john@example.co a/earth sal/1000",
+                PREFIX_EMAIL + MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE);
+
+        // address
+        assertParseFailure(parser,
+                "1 n/John p/+65 123 e/john@example.coa/earth sal/1000",
+                PREFIX_ADDRESS + MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE);
+
+        // salary
+        assertParseFailure(parser,
+                "1 n/John p/+65 123 e/john@example.co a/earthsal/1000",
+                PREFIX_SALARY + MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE);
     }
 }

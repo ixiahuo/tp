@@ -1,8 +1,13 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_CERT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_CERT_EXPIRY;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static seedu.address.logic.parser.Parser.MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -113,5 +118,28 @@ public class FindCommandParserTest {
             new CertContainsDatePredicate(new CertExpiry(LocalDate.of(2028, 12, 15)))
         )));
         assertParseSuccess(parser, " n/Alex t/IT c/Social Media e/2028-12-15", expectedFindCommand);
+    }
+
+    @Test
+    public void parse_prefixMissingPreceedingSpace_failure() {
+        // name
+        assertParseFailure(parser,
+                "n/John t/Pentester c/OSCP e/2026-04-30",
+                PREFIX_NAME + MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE);
+
+        // tag
+        assertParseFailure(parser,
+                " n/Johnt/Pentester c/OSCP e/2026-04-30",
+                PREFIX_TAG + MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE);
+
+        // cert name
+        assertParseFailure(parser,
+                " n/John t/Pentesterc/OSCP e/2026-04-30",
+                PREFIX_CERT + MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE);
+
+        // cert expiry
+        assertParseFailure(parser,
+                " n/John t/Pentester c/OSCPe/2026-04-30",
+                PREFIX_CERT_EXPIRY + MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE);
     }
 }

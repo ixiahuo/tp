@@ -28,8 +28,10 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_SALARY;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static seedu.address.logic.parser.Parser.MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE;
 import static seedu.address.testutil.TypicalPersons.BOB;
 
 import org.junit.jupiter.api.Test;
@@ -184,5 +186,33 @@ public class AddCommandParserTest {
         // unrecognized prefix 'y/' between valid fields
         assertParseFailure(parser, NAME_DESC_BOB + " y/2002 " + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB,
                 expectedMessage);
+    }
+
+    @Test
+    public void parse_prefixMissingPreceedingSpace_failure() {
+        // name
+        assertParseFailure(parser,
+                "n/John p/+65 123 e/john@example.co a/earth sal/1000",
+                PREFIX_NAME + MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE);
+
+        // phone
+        assertParseFailure(parser,
+                " n/Johnp/+65 123 e/john@example.co a/earth sal/1000",
+                PREFIX_PHONE + MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE);
+
+        // email
+        assertParseFailure(parser,
+                " n/John p/+65 123e/john@example.co a/earth sal/1000",
+                PREFIX_EMAIL + MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE);
+
+        // address
+        assertParseFailure(parser,
+                " n/John p/+65 123 e/john@example.coa/earth sal/1000",
+                PREFIX_ADDRESS + MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE);
+
+        // salary
+        assertParseFailure(parser,
+                " n/John p/+65 123 e/john@example.co a/earthsal/1000",
+                PREFIX_SALARY + MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE);
     }
 }

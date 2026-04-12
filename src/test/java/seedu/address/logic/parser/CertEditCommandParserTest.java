@@ -5,6 +5,8 @@ import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CERT_EDIT_DATE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CERT_EDIT_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CERT_NAME;
+import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
+import static seedu.address.logic.parser.Parser.MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE;
 import static seedu.address.logic.parser.ParserUtil.MESSAGE_NO_INDEX;
 
 import java.time.LocalDate;
@@ -127,5 +129,23 @@ public class CertEditCommandParserTest {
         );
 
         assertEquals(expectedCommand, certEditCommand);
+    }
+
+    @Test
+    public void parse_prefixMissingPreceedingSpace_failure() {
+        // cert name
+        assertParseFailure(parser,
+                "1n/OSCP ne/OSCP Plus ee/2028-01-01",
+                PREFIX_CERT_NAME + MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE);
+
+        // cert edit name
+        assertParseFailure(parser,
+                "1 n/OSCPne/OSCP Plus ee/2028-01-01",
+                PREFIX_CERT_EDIT_NAME + MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE);
+
+        // cert edit expiry date
+        assertParseFailure(parser,
+                "1 n/OSCP ne/OSCP Plusee/2028-01-01",
+                PREFIX_CERT_EDIT_DATE + MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE);
     }
 }

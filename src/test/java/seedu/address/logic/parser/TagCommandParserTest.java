@@ -6,8 +6,12 @@ import static seedu.address.logic.Messages.MESSAGE_INVALID_FIELD_COMBI;
 import static seedu.address.logic.commands.CommandTestUtil.MULTI_TAG_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.MULTI_TAG_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ADD_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_COLOUR_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DELETE_TAG;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static seedu.address.logic.parser.Parser.MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 
@@ -123,5 +127,21 @@ public class TagCommandParserTest {
                 ParserUtil.MESSAGE_INVALID_INDEX + "\n\n" + TagCommand.MESSAGE_USAGE);
     }
 
+    @Test
+    public void parse_prefixMissingPreceedingSpace_failure() {
+        // adding
+        assertParseFailure(parser,
+                "a/IT Intern c/BLUE GREEN",
+                PREFIX_ADD_TAG + MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE);
 
+        // colour
+        assertParseFailure(parser,
+                " a/IT Internc/BLUE GREEN",
+                PREFIX_COLOUR_TAG + MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE);
+
+        // deleting
+        assertParseFailure(parser,
+                "d/Intern",
+                PREFIX_DELETE_TAG + MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE);
+    }
 }
