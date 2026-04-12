@@ -14,7 +14,7 @@ Package " "<<Rectangle>>{
 }
 
 Class "<$user>\nUser" as User MODEL_COLOR_T2
-Class "<$documents>\nSave File" as File UI_COLOR_T1
+Class "<$documents>\nSave File" as File UI_COLOR_T2
 
 
 UI -[#green]> Logic
