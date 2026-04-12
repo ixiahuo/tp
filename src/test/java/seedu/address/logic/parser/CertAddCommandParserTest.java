@@ -3,6 +3,7 @@ package seedu.address.logic.parser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CERT_NAME;
+import static seedu.address.logic.parser.ParserUtil.MESSAGE_NO_INDEX;
 
 import java.time.LocalDate;
 
@@ -51,11 +52,12 @@ public class CertAddCommandParserTest {
     @Test
     public void parse_noIndex_failure() {
         try {
-            parser.parse("n/Accounting e/2028-03-05");
+            parser.parse(" n/Accounting e/2028-03-05"); // needs preceeding space, otherwise different error
         } catch (ParseException e) {
-            assertEquals(new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, CertAddCommand.MESSAGE_USAGE)).getMessage(),
-                    e.getMessage());
+            String expectedErrorMessage = String.format("%s\n\n%s",
+                    MESSAGE_NO_INDEX,
+                    CertAddCommand.MESSAGE_USAGE);
+            assertEquals(new ParseException(expectedErrorMessage).getMessage(), e.getMessage());
         }
     }
 

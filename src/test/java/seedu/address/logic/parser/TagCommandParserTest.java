@@ -23,7 +23,7 @@ public class TagCommandParserTest {
 
     private TagCommandParser parser = new TagCommandParser();
 
-    private String defaultTagFlags = "a/TEST1 d/TEST2";
+    private String defaultTagFlags = " a/TEST1 d/TEST2"; // needs preceeding space, otherwise different error
 
     @Test
     public void parse_missingParts_failure() {
@@ -32,7 +32,8 @@ public class TagCommandParserTest {
                 + TagCommand.MESSAGE_USAGE);
 
         // no field specified
-        assertParseFailure(parser, "1", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+        // needs preceeding space, otherwise different error
+        assertParseFailure(parser, " 1", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                 MESSAGE_AT_LEAST_ONE_FIELD + "a/ d/"));
 
         // no index and no field specified
@@ -40,7 +41,8 @@ public class TagCommandParserTest {
                 + TagCommand.MESSAGE_USAGE);
 
         // only colour specified
-        assertParseFailure(parser, "c/blue", ParserUtil.MESSAGE_INVALID_INDEX + "\n\n"
+        // needs preceeding space, otherwise different error
+        assertParseFailure(parser, " c/blue", ParserUtil.MESSAGE_NO_INDEX + "\n\n"
                 + TagCommand.MESSAGE_USAGE);
     }
 
