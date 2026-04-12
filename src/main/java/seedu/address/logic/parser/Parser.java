@@ -10,6 +10,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
  * Represents a Parser that is able to parse user input into a {@code Command} of type {@code T}.
  */
 public interface Parser<T extends Command> {
+    public static String MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE = " is missing a preceeding space.";
 
     /**
      * Parses {@code userInput} into a command and returns it.
@@ -26,7 +27,7 @@ public interface Parser<T extends Command> {
             Pattern p = Pattern.compile("(?<!\\s)" + pre); // pattern for no space before prefix
             Matcher m = p.matcher(args);
             if (m.find()) {
-                throw new ParseException("The prefix '" + pre + "' is missing a space before it.");
+                throw new ParseException(pre + MESSAGE_PREFIX_MISSING_PRECEEDING_SPACE);
             }
         }
     }
