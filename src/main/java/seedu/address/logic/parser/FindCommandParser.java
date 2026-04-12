@@ -8,7 +8,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-// import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -39,6 +38,7 @@ public class FindCommandParser implements Parser<FindCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public FindCommand parse(String args) throws ParseException {
+        checkIfFlagsAreStuck(args, PREFIX_NAME, PREFIX_TAG, PREFIX_CERT, PREFIX_CERT_EXPIRY);
         List<Predicate<Person>> predicates = new ArrayList<>();
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_TAG, PREFIX_CERT, PREFIX_CERT_EXPIRY);

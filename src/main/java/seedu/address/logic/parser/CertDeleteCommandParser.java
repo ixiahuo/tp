@@ -21,6 +21,7 @@ public class CertDeleteCommandParser implements Parser<CertDeleteCommand> {
      * @throws ParseException if the user input does not conform to the expected format.
      */
     public CertDeleteCommand parse(String args) throws ParseException {
+        checkIfFlagsAreStuck(args, PREFIX_CERT_NAME);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_CERT_NAME);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_CERT_NAME)) {

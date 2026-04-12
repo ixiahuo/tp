@@ -36,6 +36,7 @@ public class TagCommandParser implements Parser<TagCommand> {
         requireNonNull(args);
         logger.finer("Parsing Tag Command");
 
+        checkIfFlagsAreStuck(args, PREFIX_ADD_TAG, PREFIX_DELETE_TAG, PREFIX_COLOUR_TAG);
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_ADD_TAG, PREFIX_DELETE_TAG, PREFIX_COLOUR_TAG);
 

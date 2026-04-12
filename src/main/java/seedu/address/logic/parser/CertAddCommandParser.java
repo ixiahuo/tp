@@ -24,6 +24,7 @@ public class CertAddCommandParser implements Parser<CertAddCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public CertAddCommand parse(String args) throws ParseException {
+        checkIfFlagsAreStuck(args, PREFIX_CERT_NAME, PREFIX_CERT_EXPIRY);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_CERT_NAME, PREFIX_CERT_EXPIRY);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_CERT_NAME)) {

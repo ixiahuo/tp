@@ -19,13 +19,14 @@ import seedu.address.model.cert.Certificate;
 /**
  * Parses input arguments and creates a new CertEditCommand object.
  */
-public class CertEditCommandParser {
+public class CertEditCommandParser implements Parser<CertEditCommand> {
     /**
      * Parses the given {@code String} of arguments in the context of the CertEditCommand
      * and returns an CertEditCommand object for execution.
      * @throws ParseException if the user input does not conform the expected format
      */
     public CertEditCommand parse(String args) throws ParseException {
+        checkIfFlagsAreStuck(args, PREFIX_CERT_NAME, PREFIX_CERT_EDIT_NAME, PREFIX_CERT_EDIT_DATE);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_CERT_NAME,
                 PREFIX_CERT_EDIT_NAME, PREFIX_CERT_EDIT_DATE);
 
