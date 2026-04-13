@@ -173,6 +173,8 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 
 --------------------------------------------------------------------------------------------------------------------
 
+<div style="page-break-after: always;"></div>
+
 ## **Implementation**
 
 This section describes some noteworthy details on how certain features are implemented.
@@ -183,13 +185,11 @@ A `Person` can now contain an `ArrayList<Certificate>` to keep track of the cert
 
 <puml src="diagrams/CertificateClassDiagram.puml" alt="CertificateClassDiagram" />
 
-<div style="page-break-after: always;"></div>
-
 ### Find feature
 
-The `find` mechanism is implemented within ModelManager. It allows the user to display only profiles in the address book that satisfy a specified criteria.
+The `find` mechanism is implemented in ModelManager. It allows the user to display only profiles in the address book that satisfy specified criteria.
 
-### Implementation
+#### Implementation
 
 The `find` mechanism is facilitated by ModelManager which implements the `updateFilteredPersonList(Predicate<Person>)` method. The `FindCommand` object supplies the predicate to this method based on the parameters given. Below is a class diagram displaying the predicates that may be contained by the `FindCommand` object.
 
@@ -213,13 +213,11 @@ Step 7. The `FindCommand` object executes the `updateFilteredPersonList(Predicat
 
 Step 8. Only `Persons` that return `true` with the supplied predicate are kept in the filtered list.
 
-<div style="page-break-after: always;"></div>
-
 ### Tagging feature
 
 The `tag` command allows for both adding or deleting of tags (but not both at the same time). Colours for these tags can be specified by the user
 
-### Implementation
+#### Implementation
 
 <puml src="diagrams/TaggingSequenceDiagram.puml" alt="TaggingSequenceDiagram" />
 
@@ -400,166 +398,108 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 (For all use cases below, the **System** is the `Big Brother` and the **Actor** is the `user`, unless specified otherwise)
 
-**Use case: UC1 Add a person**
-
+**Use case: UC1 Add a person**<br>
 **MSS**
-
 1. User requests to add a person
-2. Big Brother indicates that a person is added
-
+2. Big Brother indicates that a person is added<br>
    Use case ends.
 
 **Extensions**
-
 * 1a. User inputs an invalid command
-    * 1a1. Big Brother shows an error message
+  * 1a1. Big Brother shows an error message<br>
+    Use case resumes at step 1.
 
-       Use case resumes at step 1.
-
-**Use case: UC2 Add a tag to a person**
-
+**Use case: UC2 Add a tag to a person**<br>
 **MSS**
-
 1.  User requests to list persons
 2.  Big Brother shows a list of persons
 3.  User requests to add a tag to a specific person in the list
-4.  Big Brother adds the tag to the person
-
+4.  Big Brother adds the tag to the person<br>
     Use case ends.
 
 **Extensions**
-
-* 1a. The list is empty
-
+* 1a. The list is empty<br>
   Use case ends.
-
 * 3a. The given person's index is invalid
+  * 3a1. Big Brother shows an error message<br>
+    Use case resumes at step 2.
 
-    * 3a1. Big Brother shows an error message
-
-      Use case resumes at step 2.
-
-**Use case: UC3 Delete a person**
-
+**Use case: UC3 Delete a person**<br>
 **MSS**
-
 1.  User requests to list persons
 2.  Big Brother shows a list of persons
 3.  User requests to delete a specific person in the list
-4.  Big Brother deletes the person
-
+4.  Big Brother deletes the person<br>
     Use case ends.
 
 **Extensions**
-
-* 1a. The list is empty
-
+* 1a. The list is empty<br>
   Use case ends.
-
 * 3a. The given person's index is invalid
+  * 3a1. Big Brother shows an error message<br>
+    Use case resumes at step 2.
 
-    * 3a1. Big Brother shows an error message
-
-      Use case resumes at step 2.
-
-**Use case: UC4 Delete a tag**
-
+**Use case: UC4 Delete a tag**<br>
 **MSS**
-
 1.  User requests to list persons
 2.  Big Brother shows a list of persons
 3.  User requests to delete a tag from a specific person in the list
-4.  Big Brother deletes the tag from the person
-
+4.  Big Brother deletes the tag from the person<br>
     Use case ends.
 
 **Extensions**
-
-* 1a. The list is empty
-
+* 1a. The list is empty<br>
   Use case ends.
-
 * 3a. The given person's index is invalid
-
-    * 3a1. Big Brother shows an error message
-
-      Use case resumes at step 2.
-
+  * 3a1. Big Brother shows an error message<br>
+    Use case resumes at step 2.
 * 3b. The tag specified cannot be found
+  * 3b1. Big Brother shows an error message<br>
+    Use case resumes at step 2.
 
-    * 3b1. Big Brother shows an error message
-
-      Use case resumes at step 2.
-
-**Use case: UC5 Find a person**
-
+**Use case: UC5 Find a person**<br>
 **MSS**
-
 1.  User requests to find a specific person
-2.  Big Brother displays the details of the specific person
-
+2.  Big Brother displays the details of the specific person<br>
     Use case ends.
 
 **Extensions**
-
 * 1a. Person specified does not exist
-    * 1a1. Big Brother shows an error message
+  * 1a1. Big Brother shows an error message<br>
+    Use case ends.
 
-      Use case ends.
-
-**Use case: UC6 Add a certificate to a person**
-
+**Use case: UC6 Add a certificate to a person**<br>
 **MSS**
-
 1.  User requests to list persons
 2.  Big Brother shows a list of persons
 3.  User requests to add a certificate to a specific person in the list
-4.  Big Brother adds the certificate to the person
-
+4.  Big Brother adds the certificate to the person<br>
     Use case ends.
 
 **Extensions**
-
-* 1a. The list is empty
-
+* 1a. The list is empty<br>
   Use case ends.
-
 * 3a. The given person's index is invalid
+  * 3a1. Big Brother shows an error message<br>
+    Use case resumes at step 2.
 
-    * 3a1. Big Brother shows an error message
-
-      Use case resumes at step 2.
-
-**Use case: UC7 Delete a certificate**
-
+**Use case: UC7 Delete a certificate**<br>
 **MSS**
-
 1.  User requests to list persons
 2.  Big Brother shows a list of persons
 3.  User requests to delete a certificate from a specific person in the list
-4.  Big Brother deletes the certificate from the person
-
+4.  Big Brother deletes the certificate from the person<br>
     Use case ends.
 
 **Extensions**
-
-* 1a. The list is empty
-
+* 1a. The list is empty<br>
   Use case ends.
-
 * 3a. The given person's index is invalid
-
-    * 3a1. Big Brother shows an error message
-
-      Use case resumes at step 2.
-
+  * 3a1. Big Brother shows an error message<br>
+    Use case resumes at step 2.
 * 3b. The certificate specified cannot be found
-
-    * 3b1. Big Brother shows an error message
-
-      Use case resumes at step 2.
-
-
+  * 3b1. Big Brother shows an error message<br>
+    Use case resumes at step 2.
 
 ### Non-Functional Requirements
 
@@ -602,6 +542,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * **Certificate**: Work skill certificates that are industry-recognised and qualify an employee for the job.
 
 --------------------------------------------------------------------------------------------------------------------
+
+<div style="page-break-after: always;"></div>
 
 ## **Appendix: Planned Enhancements**
 
@@ -661,6 +603,8 @@ Prerequisites: List all persons using the `list` command. Multiple persons in th
    1. Test case: `cert-add 1 n/Marketing`
    2. Expected: Marketing certificate is added to the first person with "No Expiry" displayed.
 
+<div style="page-break-after: always;"></div>
+
 3. Editing existing certificate's name and date
 
    1. Prerequisites: Person at index 1 has an "OSCP" certificate.
@@ -672,8 +616,6 @@ Prerequisites: List all persons using the `list` command. Multiple persons in th
    1. Prerequisites: Person at index 1 has an "CISSP" certificate, with expiry date "2027-01-01".
    2. Test case (Reset to No Expiry): `cert-edit 1 n/CISSP ee/`
    3. Expected: CISSP certificate expiry is cleared and now displays "No Expiry".
-
-<div style="page-break-after: always;"></div>
 
 ### Deleting a person
 
@@ -724,6 +666,8 @@ Prerequisites: List all persons using the `list` command. Multiple persons in th
    2. Corrupt a date: Change a certificate expiry date to an invalid format (e.g. "2026-13-45").
    3. Relaunch: Start the application.
    4. Expected: The app detects the illegal value, logs a warning, and starts with an empty AddressBook to prevent a crash.
+
+<div style="page-break-after: always;"></div>
 
 2. Simulating "No Expiry" in Storage
 

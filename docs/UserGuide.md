@@ -150,6 +150,8 @@ Expected result (starting with the existing sample data):
 
 <img src="images/addSuccess.png" width="750" style="margin-bottom:30px"/>
 
+<div style="page-break-after: always;"></div>
+
 ### Editing an existing contact : `edit`
 Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [sal/SALARY]`
 <br>
@@ -166,8 +168,6 @@ Parameters:
 * Once you enter the command, existing values will be updated to your input values.
 * You may clear attributes by entering an empty prefix, **except** for [`NAME`](#input-validation-duplicate-handling-and-utilities) (see Example 2)
 * Input values can be the same as existing values (e.g. if person with [`INDEX`](#input-validation-duplicate-handling-and-utilities) 2 already has [`SALARY`](#input-validation-duplicate-handling-and-utilities) of 3000, you can still perform `edit 2 sal/3000`)
-
-<div style="page-break-after: always;"></div>
 
 Example:
 1. `edit 1 p/+017 91234567 e/johndoe@example.com` edits person 1's [`PHONE`](#input-validation-duplicate-handling-and-utilities) number to `+017 91234567` and the [`EMAIL`](#input-validation-duplicate-handling-and-utilities) to `johndoe@example.com`
@@ -218,6 +218,8 @@ Examples:
 
 > Note: The filtered list provided by `find` is a one-time view that does not persist across multiple commands.
 
+<div style="page-break-after: always;"></div>
+
 <box type="tip" seamless>
 
 **Tip on viewing the full list again**
@@ -226,8 +228,6 @@ Examples:
 
 ### Listing all contacts : `list`
 Format: `list`
-
-<div style="page-break-after: always;"></div>
 
 ### Adding and deleting tags : `tag`
 Format: `tag INDEX [a/TAGS_TO_ADD] [c/COLOUR_OF_TAGS_TO_ADD] [d/TAGS_TO_DELETE]`
@@ -267,6 +267,8 @@ All the below commands affect the person at [`INDEX`](#input-validation-duplicat
 
 </box>
 
+<div style="page-break-after: always;"></div>
+
 ### Adding certificates : `cert-add`
 Format: `cert-add INDEX n/CERT_NAME [e/CERT_EXPIRY_DATE]`.
 <br>
@@ -297,8 +299,6 @@ Parameters:
 
 Example: `cert-del 1 n/OSCP`
 1. Deletes the certificate named OSCP from the first person in the list.
-
-<div style="page-break-after: always;"></div>
 
 ### Editing certificates : `cert-edit`
 Format: `cert-edit INDEX n/CERT_NAME [ne/NEW_CERT_NAME] [ee/NEW_CERT_EXPIRY_DATE]`
@@ -334,6 +334,8 @@ Format: `undo`
 
 </box>
 
+<div style="page-break-after: always;"></div>
+
 ### Sorting all contacts : `sort`
 Format: `sort`
 * Sorts the contact list in alphabetical order of name.
@@ -362,6 +364,10 @@ Format: `clear`
 ### Exiting the program : `exit`
 Format: `exit`
 
+--------------------------------------------------------------------------------------------------------------------
+
+<div style="page-break-after: always;"></div>
+
 ### Input Validation, Duplicate Handling and Utilities
 | Parameter        | Input Validation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Duplicate Handling                                               | Whitespace Trimming Utility                                                                                                                                                                                                                                |
 |------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -373,6 +379,9 @@ Format: `exit`
 | TAG              | 1. Only alphanumeric characters and `!@#$?\|<>_-*&:;=`<br/>2. At most 30 characters long                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | case-*sensitive* match.<br>Colours do not affect duplicate match | Leading and trailing whitespaces will be trimmed.                                                                                                                                                                                                          |
 | CERT_NAME        | 1. Only alphanumeric characters and whitespaces<br/>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | case-*insensitive* match                                         | 1. Leading and trailing whitespaces will be trimmed.<br/> 2. Internal whitespaces will be trimmed to 1.                                                                                                                                                    |
 | CERT_EXPIRY_DATE | 1. If used in a compulsory prefix, must follow format `YYYY-MM-DD` or be empty <br/>2. If not empty, must be a valid date.<br/>                                                                                                                                                                                                                                                                                                                                                                                                                                        | same `YYYY-MM-DD` or is empty                                    | Leading and trailing whitespaces will be trimmed.                                                                                                                                                                                                          |
+
+| Parameter        | Input Validation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Duplicate Handling                                               | Whitespace Trimming Utility                                                                                                                                                                                                                                |
+|------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | INDEX            | 1. Must be a positive non-zero integer (e.g. 1)<br/>2. Cannot be higher than the recorded number of employees.<br/>3. No internal whitespaces are allowed (e.g. if contact list has a person at index `10`, INDEX `10` is valid while `1 0` is invalid)                                                                                                                                                                                                                                                                                                                | N.A.                                                             | Leading and trailing whitespaces will be trimmed.                                                                                                                                                                                                          |
 
 <box type="info" seamless>
