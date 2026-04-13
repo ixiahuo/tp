@@ -167,10 +167,10 @@ Parameters:
 * You may clear attributes by entering an empty prefix, **except** for [`NAME`](#input-validation-duplicate-handling-and-utilities) (see Example 2)
 * Input values can be the same as existing values (e.g. if person with [`INDEX`](#input-validation-duplicate-handling-and-utilities) 2 already has [`SALARY`](#input-validation-duplicate-handling-and-utilities) of 3000, you can still perform `edit 2 sal/3000`)
 
-**Note when editing multiple same persons**
-> 1. Duplicated persons and same persons **do not** mean the same; same persons are persons with exact same fields (e.g. Index 1 and 2 are same persons with [`NAME`](#input-validation-duplicate-handling-and-utilities) John with [`SALARY`](#input-validation-duplicate-handling-and-utilities) of 4000).<br>
-> 2. When there are multiple same persons, `edit` will modify the person with the smallest index between the same persons, regardless of the [`INDEX`](#input-validation-duplicate-handling-and-utilities) specified.<br>
-> 3. Since the persons are the same after all, the intended outcome of the user is still achieved.<br>
+**Note when editing multiple "same" contacts**
+> 1. Duplicate contacts and contacts with the same attribute data are two separate scenarios handled differently by Big Brother; "same contacts" are contacts with exact same fields (e.g. Index 1 and 2 are same persons with [`NAME`](#input-validation-duplicate-handling-and-utilities) John with [`SALARY`](#input-validation-duplicate-handling-and-utilities) of 4000).<br>
+> 2. When there are multiple "same contacts", `edit` will modify the person with the smallest index between the same "contacts", regardless of the [`INDEX`](#input-validation-duplicate-handling-and-utilities) specified.<br>
+> 3. Since the contacts are the same after all, the intended outcome of the user is still achieved.<br>
 
 <div style="page-break-after: always;"></div>
 
@@ -266,6 +266,10 @@ All the below commands affect the person at [`INDEX`](#input-validation-duplicat
 > Likewise, non-existent tag(s) (i.e. the contact does not have a tag with that name) will be silently ignored when deleting a mix of existing and non-existing tag(s).
 
 > If you specify duplicate tag names in the command itself, Big Brother will throw an error. (i.e. `tag 1 a/TAG TAG c/RED BLUE` is not allowed)
+
+**Notes on editing tags**
+> Editing of tags is currently not supported. If you would like to change the colour of a tag, you would need to delete it first before adding it back. 
+
 
 </box>
 
@@ -379,17 +383,17 @@ Format: `exit`
 
 <box type="info" seamless>
 
-**Additional infomation on duplicate persons**
+**Additional information on duplicate persons**
 > Possible right after executing [`add`](#adding-a-new-contact-add) or [`edit`](#editing-an-existing-contact-edit) commands<br>
 > (1) [`EMAIL`](#input-validation-duplicate-handling-and-utilities) and [`PHONE`](#input-validation-duplicate-handling-and-utilities) are empty: duplicates if [`NAME`](#input-validation-duplicate-handling-and-utilities) are the same<br>
 > (2) Else, 2 persons are duplicates if their [`NAME`](#input-validation-duplicate-handling-and-utilities) & [`PHONE`](#input-validation-duplicate-handling-and-utilities) & [`EMAIL`](#input-validation-duplicate-handling-and-utilities) are the same<br><br>
 > **Good news**: there will be a warning pop-up message if duplicate persons are detected after executing a command. It is then up to you to delete duplicates.
 
-**Additional infomation on duplicate certificates**
+**Additional information on duplicate certificates**
 > Possible right after executing [`cert-add`](#adding-certificates-cert-add) or [`cert-edit`](#editing-certificates-cert-edit) commands<br>
 > Certificates are duplicates if [`CERT_NAME`](#input-validation-duplicate-handling-and-utilities) are duplicates. [`CERT_EXPIRY_DATE`](#input-validation-duplicate-handling-and-utilities) is not taken into account.
 
-**Additional infomation on duplicate tags**
+**Additional information on duplicate tags**
 > Possible right after executing [`tag`](#adding-and-deleting-tags-tag), see [`tag`](#adding-and-deleting-tags-tag) for more details.
 
 </box>
