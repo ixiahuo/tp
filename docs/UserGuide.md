@@ -13,6 +13,8 @@ Big Brother allows you to manage employee contacts, on your desktop, with keyboa
 
 --------------------------------------------------------------------------------------------------------------------
 
+<div style="page-break-after: always;"></div>
+
 ## Quick start
 
 1. Ensure you have Java `17` installed in your Computer.<br>
@@ -40,6 +42,8 @@ Big Brother allows you to manage employee contacts, on your desktop, with keyboa
 * Refer to the [Summary](#command-summary) below for a summary of all available commands.
 
 --------------------------------------------------------------------------------------------------------------------
+
+<div style="page-break-after: always;"></div>
 
 ## Features
 
@@ -98,6 +102,8 @@ Big Brother allows you to manage employee contacts, on your desktop, with keyboa
 
 * When adjusting the display size, the contact entries temporarily disappear. They will reappear once the size has stabilized.
 
+<div style="page-break-after: always;"></div>
+
 ### Viewing in-app help menu : `help`
 Format: `help`
 
@@ -119,8 +125,6 @@ Format: `help`
 > If you need more help with a command marked by a `*`, enter it with no arguments into the command box.
 > Example: to get more help for [`add`](#adding-a-new-contact-add), simply enter [`add`](#adding-a-new-contact-add) into the command box.
 </box>
-
-<br>
 
 ### Adding a new contact : `add`
 Format: `add n/NAME [p/PHONE] [e/EMAIL] [a/ADDRESS] [sal/SALARY]`
@@ -173,7 +177,7 @@ Example:
 > If you `edit` a contact such that it now matches another existing contact in your list, Big Brother will perform the edit but will trigger a **warning pop-up** to alert you of the duplicate. You can choose to keep the duplicate or delete it later.
 </box>
 
-<br>
+<div style="page-break-after: always;"></div>
 
 ### Deleting an existing contact : `delete`
 Format: `delete INDEX`
@@ -185,8 +189,6 @@ Parameters:
 Examples:
 1. [`list`](#listing-all-contacts-list) followed by `delete 2` deletes the 2nd person in the address book.
 2. [`find n/Betsy`](#searching-contacts-by-criteria-find) followed by `delete 1` deletes the 1st person in the results of the [`find`](#searching-contacts-by-criteria-find) command, if present.
-
-<br>
 
 ### Searching contacts by criteria : `find`
 Format: `find [n/NAME] [t/TAG] [c/CERT_NAME] [e/CERT_EXPIRY_DATE]`
@@ -221,12 +223,10 @@ Examples:
 > If you want to see the original contact list after performing a `find` command, use the [`list`](#listing-all-contacts-list) command instead of the [`undo`](#restoring-the-contact-list-undo) command, since finding is not a data-modifying command that changes state of the contact list.
 </box>
 
-<br>
-
 ### Listing all contacts : `list`
 Format: `list`
 
-<br>
+<div style="page-break-after: always;"></div>
 
 ### Adding and deleting tags : `tag`
 Format: `tag INDEX [a/TAGS_TO_ADD] [c/COLOUR_OF_TAGS_TO_ADD] [d/TAGS_TO_DELETE]`
@@ -262,7 +262,6 @@ All the below commands affect the person at [`INDEX`](#input-validation-duplicat
 > If you specify duplicate tag names in the command itself, Big Brother will throw an error. (i.e. `tag 1 a/TAG TAG c/RED BLUE` is not allowed)
 
 </box>
-<br>
 
 ### Adding certificates : `cert-add`
 Format: `cert-add INDEX n/CERT_NAME [e/CERT_EXPIRY_DATE]`.
@@ -282,8 +281,6 @@ Examples:<br>
 1. `cert-add 1 n/OSCP e/2028-03-05` adds a certificate named OSCP with an expiry date on 5th March 2028 to the first person in the list.
 2. `cert-add 1 n/CompTIA` adds a certificate named CompTIA with no expiry date to the first person in the list.
 
-<br>
-
 ### Deleting certificates : `cert-del`
 Format: `cert-del INDEX n/CERT_NAME`
 <br>
@@ -297,7 +294,7 @@ Parameters:
 Example: `cert-del 1 n/OSCP`
 1. Deletes the certificate named OSCP from the first person in the list.
 
-<br>
+<div style="page-break-after: always;"></div>
 
 ### Editing certificates : `cert-edit`
 Format: `cert-edit INDEX n/CERT_NAME [ne/NEW_CERT_NAME] [ee/NEW_CERT_EXPIRY_DATE]`
@@ -317,8 +314,6 @@ Parameters:
 Example: `cert-edit 1 n/OSCP ne/OSCP2`
 * Edits the certificate originally named 'OSCP' held by the first person in the list, updating its name to 'OSCP2'.
 
-<br>
-
 ### Restoring the contact list : `undo`
 Format: `undo`
 
@@ -335,8 +330,6 @@ Format: `undo`
 
 </box>
 
-<br>
-
 ### Sorting all contacts : `sort`
 Format: `sort`
 * Sorts the contact list in alphabetical order of name.
@@ -351,8 +344,6 @@ Format: `sort`
 
 </box>
 
-<br>
-  
 ### Clearing all entries : `clear`
 Format: `clear`
 
@@ -364,12 +355,8 @@ Format: `clear`
 > If you accidentally ran `clear`, you can run [`undo`](#restoring-the-contact-list-undo)  to restore the cleared entries.
 </box>
 
-<br>
-
 ### Exiting the program : `exit`
 Format: `exit`
-
-<br>
 
 ### Input Validation, Duplicate Handling and Utilities
 | Parameter        | Input Validation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Duplicate Handling                                               | Whitespace Trimming Utility                                                                                                                                                                                                                                |
@@ -400,8 +387,6 @@ Format: `exit`
 > Possible right after executing [`tag`](#adding-and-deleting-tags-tag), see [`tag`](#adding-and-deleting-tags-tag) for more details.
 
 </box>
-
-<br>
 
 ### Saving the data
 Big Brother's data is saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
