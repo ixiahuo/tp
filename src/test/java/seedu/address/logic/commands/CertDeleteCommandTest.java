@@ -94,6 +94,33 @@ public class CertDeleteCommandTest {
     }
 
     @Test
+    public void execute_deleteFromIndexSpecifiedPerson() throws Exception {
+        Model model = new ModelManager(new AddressBook(), new UserPrefs());
+
+        // create persons with same name
+        ArrayList<Certificate> certList = new ArrayList<Certificate>() {
+            {
+                add(new Certificate(new CertName("OSCP")));
+            }
+        };
+        Person person1 = new PersonBuilder().withName("a").withCertificates(certList).build();
+        Person person2 = new PersonBuilder().withName("A").withCertificates(certList).build();
+        new AddCommand(person1).execute(model);
+        new AddCommand(person2).execute(model);
+
+        // delete certificate from person 2, not person 1
+        new CertDeleteCommand(Index.fromOneBased(2), new Certificate(new CertName("OSCP")))
+                .execute(model);
+
+        assertEquals(model.getFilteredPersonList().get(0), person1);
+        ArrayList<Certificate> expectedCertList = new ArrayList<Certificate>();
+        Person expectedPerson2 = new PersonBuilder().withName("A")
+                .withCertificates(expectedCertList)
+                .build();
+        assertEquals(model.getFilteredPersonList().get(1), expectedPerson2);
+    }
+
+    @Test
     public void equals() {
         Certificate cert1 = new Certificate(new CertName("cert1"));
         Certificate cert2 = new Certificate(new CertName("cert2"));

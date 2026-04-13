@@ -71,7 +71,7 @@ public class CertAddCommand extends Command {
 
         Person personAddedTo = addCertToPerson(personToAddTo, toAdd);
 
-        model.setPerson(personToAddTo, personAddedTo);
+        model.setPerson(index.getZeroBased(), personAddedTo);
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(personAddedTo)));
     }

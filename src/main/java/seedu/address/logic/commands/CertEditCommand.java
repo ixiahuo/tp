@@ -89,7 +89,7 @@ public class CertEditCommand extends Command {
 
         Person personEdited = editCertForPerson(personToEdit, toEdit, updatedCert);
 
-        model.setPerson(personToEdit, personEdited);
+        model.setPerson(index.getZeroBased(), personEdited);
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(personEdited)));
     }

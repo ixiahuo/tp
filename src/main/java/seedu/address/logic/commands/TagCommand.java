@@ -94,7 +94,7 @@ public class TagCommand extends Command {
         }
         model.commitAddressBook();
 
-        model.setPerson(personToEdit, editedPerson);
+        model.setPerson(targetIndex.getZeroBased(), editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
         return new CommandResult(String.format(MESSAGE_TAG_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)));

@@ -27,6 +27,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.TagColour;
 import seedu.address.model.tag.TagSet;
+import seedu.address.testutil.PersonBuilder;
 
 /**
  * Contains integration tests (interaction with the Model) and unit tests for EditCommand.
@@ -233,6 +234,22 @@ public class TagCommandTest {
 
         assertCommandFailure(tagCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
 
+    }
+
+    @Test
+    public void execute_tagIndexSpecifiedPerson() throws Exception {
+        Model model = new ModelManager(new AddressBook(), new UserPrefs());
+        Person person1 = new PersonBuilder().withName("a").build();
+        Person person2 = new PersonBuilder().withName("A").build();
+        new AddCommand(person1).execute(model);
+        new AddCommand(person2).execute(model);
+
+        new TagCommand(Index.fromOneBased(2), Set.of(new Tag("test")), true)
+                .execute(model);
+
+        Person expectedPerson2 = new PersonBuilder().withName("A").withTags("test").build();
+        assertEquals(model.getFilteredPersonList().get(0), person1);
+        assertEquals(model.getFilteredPersonList().get(1), expectedPerson2);
     }
 
     @Test

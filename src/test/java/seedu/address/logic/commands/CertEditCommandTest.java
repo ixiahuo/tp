@@ -169,6 +169,40 @@ public class CertEditCommandTest {
     }
 
     @Test
+    public void execute_editIndexSpecifiedPerson() throws Exception {
+        Model model = new ModelManager(new AddressBook(), new UserPrefs());
+
+        // create persons with same name
+        ArrayList<Certificate> certList = new ArrayList<Certificate>() {
+            {
+                add(new Certificate(new CertName("OSCP")));
+            }
+        };
+        Person person1 = new PersonBuilder().withName("a").withCertificates(certList).build();
+        Person person2 = new PersonBuilder().withName("A").withCertificates(certList).build();
+        new AddCommand(person1).execute(model);
+        new AddCommand(person2).execute(model);
+
+        // edit certificate of person 2, not person 1
+        new CertEditCommand(Index.fromOneBased(2),
+                new Certificate(new CertName("OSCP")),
+                Optional.of(new CertName("OSCP2")),
+                Optional.empty())
+                .execute(model);
+
+        assertEquals(model.getFilteredPersonList().get(0), person1);
+        ArrayList<Certificate> expectedCertList = new ArrayList<Certificate>() {
+            {
+                add(new Certificate(new CertName("OSCP2")));
+            }
+        };
+        Person expectedPerson2 = new PersonBuilder().withName("A")
+                .withCertificates(expectedCertList)
+                .build();
+        assertEquals(model.getFilteredPersonList().get(1), expectedPerson2);
+    }
+
+    @Test
     public void equals() {
         Certificate cert1 = new Certificate(new CertName("cert1"));
         Certificate cert2 = new Certificate(new CertName("cert2"));

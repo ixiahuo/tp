@@ -70,7 +70,7 @@ public class CertDeleteCommand extends Command {
 
         Person personDeletedFrom = deleteCertFromPerson(personToDeleteFrom, toDel);
 
-        model.setPerson(personToDeleteFrom, personDeletedFrom);
+        model.setPerson(index.getZeroBased(), personDeletedFrom);
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(personDeletedFrom)));
     }
