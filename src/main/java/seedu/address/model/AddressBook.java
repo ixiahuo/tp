@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Comparator;
 import java.util.List;
@@ -82,9 +83,20 @@ public class AddressBook implements ReadOnlyAddressBook {
      * The person identity of {@code editedPerson} must not be the same as another existing person in the address book.
      */
     public void setPerson(Person target, Person editedPerson) {
-        requireNonNull(editedPerson);
+        requireAllNonNull(target, editedPerson);
 
         persons.setPerson(target, editedPerson);
+    }
+
+    /**
+     * Replaces the given Person's index {@code target} in the list with {@code editedPerson}.
+     * {@code target} must exist in the address book.
+     * The person identity of {@code editedPerson} must not be the same as another existing person in the address book.
+     */
+    public void setPerson(int index, Person editedPerson) {
+        requireNonNull(editedPerson);
+
+        persons.setPerson(index, editedPerson);
     }
 
     /**
