@@ -213,6 +213,8 @@ Step 7. The `FindCommand` object executes the `updateFilteredPersonList(Predicat
 
 Step 8. Only `Persons` that return `true` with the supplied predicate are kept in the filtered list.
 
+<div style="page-break-after: always;"></div>
+
 ### Tagging feature
 
 The `tag` command allows for both adding or deleting of tags (but not both at the same time). Colours for these tags can be specified by the user
