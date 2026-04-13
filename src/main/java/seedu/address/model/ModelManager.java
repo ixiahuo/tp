@@ -114,6 +114,13 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public void setPerson(int index, Person editedPerson) {
+        requireAllNonNull(editedPerson);
+
+        addressBook.setPerson(index, editedPerson);
+    }
+
+    @Override
     public void sort(Comparator<Person> comparator) {
         requireNonNull(comparator);
         addressBook.sort(comparator);

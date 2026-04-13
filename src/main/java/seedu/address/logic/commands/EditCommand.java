@@ -81,7 +81,7 @@ public class EditCommand extends Command {
 
         model.commitAddressBook();
 
-        model.setPerson(personToEdit, editedPerson);
+        model.setPerson(index.getZeroBased(), editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         String feedback = String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
         if (isPossibleDuplicate) {
